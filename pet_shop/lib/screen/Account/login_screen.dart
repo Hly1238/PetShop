@@ -9,7 +9,9 @@ import 'package:pet_shop/config/responsive/responsive_widget.dart';
 import 'package:pet_shop/config/validators/validation.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:pet_shop/models/Account/login_request_model.dart';
 import 'package:pet_shop/route/route_generator.dart';
+import 'package:pet_shop/servies/Account/account_api_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool isAPIcallProcess = false;
   String? username;
   String? password;
+  bool _isNotValidate = false;
 
   //Form
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
@@ -327,14 +330,30 @@ class _LoginScreenState extends State<LoginScreen> {
                                         cursor: SystemMouseCursors
                                             .click, // Thay đổi con trỏ chuột thành hình bàn tay
                                         child: GestureDetector(
-                                          onTap: () {
+                                          // onTap: () {
+                                          //   if (globalKey.currentState!
+                                          //       .validate()) {
+                                          //     // ScaffoldMessenger.of(context)
+                                          //     //     .showSnackBar(const SnackBar(
+                                          //     //   content:
+                                          //     //       Text("Trying to Login"),
+                                          //     // ));
+                                          //     bool isLogin = loginUser();
+                                          //   }
+                                          // },
+                                          onTap: () async {
                                             if (globalKey.currentState!
                                                 .validate()) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Trying to Login"),
-                                              ));
+                                              bool isLogin = await loginUser();
+                                              if (isLogin) {
+                                                Navigator.pushReplacementNamed(
+                                                    context, Routes.homepage);
+                                              } else {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(SnackBar(
+                                                  content: Text("Login failed"),
+                                                ));
+                                              }
                                             }
                                           },
                                           child: Container(
@@ -493,6 +512,34 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   //Handle Sign In
+
+  Future<bool> loginUser() async {
+    if (_userController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      var model = LoginRequestModel(
+        // Email: _userController.text,
+        // Password: _passwordController.text,
+        Email: "admin5@gmail.com",
+        Password: "091232434",
+      );
+
+      bool success = await AccountApiService.login(model);
+
+      if (success) {
+        // Handle successful login
+        print("Login successful");
+      } else {
+        // Handle failed login
+        print("Login failed");
+      }
+      return success;
+    } else {
+      setState(() {
+        _isNotValidate = true;
+      });
+      return false;
+    }
+  }
 }
 // Container(
 //   decoration: BoxDecoration(

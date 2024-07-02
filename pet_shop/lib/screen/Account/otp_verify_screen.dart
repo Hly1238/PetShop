@@ -414,7 +414,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                                     ));
                                                     Navigator.of(context)
                                                         .pushReplacementNamed(
-                                                            Routes.sign_in);
+                                                            Routes
+                                                                .register_member);
                                                   }
                                                 }
                                               : null,

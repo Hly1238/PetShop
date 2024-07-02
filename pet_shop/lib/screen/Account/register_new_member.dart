@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 
 import 'package:flutter/material.dart';
@@ -27,9 +29,35 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   TextEditingController _userController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmpasswordController = TextEditingController();
   var _isObscured;
   final FocusNode _userFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _confirmpasswordFocusNode = FocusNode();
+  bool _isNotValidate = false;
+
+  void registerUser() async {
+    if (_userController.text.isNotEmpty &&
+        _confirmpasswordController.text.isNotEmpty) {
+      var reqBody = {
+        "FullName": "091232434",
+        "Email": "admin6@gmail.com",
+        "PhoneNumber": "091232434",
+        "Password": "091232434",
+        "Otp": "JWUIj2"
+      };
+
+      var response = await http.post(Uri.parse(registration),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode(reqBody));
+      var jsonResponse = jsonDecode(response.body);
+      print(jsonResponse);
+    } else {
+      setState(() {
+        _isNotValidate = true;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -43,6 +71,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
     _passwordController.dispose();
     _userFocusNode.dispose();
     _passwordFocusNode.dispose();
+    _confirmpasswordFocusNode.dispose();
     super.dispose();
   }
 
@@ -213,11 +242,11 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                               horizontal:
                                                   10.0), // Điều chỉnh padding để tăng kích thước input
                                         ),
-                                        keyboardType: TextInputType.phone,
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                         autofillHints: [AutofillHints.username],
                                         validator: (name) =>
-                                            TValidation.validatePhoneNumber(
-                                                name),
+                                            TValidation.validateEmail(name),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                       ),
@@ -313,8 +342,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                         height: 6.0,
                                       ),
                                       TextFormField(
-                                        controller: _passwordController,
-                                        focusNode: _passwordFocusNode,
+                                        controller: _confirmpasswordController,
+                                        focusNode: _confirmpasswordFocusNode,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
                                             borderRadius:
@@ -383,11 +412,21 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           onTap: () {
                                             if (globalKey.currentState!
                                                 .validate()) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Trying to Login"),
-                                              ));
+                                              if (_confirmpasswordController
+                                                      .text !=
+                                                  _passwordController.text) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        "Password are not the same"),
+                                                  ),
+                                                );
+                                              } else {
+                                                Navigator.of(context)
+                                                    .pushReplacementNamed(
+                                                        Routes.homepage);
+                                              }
                                             }
                                           },
                                           child: Container(
@@ -399,7 +438,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                "Sign In",
+                                                "Đăng ký",
                                                 style: GoogleFonts.raleway()
                                                     .copyWith(
                                                   color: Colors.white,
@@ -412,7 +451,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                         ),
                                       ),
 
-                                      // TODO [Input Form/Content/Form/Sign Up]
+                                      // TODO [Input Form/Content/Form/Sign In]
                                       SizedBox(
                                         height: height * 0.03,
                                       ),
@@ -421,7 +460,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Haven't got any account? ",
+                                            "Have an account? ",
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
@@ -443,7 +482,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                       .shrinkWrap,
                                             ),
                                             child: Text(
-                                              "Register Now",
+                                              "Sign In",
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,

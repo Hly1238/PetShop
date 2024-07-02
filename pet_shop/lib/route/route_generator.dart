@@ -9,7 +9,7 @@ import 'package:pet_shop/screen/Account/signup_screen.dart';
 import 'package:pet_shop/screen/Camera/camera_screen.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Navigation/navigation_screen.dart';
-import 'package:pet_shop/screen/Product/components/product_card_vertical.dart';
+
 import 'package:pet_shop/screen/SplashScreen/on_boarding.dart';
 import 'package:pet_shop/screen/SplashScreen/splash_screen.dart';
 import 'package:pet_shop/screen/tmp/snack_bar.dart';
@@ -54,6 +54,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => CameraScreen());
       case Routes.productCard:
         return MaterialPageRoute(builder: (_) => CarouselLoading());
+
       case '/test':
         return MaterialPageRoute(builder: (_) => SnackBarScreen());
       case '/pre':

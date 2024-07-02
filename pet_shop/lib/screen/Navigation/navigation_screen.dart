@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +11,7 @@ import 'package:pet_shop/screen/Home/home_screen.dart';
 import 'package:pet_shop/screen/Profile/favorite_screen.dart';
 import 'package:pet_shop/screen/Profile/profile_screen.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -24,6 +28,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
     FavoriteScreen(),
     ProfileScreen(),
   ];
+
+  //Pick and Take options
+  Uint8List? _image;
+  File? selectedIMage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,8 +42,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
       ),
       floatingActionButton: SafeArea(
         child: FloatingActionButton(
+          // todo: [Scan dog action]
           onPressed: () {
-            checkpermission_opencamera();
+            // checkpermission_opencamera();
+            showImagePickerOption(context);
+            // Navigator.of(context).pushNamed(Routes.recognize_model);
           },
           child: Icon(
             Icons.qr_code,
@@ -68,6 +80,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     );
   }
 
+  // todo: [Check Permission]
   checkpermission_opencamera() async {
     var cameraStatus = await Permission.camera.status;
     var microphoneStatus = await Permission.microphone.status;
@@ -105,6 +118,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
     }
   }
 
+  check_gallerry_permission() async {
+    if (await Permission.storage.request().isGranted) {
+      _pickImageFromGallery();
+    } else {
+      print('No permission provided');
+    }
+  }
+
   void openCamera() {
     // ScaffoldMessenger.of(context).showSnackBar(
     //   const SnackBar(
@@ -135,5 +156,95 @@ class _NavigationScreenState extends State<NavigationScreen> {
     } else if (status.isGranted) {
       //proceed with camera
     }
+  }
+
+  void showImagePickerOption(BuildContext context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.blue[100],
+        context: context,
+        builder: (builder) {
+          return Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height / 4.5,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        check_gallerry_permission();
+                      },
+                      child: const SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.image,
+                              size: 70,
+                            ),
+                            Text("Gallery")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        checkpermission_opencamera();
+                      },
+                      child: const SizedBox(
+                        child: Column(
+                          children: [
+                            Icon(
+                              Icons.camera_alt,
+                              size: 70,
+                            ),
+                            Text("Camera")
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  //Gallery
+  Future _pickImageFromGallery() async {
+    final returnImage = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Navigator.of(context).pop(); //close the model sheet
+  }
+
+  //Camera
+  Future _pickImageFromCamera() async {
+    final returnImage =
+        await ImagePicker().pickImage(source: ImageSource.camera);
+    if (returnImage == null) return;
+    setState(() {
+      selectedIMage = File(returnImage.path);
+      _image = File(returnImage.path).readAsBytesSync();
+    });
+    Navigator.of(context).pop();
+  }
+
+  void _imgFromGallery() async {
+    await ImagePicker()
+        .pickImage(source: ImageSource.camera, imageQuality: 50)
+        .then((value) => {
+              if (value != null)
+                {
+                  // _cropImage(File(value.path))
+                }
+            });
   }
 }
