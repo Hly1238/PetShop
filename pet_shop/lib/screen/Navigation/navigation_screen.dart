@@ -85,8 +85,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
     var cameraStatus = await Permission.camera.status;
     var microphoneStatus = await Permission.microphone.status;
 
-    print(cameraStatus);
-    print(microphoneStatus);
     //cameraStatus.isGranted == has access to application
     //cameraStatus.isDenied == does not have access to application, you can request again for the permission.
     //cameraStatus.isPermanentlyDenied == does not have access to application, you cannot request again for the permission.
@@ -94,24 +92,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
     //cameraStatus.isUndetermined == permission has not asked before.
 
     if (!cameraStatus.isGranted) await Permission.camera.request();
-
-    if (!microphoneStatus.isGranted) await Permission.microphone.request();
-
-    // //Step 2:
-    // if (cameraStatus.isGranted) {
-    //   //Proceed with camera-related task
-    // } else if (cameraStatus.isDenied) {
-    //   requestCameraPermission();
-    // }
+    // if (!microphoneStatus.isGranted) await Permission.microphone.request();
 
     if (await Permission.camera.isGranted) {
-      if (await Permission.microphone.isGranted) {
-        openCamera();
-      } else {
-        showToast(
-            "Camera needs to access your microphone, please provide permission",
-            position: ToastPosition.bottom);
-      }
+      // if (await Permission.microphone.isGranted) {
+      // } else {
+      //   showToast(
+      //       "Camera needs to access your microphone, please provide permission",
+      //       position: ToastPosition.bottom);
+      // }
+      openCamera();
     } else {
       showToast("Provide Camera permission to use camera.",
           position: ToastPosition.bottom);
@@ -127,84 +117,44 @@ class _NavigationScreenState extends State<NavigationScreen> {
   }
 
   void openCamera() {
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text("Trying to Login"),
-    //   ),
-    // );
-    Navigator.of(context).pushNamed(Routes.camera);
+    Navigator.of(context).pushNamed(Routes.scanner);
   }
 
-  checkpermission_phone_logs() async {
-    if (await Permission.phone.request().isGranted) {
-      openPhonelogs();
-    } else {
-      showToast("Provide Phone permission to make a call and view logs.",
-          position: ToastPosition.bottom);
-    }
-  }
+  // void requestCameraPermission() async {
+  //   var status = await Permission.camera.request();
+  //   if (status.isDenied) {
+  //     //Handle Denied
+  //     showToast("Camera");
+  //   } else if (status.isPermanentlyDenied) {
+  //     //Permissiobn permanently denied, show Dialog or redirect to app settings
+  //   } else if (status.isGranted) {
+  //     //proceed with camera
+  //   }
+  // }
 
-  void openPhonelogs() {}
-
-  void requestCameraPermission() async {
-    var status = await Permission.camera.request();
-    if (status.isDenied) {
-      //Handle Denied
-      showToast("Camera");
-    } else if (status.isPermanentlyDenied) {
-      //Permissiobn permanently denied, show Dialog or redirect to app settings
-    } else if (status.isGranted) {
-      //proceed with camera
-    }
-  }
-
+  // todo [Options pick]
   void showImagePickerOption(BuildContext context) {
     showModalBottomSheet(
-        backgroundColor: Colors.blue[100],
+        backgroundColor: Colors.white,
         context: context,
         builder: (builder) {
           return Padding(
-            padding: const EdgeInsets.all(18.0),
+            padding: const EdgeInsets.only(left: 18.0, right: 18.0),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height / 4.5,
               child: Row(
                 children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        check_gallerry_permission();
-                      },
-                      child: const SizedBox(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.image,
-                              size: 70,
-                            ),
-                            Text("Gallery")
-                          ],
-                        ),
-                      ),
-                    ),
+                  IconPicker(
+                    check_gallerry_permission,
+                    // _pickImageFromGallery,
+                    Text("Gallery"),
+                    Icons.image,
                   ),
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        checkpermission_opencamera();
-                      },
-                      child: const SizedBox(
-                        child: Column(
-                          children: [
-                            Icon(
-                              Icons.camera_alt,
-                              size: 70,
-                            ),
-                            Text("Camera")
-                          ],
-                        ),
-                      ),
-                    ),
+                  IconPicker(
+                    checkpermission_opencamera,
+                    Text("Camera"),
+                    Icons.camera_alt_rounded,
                   ),
                 ],
               ),
@@ -213,6 +163,31 @@ class _NavigationScreenState extends State<NavigationScreen> {
         });
   }
 
+  Expanded IconPicker(void Function() function, Text named, IconData icon) {
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          function();
+        },
+        child: SizedBox(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                size: 65,
+                color: Colors.black,
+              ),
+              named, // Sử dụng Text widget đã được truyền vào
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  //todo [Pick Action]
   //Gallery
   Future _pickImageFromGallery() async {
     final returnImage = await ImagePicker()

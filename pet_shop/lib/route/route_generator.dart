@@ -7,12 +7,14 @@ import 'package:pet_shop/screen/Account/recovery_screen.dart';
 import 'package:pet_shop/screen/Account/register_new_member.dart';
 import 'package:pet_shop/screen/Account/signup_screen.dart';
 import 'package:pet_shop/screen/Camera/camera_screen.dart';
+import 'package:pet_shop/screen/Camera/scan_screen.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Navigation/navigation_screen.dart';
 
 import 'package:pet_shop/screen/SplashScreen/on_boarding.dart';
 import 'package:pet_shop/screen/SplashScreen/splash_screen.dart';
 import 'package:pet_shop/screen/tmp/snack_bar.dart';
+import 'package:pet_shop/screen/tmp/test_model.dart';
 
 class Routes {
   static const String homepage = "/";
@@ -25,7 +27,9 @@ class Routes {
   static const String register_member = "/register_member";
   static const String otp_verified = "/otp_verified";
   static const String camera = "/camera";
+  static const String scanner = "/scan";
   static const String snackBarScreen = "/test";
+  static const String testModelScreen = "/test_model";
   static const String productCard = "/product_card";
   static const String preAccessScreen = "/pre";
 }
@@ -52,11 +56,15 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => RegisterNewMember());
       case Routes.camera:
         return MaterialPageRoute(builder: (_) => CameraScreen());
+      case Routes.scanner:
+        return MaterialPageRoute(builder: (_) => ScanScreen());
       case Routes.productCard:
         return MaterialPageRoute(builder: (_) => CarouselLoading());
 
       case '/test':
         return MaterialPageRoute(builder: (_) => SnackBarScreen());
+      case Routes.testModelScreen:
+        return MaterialPageRoute(builder: (_) => TestModel());
       case '/pre':
         return MaterialPageRoute(builder: (_) => PreAccess());
 
