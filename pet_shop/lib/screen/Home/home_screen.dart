@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/controllers/Home/Banners/banner_controller.dart';
+import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
+import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_slider_view.dart';
 import 'package:pet_shop/screen/Product/components/product_card_vertical.dart';
 import 'package:pet_shop/screen/Product/detail_product.dart';
 import 'package:badges/badges.dart' as badges;
@@ -323,10 +327,27 @@ class _HomeScreenState extends State<HomeScreen> {
       //     ),
       //   ),
       // ),
+
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
-            children: [],
+            children: [
+              //todo: [Banners Loading]
+              Obx(() {
+                //? Show
+                if (BannerController.instance.bannerList.isNotEmpty) {
+                  return CarouselSliderView(
+                      bannerList: BannerController.instance.bannerList);
+                }
+                //? Loading
+                else {
+                  return CarouselLoading();
+                  // Image.network(
+                  //     'https://pbs.twimg.com/profile_images/497929479063224320/LuzRK4sp_400x400.jpeg')
+                }
+              }),
+              //todo
+            ],
           ),
         ),
       ),
@@ -337,9 +358,9 @@ class _HomeScreenState extends State<HomeScreen> {
   AppBar buildAppBar() {
     return AppBar(
       backgroundColor: Colors.white,
-      toolbarHeight: 70,
+      toolbarHeight: 75,
       elevation: 0,
-      leadingWidth: 110, // Điều chỉnh chiều rộng để hình ảnh hiển thị đầy đủ
+      leadingWidth: 90, // Điều chỉnh chiều rộng để hình ảnh hiển thị đầy đủ
       leading: Padding(
         padding: EdgeInsets.only(left: 0),
         child: Container(
@@ -358,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
             image: AssetImage(
               "assets/images/_project/Icons/loupe.png",
             ),
-            width: 30,
+            width: 25,
           ),
         ),
         SizedBox(
@@ -382,8 +403,8 @@ class _HomeScreenState extends State<HomeScreen> {
               image: AssetImage(
                 "assets/images/_project/Icons/shopping-bag-blue.png",
               ),
-              width: 35,
-              height: 35,
+              width: 30,
+              height: 30,
             ),
           ),
         ),
