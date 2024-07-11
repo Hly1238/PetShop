@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/screen/Product/components/rounded_container.dart';
 import 'package:pet_shop/screen/Product/components/rounded_img.dart';
 import 'package:pet_shop/screen/Product/style/shadows_style.dart';
 
 class ProductCardVertical extends StatelessWidget {
-  const ProductCardVertical({Key? key}) : super(key: key);
+  final Product product;
+  const ProductCardVertical({Key? key, required this.product})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // if (product.images.isNotEmpty && product.images[0] != null) {
+    //   print('Product Image URL: ${product.images[0]}');
+    // }
     return GestureDetector(
       onTap: () {},
       child: Center(
         child: ConstrainedBox(
-          constraints: BoxConstraints(
-            maxWidth: 780, // Kích thước mong muốn của bạn
-          ),
+          constraints: BoxConstraints(maxWidth: 200, minHeight: 250),
           child: Container(
-            width: 240,
+            margin: EdgeInsets.only(right: 10),
+            width: 200,
             padding: const EdgeInsets.all(1),
             decoration: BoxDecoration(
                 boxShadow: [TShadowStyle.verticalProductShadow],
@@ -29,115 +33,148 @@ class ProductCardVertical extends StatelessWidget {
                 ),
             child: Column(
               children: [
-                //TODO: Image product
-                RoundedContainer(
-                  height: 280,
-                  // padding: const EdgeInsets.all(10.0),
-                  backgroundColor: Colors.pink,
+                //TODO: Images Product
+                Container(
+                  height: 220,
                   child: Stack(
                     children: [
-                      RoundedImg(
-                        imageUrl:
-                            "assets/images/_project/Account/black_dog.png",
-                        applyImageRadius: true,
+                      //todo [Images Product]
+                      Positioned.fill(
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(16.0),
+                              topRight: Radius.circular(16.0)),
+                          child: product.images.isNotEmpty &&
+                                  product.images[0] != null
+                              ? Image.network(
+                                  product.images[0],
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.asset(
+                                  "assets/images/_project/Account/black_dog.png",
+                                  fit: BoxFit.cover,
+                                ),
+                        ),
                       ),
-                      //TODO: RatingStar
+                      //todo [Sale Tag]
+                      if (product.discount != null)
+                        Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: RoundedContainer(
+                            radius: 10,
+                            backgroundColor: Colors.purple.withOpacity(1),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 8.0, vertical: 4),
+                            child: Text(
+                              // 'product.discount as String',
+                              '${product.discount}% Discount',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelLarge!
+                                  .apply(color: Colors.black),
+                            ),
+                          ),
+                        ),
+                      //todo [Rating tag]
                       Positioned(
-                        top: 12,
+                        top: 4,
+                        left: 0,
                         child: RoundedContainer(
                           radius: 10,
-                          backgroundColor: Colors.amber.withOpacity(0.8),
+                          backgroundColor: Colors.amber,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 4),
-                          child: Text(
-                            '25%',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge!
-                                .apply(color: Colors.black),
+                          child: Row(
+                            children: [
+                              Icon(Icons.star, size: 16, color: Colors.red),
+                              SizedBox(width: 4),
+                              product.discount == 0
+                                  ? Text(
+                                      '5.0',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge!
+                                          .apply(color: Colors.black),
+                                    )
+                                  : Text(
+                                      '${product.discount}% Discount',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge!
+                                          .apply(color: Colors.black),
+                                    ),
+                            ],
                           ),
                         ),
                       ),
-
-                      //TODO: Sale Tag
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: RoundedContainer(
-                          radius: 10,
-                          backgroundColor: Colors.purple.withOpacity(1),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 4),
-                          child: Text(
-                            '35% Discount',
-                            style: Theme.of(context)
-                                .textTheme
-                                .labelLarge!
-                                .apply(color: Colors.black),
-                          ),
-                        ),
-                      ),
-
-                      //TODO: Fav Icon
+                      //todo [Fav Icon]
                       // Positioned(
                       //   top: 0,
                       //   right: 0,
                       //   child: Container(
-                      //     // color: primaryColorOrange,
                       //     decoration: BoxDecoration(
                       //       borderRadius: BorderRadius.circular(100),
-                      //       // color: primaryColorOrange,
                       //     ),
                       //     child: IconButton(
                       //       onPressed: () {},
-                      //       // icon: Icon(Icons.favorite_border),
                       //       icon: Icon(Icons.favorite),
                       //       color: Colors.red,
                       //       iconSize: 30,
                       //     ),
                       //   ),
-                      // )
+                      // ),
                     ],
                   ),
                 ),
                 //TODO: Details
                 Padding(
-                  padding: EdgeInsets.only(left: 20),
+                  padding: EdgeInsets.only(left: 10, top: 10),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          'Green Nike Air Shoes Lorem Ispum Loren Black Host Starter',
-                          style: Theme.of(context).textTheme.titleLarge,
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10.0),
+                        child: Text(
+                          product.name,
+                          style: TextStyle(fontSize: 20),
                           overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          textAlign: TextAlign.left),
+                          maxLines: 1,
+                          textAlign: TextAlign.left,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: Row(
+                          children: [
+                            Text(
+                              product.category.name,
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.labelLarge,
+                            ),
+                            const SizedBox(
+                              width: 8,
+                            ),
+                            Icon(
+                              Icons.verified,
+                              color: Colors.amber,
+                              size: 20,
+                            )
+                          ],
+                        ),
+                      ),
                       SizedBox(
                         height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Text(
-                            'Nike',
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 1,
-                            style: Theme.of(context).textTheme.labelLarge,
-                          ),
-                          const SizedBox(
-                            width: 8,
-                          ),
-                          Icon(
-                            Icons.verified,
-                            color: Colors.amber,
-                            size: 20,
-                          )
-                        ],
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '\$35.5',
+                            '${product.price}',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.headlineMedium,

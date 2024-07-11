@@ -1,7 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pet_shop/controllers/Home/Banners/banner_controller.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -12,7 +14,7 @@ List<CameraDescription> cameras = [];
 void main() async {
   // WidgetsFlutterBinding.ensureInitialized();
   // cameras = await availableCameras();
-
+  await Hive.initFlutter();
   // Set up the SettingsController,  which will glue user settings to multiple
   // Flutter Widgets.
   final settingsController = SettingsController(SettingsService());

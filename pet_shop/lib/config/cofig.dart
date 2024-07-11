@@ -6,10 +6,16 @@ final login = url + "api/u/login";
 //? Home
 //todo [banners]
 final banner = url + "api/product/banners";
+//todo [category]
+final category = url + "api/category/getAll";
 
 class Config {
   static const String appName = "Shopping App";
   static const String apiURL = "192.168.1.191:3000";
   static const String loginAPI = "/api/u/login";
   static const String bannerAPI = "api/product/banners";
+  static const String categoryAPI = "/api/category/getAll";
+
+  //Product
+  static const String productAPI = "/api/product/getAll";
 }

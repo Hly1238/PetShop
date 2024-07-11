@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/config/constant.dart';
-import 'package:pet_shop/controllers/Home/Banners/banner_controller.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_slider_view.dart';
+import 'package:pet_shop/screen/Home/components/category/category_loading.dart';
+import 'package:pet_shop/screen/Home/components/category/category_showing.dart';
+import 'package:pet_shop/screen/Home/components/selection_component/selection_title.dart';
 import 'package:pet_shop/screen/Product/components/product_card_vertical.dart';
+import 'package:pet_shop/screen/Product/components/product_loading.dart';
+import 'package:pet_shop/screen/Product/components/product_showing.dart';
 import 'package:pet_shop/screen/Product/detail_product.dart';
 import 'package:badges/badges.dart' as badges;
 
@@ -34,8 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var screenWidth = MediaQuery.of(context).size.width;
-    var crossAxisCount = (screenWidth / 300).floor();
+    // var screenWidth = MediaQuery.of(context).size.width;
+    // var crossAxisCount = (screenWidth / 300).floor();
     return Scaffold(
       appBar: buildAppBar(),
       backgroundColor: CustomAppColor.lightBackgroundColor_Home,
@@ -329,15 +334,16 @@ class _HomeScreenState extends State<HomeScreen> {
       // ),
 
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
         child: SafeArea(
           child: Column(
             children: [
               //todo: [Banners Loading]
               Obx(() {
                 //? Show
-                if (BannerController.instance.bannerList.isNotEmpty) {
+                if (HomeController.instance.bannerList.isNotEmpty) {
                   return CarouselSliderView(
-                      bannerList: BannerController.instance.bannerList);
+                      bannerList: HomeController.instance.bannerList);
                 }
                 //? Loading
                 else {
@@ -346,7 +352,58 @@ class _HomeScreenState extends State<HomeScreen> {
                   //     'https://pbs.twimg.com/profile_images/497929479063224320/LuzRK4sp_400x400.jpeg')
                 }
               }),
-              //todo
+              //todo [Category]
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    SelectionTitle(title: "Thể loại"),
+                    Obx(() {
+                      //? Show
+                      if (HomeController.instance.categoryList.isNotEmpty) {
+                        return CategoryShowing(
+                            categories: HomeController.instance.categoryList);
+                      }
+                      //? Loading
+                      else {
+                        return CategoryLoading();
+                      }
+                    }),
+                  ],
+                ),
+              ),
+
+              //todo [Product]
+              SizedBox(height: 20),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  // border: Border.all(width: 1),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  children: [
+                    SelectionTitle(title: "Đồ ăn chó mèu"),
+                    Obx(() {
+                      //? Show
+                      if (HomeController.instance.productList.isNotEmpty) {
+                        return ProductShowing(
+                            productList: HomeController.instance.productList);
+                      }
+                      //? Loading
+                      else {
+                        return ProductLoading();
+                      }
+                    }),
+                  ],
+                ),
+              ),
             ],
           ),
         ),

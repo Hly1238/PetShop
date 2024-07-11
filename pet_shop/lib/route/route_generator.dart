@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:pet_shop/controllers/Home/Banners/banner_controller.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/screen/Account/forget_screen.dart';
 import 'package:pet_shop/screen/Account/login_screen.dart';
 import 'package:pet_shop/screen/Account/otp_verify_screen.dart';
@@ -38,7 +38,7 @@ class Routes {
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    Get.put(BannerController());
+    Get.put(HomeController());
     final args = settings.arguments;
     switch (settings.name) {
       case '/splash_screen':
