@@ -1,29 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:pet_shop/models/Product/category.dart';
+import 'package:pet_shop/models/Product/product.dart';
+import 'package:pet_shop/route/route_generator.dart';
 
 class SelectionTitle extends StatelessWidget {
-  final String title;
-  const SelectionTitle({Key? key, required this.title}) : super(key: key);
+  final String name;
+  final String id;
+  final bool isCategory;
+
+  const SelectionTitle({
+    Key? key,
+    required this.name,
+    this.isCategory = false,
+    this.id = "0",
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String displayText = name;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.black87,
-            ),
-          ),
-          InkWell(
+          Expanded(
             child: Text(
-              "Xem thêm",
+              displayText,
               style: TextStyle(
                 fontSize: 18,
-                color: Colors.grey,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Align(
+            alignment: Alignment.topCenter,
+            child: InkWell(
+              onTap: () {
+                if (isCategory) {
+                  Navigator.of(context).pushNamed(Routes.list_category);
+                } else {
+                  Navigator.of(context).pushNamed(Routes.product_category,
+                      arguments:
+                          SelectionTitleArguments(name: name, productList: []));
+                }
+              },
+              child: Text(
+                "Xem thêm",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ),
@@ -31,4 +60,11 @@ class SelectionTitle extends StatelessWidget {
       ),
     );
   }
+}
+
+class SelectionTitleArguments {
+  final String name;
+  final List<Product> productList;
+
+  SelectionTitleArguments({required this.name, required this.productList});
 }

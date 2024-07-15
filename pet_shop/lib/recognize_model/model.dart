@@ -1,180 +1,151 @@
-// import 'dart:io';
-// import 'package:flutter/material.dart';
-// import 'package:tflite/tflite.dart';
-// import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:pet_shop/config/cofig.dart';
+import 'package:pet_shop/models/ModelPredict/model_product.dart';
 
-// class Model extends StatefulWidget {
-//   const Model({Key? key}) : super(key: key);
+class Model extends StatefulWidget {
+  @override
+  _ModelState createState() => _ModelState();
+}
 
-//   @override
-//   _ModelState createState() => _ModelState();
-// }
+class _ModelState extends State<Model> {
+  String isImageUploaded = "";
+  bool isLoading = false;
 
-// class _ModelState extends State<Model> {
-//   bool isLoading = true;
-//   File? _image;
-//   List? _output;
-//   final picker = ImagePicker();
+  final ImagePicker picker = ImagePicker();
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     loadModel().then((value) {
-//       setState(() {});
-//     });
-//   }
+  Future<void> predictImage(Uint8List bytes, String fileName) async {
+    print("Predicting image: $fileName");
+    var predictionResult = await UploadApiImage().uploadImage(bytes, fileName);
+    if (predictionResult != null) {
+      setState(() {
+        // Update UI with prediction result if needed
+        print("Prediction result: $predictionResult");
+        Navigator.of(context).pushReplacementNamed('/');
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      print("Failed to predict image.");
+    }
+  }
 
-//   @override
-//   void dispose() async {
-//     super.dispose();
-//     await Tflite.close();
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: isLoading
+            ? const CircularProgressIndicator()
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  isImageUploaded == ""
+                      ? const SizedBox()
+                      : SizedBox(
+                          height: 350,
+                          width: 350,
+                          child: Image.network(
+                            isImageUploaded,
+                          ),
+                        ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent),
+                    onPressed: () async {
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.camera);
+                      if (image != null) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Uint8List bytes = await image.readAsBytes();
+                        await predictImage(bytes, image.name);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "Take Photo from Camera",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueAccent),
+                    onPressed: () async {
+                      final XFile? image =
+                          await picker.pickImage(source: ImageSource.gallery);
+                      if (image != null) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Uint8List bytes = await image.readAsBytes();
+                        await predictImage(bytes, image.name);
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text(
+                        "Pick Image from Gallery",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+      ),
+    );
+  }
+}
 
-//   void pickImage(ImageSource source) async {
-//     var image = await picker.pickImage(source: source);
-//     if (image == null) return;
-//     setState(() {
-//       _image = File(image.path);
-//       isLoading = true; // Reset loading state
-//     });
-//     detectImage(_image!);
-//   }
+class UploadApiImage {
+  var client = http.Client();
+  var url = Uri.http(Config.apiURL, Config.predict);
+  RxList<ModelProduct> predList = List<ModelProduct>.empty(growable: true).obs;
 
-//   // void detectImage(File image) async {
-//   //   var output = await Tflite.runModelOnImage(
-//   //     path: image.path,
-//   //     numResults: 2,
-//   //     threshold: 0.6,
-//   //     imageMean: 0.0,
-//   //     imageStd: 255.0,
-//   //   );
-//   //   setState(() {
-//   //     isLoading = false;
-//   //     _output = output!;
-//   //   });
-//   // }
+  Future<dynamic> uploadImage(Uint8List bytes, String fileName) async {
+    // Uri url = Uri.parse("http://192.168.1.191:3000/aa");
+    Uri url = Uri.parse("http://192.168.1.191:3000/api/model/predict");
+    var request = http.MultipartRequest("POST", url);
+    var myFile = http.MultipartFile(
+      "file",
+      http.ByteStream.fromBytes(bytes),
+      bytes.length,
+      filename: fileName,
+    );
+    request.files.add(myFile);
+    try {
+      final respones = await request.send();
+      if (respones.statusCode == 201) {
+        var data = await respones.stream.bytesToString();
+        print(data);
+        predList.assignAll(predListFromJson(data));
 
-//   Future detectImage(File image) async {
-//     int startTime = new DateTime.now().millisecondsSinceEpoch;
-//     var recognitions = await Tflite.runModelOnImage(
-//       path: image.path,
-//       numResults: 6,
-//       threshold: 0.05,
-//       imageMean: 127.5,
-//       imageStd: 127.5,
-//     );
-//     setState(() {
-//       isLoading = false;
-//       _output = recognitions;
-//     });
-//     int endTime = new DateTime.now().millisecondsSinceEpoch;
-//     print("Inference took ${endTime - startTime}ms");
-//   }
-
-//   Future<void> loadModel() async {
-//     Tflite.close();
-//     try {
-//       await Tflite.loadModel(
-//         // model: "assets/images/_project/Model/tf_lite_quant_model.tflite",
-//         model: "assets/images/_project/Model/tf_lite_model.tflite",
-//         labels: "assets/images/_project/Model/labels.txt",
-//         numThreads: 1,
-//         isAsset: true,
-//         useGpuDelegate: false,
-//       );
-//     } catch (e) {
-//       print("Failed to load model: $e");
-//     }
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.blue,
-//       body: Container(
-//         padding: EdgeInsets.symmetric(horizontal: 24),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(height: 50),
-//             Text("Coding Cafe"),
-//             SizedBox(height: 5),
-//             Text('Cats and Dogs Detector App'),
-//             SizedBox(height: 50),
-//             Center(
-//               child: isLoading
-//                   ? Container(
-//                       width: 350,
-//                       child: Column(
-//                         children: [
-//                           Image.asset(
-//                             "assets/images/_project/Account/black_dog.png",
-//                             height: 250,
-//                           ),
-//                           SizedBox(height: 50),
-//                         ],
-//                       ),
-//                     )
-//                   : Container(
-//                       width: 350,
-//                       child: Column(
-//                         children: [
-//                           Container(
-//                             height: 250,
-//                             child: Image.file(_image!),
-//                           ),
-//                           SizedBox(height: 20),
-//                           _output != null
-//                               ? Text('${_output![0]['label']}')
-//                               : Container(),
-//                         ],
-//                       ),
-//                     ),
-//             ),
-//             SizedBox(height: 20),
-//             Container(
-//               width: MediaQuery.of(context).size.width,
-//               child: Column(
-//                 children: [
-//                   GestureDetector(
-//                     onTap: () {
-//                       pickImage(ImageSource.camera);
-//                     },
-//                     child: Container(
-//                       width: MediaQuery.of(context).size.width - 250,
-//                       alignment: Alignment.center,
-//                       padding:
-//                           EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-//                       decoration: BoxDecoration(
-//                         color: Colors.yellow,
-//                         borderRadius: BorderRadius.circular(10),
-//                       ),
-//                       child: Text("Capture"),
-//                     ),
-//                   ),
-//                   SizedBox(height: 20),
-//                   GestureDetector(
-//                     onTap: () {
-//                       pickImage(ImageSource.gallery);
-//                     },
-//                     child: Container(
-//                       width: MediaQuery.of(context).size.width - 250,
-//                       alignment: Alignment.center,
-//                       padding:
-//                           EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-//                       decoration: BoxDecoration(
-//                         color: Colors.yellow,
-//                         borderRadius: BorderRadius.circular(10),
-//                       ),
-//                       child: Text("Pick"),
-//                     ),
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+        return jsonDecode(data);
+      }
+    } catch (e) {
+      return null;
+    } finally {
+      for (var i = 0; i < predList.length; i++) {
+        print("aaaaaa ${predList[i].probability}");
+      }
+      print("wwwwwwwwww ${predList.length}");
+    }
+  }
+}

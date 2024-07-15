@@ -5,13 +5,16 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pet_shop/controllers/Predict/predict_controller.dart';
+import 'package:pet_shop/models/ModelPredict/model_product.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/screen/CartAndPayment/cart_screen.dart';
 import 'package:pet_shop/screen/Home/home_screen.dart';
-import 'package:pet_shop/screen/Profile/favorite_screen.dart';
+import 'package:pet_shop/screen/Profile/FavScreen/favorite_screen.dart';
 import 'package:pet_shop/screen/Profile/profile_screen.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet_shop/servies/ModelPredict/predict_service.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -22,6 +25,11 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   int pageIndex = 0;
+  //todo [Predict]
+  String isImageUploaded = "";
+  bool isLoading = false;
+  final ImagePicker picker = ImagePicker();
+
   List<Widget> pages = [
     HomeScreen(),
     CartScreen(),
@@ -101,7 +109,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
       //       "Camera needs to access your microphone, please provide permission",
       //       position: ToastPosition.bottom);
       // }
-      openCamera();
+      // openCamera();
+      _pickImageFromCamera();
     } else {
       showToast("Provide Camera permission to use camera.",
           position: ToastPosition.bottom);
@@ -190,36 +199,87 @@ class _NavigationScreenState extends State<NavigationScreen> {
   //todo [Pick Action]
   //Gallery
   Future _pickImageFromGallery() async {
-    final returnImage = await ImagePicker()
-        .pickImage(source: ImageSource.gallery, imageQuality: 50);
-    if (returnImage == null) return;
-    setState(() {
-      selectedIMage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
-    });
-    Navigator.of(context).pop(); //close the model sheet
+    // final returnImage = await ImagePicker()
+    //     .pickImage(source: ImageSource.gallery, imageQuality: 50);
+    // if (returnImage == null) return;
+    // setState(() {
+    //   selectedIMage = File(returnImage.path);
+    //   _image = File(returnImage.path).readAsBytesSync();
+    // });
+    // Navigator.of(context).pop();
+
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      print("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      // setState(() {
+      //   isLoading = true;
+      // });
+
+      // Uint8List bytes = await image.readAsBytes();
+      Navigator.of(context).pushNamed(Routes.pred_list, arguments: image);
+      // PredictController.instance.predict(bytes, image.name);
+
+      // if (PredictController.instance.predList.isNotEmpty) {
+      //   for (var i = 0; i < PredictController.instance.predList.length; i++) {
+      //     print(PredictController.instance.predList[i]);
+      //   }
+      //   Navigator.of(context).pushNamed(Routes.pred_list,
+      //       arguments: PredictController.instance.predList);
+      //   // await predictImage(bytes, image.name);
+      // }
+    } else {
+      print("jjjjjjjjjjjjjjjjjjjjjjjj");
+    }
   }
 
   //Camera
   Future _pickImageFromCamera() async {
-    final returnImage =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (returnImage == null) return;
-    setState(() {
-      selectedIMage = File(returnImage.path);
-      _image = File(returnImage.path).readAsBytesSync();
-    });
-    Navigator.of(context).pop();
+    // final returnImage =
+    //     await ImagePicker().pickImage(source: ImageSource.camera);
+    // if (returnImage == null) return;
+    // setState(() {
+    //   selectedIMage = File(returnImage.path);
+    //   _image = File(returnImage.path).readAsBytesSync();
+    // });
+    // Navigator.of(context).pop();
+    final XFile? image = await picker.pickImage(source: ImageSource.camera);
+    if (image != null) {
+      // setState(() {
+      //   isLoading = true;
+      // });
+      // Uint8List bytes = await image.readAsBytes();
+      // await predictImage(bytes, image.name);
+      Navigator.of(context).pushNamed(Routes.pred_list, arguments: image);
+    }
   }
 
-  void _imgFromGallery() async {
-    await ImagePicker()
-        .pickImage(source: ImageSource.camera, imageQuality: 50)
-        .then((value) => {
-              if (value != null)
-                {
-                  // _cropImage(File(value.path))
-                }
-            });
+  //todo [Predict]
+  Future<void> predictImage(Uint8List bytes, String fileName) async {
+    // print("Predicting image: $fileName");
+    // var predictionResult = await UploadApiImage().uploadImage(bytes, fileName);
+    // if (predictionResult != null) {
+    //   setState(() {
+    //     // Update UI with prediction result if needed
+    //     print("Prediction result: $predictionResult");
+    //     Navigator.of(context).pushReplacementNamed('/');
+    //     isLoading = false;
+    //   });
+    // } else {
+    //   setState(() {
+    //     isLoading = false;
+    //   });
+    //   print("Failed to predict image.");
+    // }
   }
+
+  // void _imgFromGallery() async {
+  //   await ImagePicker()
+  //       .pickImage(source: ImageSource.camera, imageQuality: 50)
+  //       .then((value) => {
+  //             if (value != null)
+  //               {
+  //                 // _cropImage(File(value.path))
+  //               }
+  //           });
+  // }
 }

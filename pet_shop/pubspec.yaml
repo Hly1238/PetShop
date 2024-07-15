@@ -54,6 +54,9 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
 
+  #Slidable
+  flutter_slidable: ^3.1.1
+  flutter_easyloading: ^3.0.5
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -71,6 +74,7 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/_project/Account/
+    - assets/images/_project/Predict/
     - assets/images/_project/Home/
     - assets/images/_project/Icons/
     - assets/images/_project/Icons/Frame/

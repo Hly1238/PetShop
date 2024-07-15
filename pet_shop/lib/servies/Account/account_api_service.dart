@@ -6,6 +6,8 @@ import 'package:pet_shop/models/Account/login_request_model.dart';
 
 class AccountApiService {
   static var client = http.Client();
+
+  // !Login
   static Future<bool> login(LoginRequestModel model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -24,5 +26,48 @@ class AccountApiService {
     } else {
       return false;
     }
+  }
+
+  static Future<bool> login2(LoginRequestModel model) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    // var url = Uri.parse(loginUrl);
+    var url = Uri.http(Config.apiURL, Config.loginAPI);
+
+    // var response = await http.post(
+    var response = await client.post(url,
+        headers: requestHeaders, body: jsonEncode(model.toJson()));
+    var jsonResponse = jsonDecode(response.body);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      // await SharedService.setLoginDetails(loginResponseJson(response.body));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // !Register
+  // ? Kiểm tra email - dc thì mới cho tiếp
+  static Future<dynamic> signup({
+    required String email,
+    required String password,
+    required String username,
+    required String phone,
+  }) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.http(Config.apiURL, Config.apiSignUp);
+    var body = {
+      "username": username,
+      "email": email,
+      "password": password,
+      "phone": phone
+    };
+    var response =
+        await client.post(url, headers: requestHeaders, body: jsonEncode(body));
+    return response;
   }
 }

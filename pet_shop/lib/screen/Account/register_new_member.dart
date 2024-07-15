@@ -11,6 +11,7 @@ import 'package:pet_shop/config/responsive/responsive_widget.dart';
 import 'package:pet_shop/config/validators/validation.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/route/route_generator.dart';
 
 class RegisterNewMember extends StatefulWidget {
@@ -423,9 +424,9 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                   ),
                                                 );
                                               } else {
-                                                Navigator.of(context)
-                                                    .pushReplacementNamed(
-                                                        Routes.homepage);
+                                                HandleRegister(
+                                                    _userController.text,
+                                                    _passwordController.text);
                                               }
                                             }
                                           },
@@ -510,5 +511,13 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
         ),
       ),
     );
+  }
+
+  void HandleRegister(String email, String password) async {
+    var isRegisted = AuthController.instance.signUp(
+        email: email, password: password, username: "123", phone: "0909090909");
+    if (await isRegisted) {
+      Navigator.of(context).pushReplacementNamed(Routes.sign_in);
+    }
   }
 }

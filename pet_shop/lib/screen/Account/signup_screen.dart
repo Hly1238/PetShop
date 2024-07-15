@@ -2,8 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pet_shop/config/cofig.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/screen/Account/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -43,172 +45,37 @@ class _SignupScreenState extends State<SignupScreen> {
     _passwordController.dispose();
     _userFocusNode.dispose();
     _passwordFocusNode.dispose();
+    _userController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
-  void registerUser() async {
-    if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-      var reqBody = {
-        "FullName": "091232434",
-        "Email": "admin5@gmail.com",
-        "PhoneNumber": "091232434",
-        "Password": "091232434",
-        "Otp": "JWUIj2"
-      };
+  // void registerUser() async {
+  //   if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+  //     var reqBody = {
+  //       "FullName": "091232434",
+  //       "Email": "admin5@gmail.com",
+  //       "PhoneNumber": "091232434",
+  //       "Password": "091232434",
+  //       "Otp": "JWUIj2"
+  //     };
 
-      var response = await http.post(Uri.parse(registration),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(reqBody));
-      var jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
-    } else {
-      setState(() {
-        _isNotValidate = true;
-      });
-    }
-  }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   // return Material(
-  //   //   child: SingleChildScrollView(
-  //   //     child: SafeArea(
-  //   //       child: Column(
-  //   //         mainAxisAlignment: MainAxisAlignment.center,
-  //   //         children: [
-  //   //           SizedBox(
-  //   //             height: 100,
-  //   //           ),
-  //   //           //Pic
-  //   //           Container(
-  //   //             child: Image.asset(
-  //   //                 "assets/images/_project/Account/login_background.jpg"),
-  //   //             height: 300,
-  //   //           ),
-  //   //           SizedBox(
-  //   //             height: 3,
-  //   //           ),
-  //   //           //Input
-  //   //           Padding(
-  //   //             padding: const EdgeInsets.symmetric(horizontal: 25),
-  //   //             child: Column(
-  //   //               children: [
-  //   //                 TextFormField(
-  //   //                   controller: nameController,
-  //   //                   decoration: InputDecoration(
-  //   //                       labelText: "Enter Name",
-  //   //                       border: OutlineInputBorder(),
-  //   //                       prefixIcon: Icon(Icons.person)),
-  //   //                 ),
-  //   //                 SizedBox(
-  //   //                   height: 15,
-  //   //                 ),
-  //   //                 TextFormField(
-  //   //                   controller: emailController,
-  //   //                   keyboardType: TextInputType.emailAddress,
-  //   //                   decoration: InputDecoration(
-  //   //                       labelText: "Enter Email",
-  //   //                       border: OutlineInputBorder(),
-  //   //                       prefixIcon: Icon(Icons.email_rounded)),
-  //   //                 ),
-  //   //                 SizedBox(
-  //   //                   height: 15,
-  //   //                 ),
-  //   //                 TextFormField(
-  //   //                   controller: phoneNumberController,
-  //   //                   keyboardType: TextInputType.phone,
-  //   //                   decoration: InputDecoration(
-  //   //                       labelText: "Enter Phone Number",
-  //   //                       border: OutlineInputBorder(),
-  //   //                       prefixIcon: Icon(Icons.phone)),
-  //   //                 ),
-  //   //                 SizedBox(
-  //   //                   height: 15,
-  //   //                 ),
-  //   //                 TextFormField(
-  //   //                   controller: passwordController,
-  //   //                   obscureText: true,
-  //   //                   decoration: InputDecoration(
-  //   //                       labelText: "Enter Password",
-  //   //                       border: OutlineInputBorder(),
-  //   //                       prefixIcon: Icon(Icons.lock),
-  //   //                       suffixIcon: Icon(Icons.remove_red_eye)),
-  //   //                 ),
-  //   //                 SizedBox(
-  //   //                   height: 15,
-  //   //                 ),
-  //   //                 TextFormField(
-  //   //                   controller: passwordConfirmController,
-  //   //                   obscureText: true,
-  //   //                   decoration: InputDecoration(
-  //   //                       labelText: "Confirm Password",
-  //   //                       border: OutlineInputBorder(),
-  //   //                       prefixIcon: Icon(Icons.lock),
-  //   //                       suffixIcon: Icon(Icons.remove_red_eye)),
-  //   //                 ),
-  //   //                 SizedBox(
-  //   //                   height: 15,
-  //   //                 ),
-  //   //                 ElevatedButton(
-  //   //                   onPressed: () {
-  //   //                     registerUser();
-  //   //                     // Navigator.push(
-  //   //                     //     context,
-  //   //                     //     MaterialPageRoute(
-  //   //                     //       builder: (context) => NavigationScreen(),
-  //   //                     //     ));
-  //   //                   },
-  //   //                   child: Text(
-  //   //                     "Sign up",
-  //   //                     style: TextStyle(color: Colors.white),
-  //   //                   ),
-  //   //                   style: ElevatedButton.styleFrom(
-  //   //                       minimumSize: Size.fromHeight(55),
-  //   //                       backgroundColor: Color(0xFFEf6969),
-  //   //                       shape: RoundedRectangleBorder(
-  //   //                           borderRadius: BorderRadius.circular(8))),
-  //   //                 ),
-  //   //                 SizedBox(
-  //   //                   height: 20,
-  //   //                 ),
-  //   //                 Text(
-  //   //                   "OR",
-  //   //                 ),
-  //   //                 Row(
-  //   //                   mainAxisAlignment: MainAxisAlignment.center,
-  //   //                   children: [
-  //   //                     Text(
-  //   //                       "Already have an account?",
-  //   //                       style: TextStyle(color: Colors.black54, fontSize: 15),
-  //   //                     ),
-  //   //                     TextButton(
-  //   //                         onPressed: () {
-  //   //                           Navigator.push(
-  //   //                               context,
-  //   //                               MaterialPageRoute(
-  //   //                                   builder: (context) => LoginScreen()));
-  //   //                         },
-  //   //                         child: Text(
-  //   //                           "Login",
-  //   //                           style: TextStyle(
-  //   //                               color: Color.fromARGB(137, 238, 42, 42),
-  //   //                               fontSize: 15,
-  //   //                               fontWeight: FontWeight.bold),
-  //   //                         ))
-  //   //                   ],
-  //   //                 )
-  //   //               ],
-  //   //             ),
-  //   //           )
-  //   //         ],
-  //   //       ),
-  //   //     ),
-  //   //   ),
-  //   // );
+  //     var response = await http.post(Uri.parse(registration),
+  //         headers: {"Content-Type": "application/json"},
+  //         body: jsonEncode(reqBody));
+  //     var jsonResponse = jsonDecode(response.body);
+  //     print(jsonResponse);
+  //   } else {
+  //     setState(() {
+  //       _isNotValidate = true;
+  //     });
+  //   }
   // }
 
   @override
   Widget build(BuildContext context) {
+    Get.put(AuthController());
+
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
@@ -498,7 +365,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                     Text("Trying to Login"),
                                               ));
                                               Navigator.of(context).pushNamed(
-                                                  Routes.otp_verified);
+                                                  Routes.register_member);
                                             }
                                           },
                                           child: Container(

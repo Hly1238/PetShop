@@ -25,9 +25,9 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    getBanners();
+    // getBanners();
     getCategory();
-    getProduct();
+    // getProduct();
     super.onInit();
   }
 
@@ -48,6 +48,7 @@ class HomeController extends GetxController {
     }
   }
 
+  //todo [Category]
   void getCategory() async {
     try {
       isCategoryLoading(true);
@@ -65,6 +66,7 @@ class HomeController extends GetxController {
     }
   }
 
+  //todo [Products]
   void getProduct() async {
     try {
       isProductLoading(true);
