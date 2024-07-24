@@ -25,9 +25,9 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    // getBanners();
+    getBanners();
     getCategory();
-    // getProduct();
+    getProduct();
     super.onInit();
   }
 
@@ -35,6 +35,7 @@ class HomeController extends GetxController {
     try {
       isBannerLoading(true);
       var result = await BannersService().get();
+
       if (result != null) {
         bannerList.assignAll(adBannerListFromJson(result.body));
       } else {
@@ -53,6 +54,7 @@ class HomeController extends GetxController {
     try {
       isCategoryLoading(true);
       var result = await CategoryService().get();
+
       if (result != null) {
         categoryList.assignAll(categoryListFromJson(result.body));
       } else {
@@ -70,7 +72,7 @@ class HomeController extends GetxController {
   void getProduct() async {
     try {
       isProductLoading(true);
-      var result = await ProductService().get();
+      var result = await ProductService().getAll();
       if (result != null) {
         productList.assignAll(productListFromJson(result.body));
       } else {

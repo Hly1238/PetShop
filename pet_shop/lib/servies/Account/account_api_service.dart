@@ -28,24 +28,23 @@ class AccountApiService {
     }
   }
 
-  static Future<bool> login2(LoginRequestModel model) async {
+//
+  static Future<dynamic> login2({
+    required String email,
+    required String password,
+  }) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    // var url = Uri.parse(loginUrl);
     var url = Uri.http(Config.apiURL, Config.loginAPI);
+    var body = {
+      "email": email,
+      "password": password,
+    };
+    var response =
+        await client.post(url, headers: requestHeaders, body: jsonEncode(body));
 
-    // var response = await http.post(
-    var response = await client.post(url,
-        headers: requestHeaders, body: jsonEncode(model.toJson()));
-    var jsonResponse = jsonDecode(response.body);
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      // await SharedService.setLoginDetails(loginResponseJson(response.body));
-      return true;
-    } else {
-      return false;
-    }
+    return response;
   }
 
   // !Register
@@ -64,7 +63,8 @@ class AccountApiService {
       "username": username,
       "email": email,
       "password": password,
-      "phone": phone
+      "phone": phone,
+      "status": "actived",
     };
     var response =
         await client.post(url, headers: requestHeaders, body: jsonEncode(body));

@@ -1,10 +1,15 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Home/home_controller.dart';
+import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/controllers/Predict/predict_controller.dart';
+import 'package:pet_shop/controllers/Product/cart_controller.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/ModelPredict/model_product.dart';
+import 'package:pet_shop/models/Order/order.dart';
+import 'package:pet_shop/models/Order/product_order.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/recognize_model/model.dart';
@@ -17,11 +22,14 @@ import 'package:pet_shop/screen/Account/register_new_member.dart';
 import 'package:pet_shop/screen/Account/signup_screen.dart';
 import 'package:pet_shop/screen/Camera/camera_screen.dart';
 import 'package:pet_shop/screen/Camera/scan_screen.dart';
+import 'package:pet_shop/screen/CartAndPayment/cart_screen.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Home/components/selection_component/selection_title.dart';
 import 'package:pet_shop/screen/Navigation/navigation_screen.dart';
+import 'package:pet_shop/screen/Order/order_details_screen.dart';
 import 'package:pet_shop/screen/Order/order_screen.dart';
 import 'package:pet_shop/screen/Order/order_summary_screen.dart';
+import 'package:pet_shop/screen/Payment/payment.dart';
 import 'package:pet_shop/screen/Predict/list_predict.dart';
 import 'package:pet_shop/screen/Product/Category/category_screen.dart';
 import 'package:pet_shop/screen/Rate/rate_screen.dart';
@@ -57,6 +65,9 @@ class Routes {
   static const String product_category = "/product_category";
   static const String list_category = "/list_category";
   static const String rate_comment = "/comment";
+  static const String order_detail = "/order_detail";
+  static const String cart = "/cart";
+  static const String pay = "/pay";
 }
 
 class RouteGenerator {
@@ -64,6 +75,9 @@ class RouteGenerator {
     Get.put(PredictController());
     Get.put(HomeController());
     Get.put(ProductController());
+    Get.put(OrderController());
+    Get.put(CartController());
+    Get.put(AuthController());
     final args = settings.arguments;
     switch (settings.name) {
       case '/splash_screen':
@@ -76,6 +90,14 @@ class RouteGenerator {
         if (args is Product) {
           return MaterialPageRoute(
               builder: (_) => DetailProduct(product: args));
+        }
+        return _errorRoute();
+      case Routes.order_detail:
+        if (args is Order) {
+          return MaterialPageRoute(
+              builder: (_) => OrderDetailsScreen(
+                    item: args,
+                  ));
         }
         return _errorRoute();
       case Routes.pred_list:
@@ -109,31 +131,50 @@ class RouteGenerator {
         return _errorRoute();
       case Routes.sign_in:
         return MaterialPageRoute(builder: (_) => LoginScreen());
+      case Routes.cart:
+        return MaterialPageRoute(builder: (_) => CartScreen());
       case Routes.list_category:
         return MaterialPageRoute(builder: (_) => CategoryScreen());
       case Routes.rate_comment:
         return MaterialPageRoute(builder: (_) => RateScreen());
       case Routes.order_sumary:
-        return MaterialPageRoute(builder: (_) => OrderSummaryScreen());
+        // return MaterialPageRoute(builder: (_) => OrderSummaryScreen());
+        if (args is List<ProductOrder>) {
+          return MaterialPageRoute(
+            builder: (_) => OrderSummaryScreen(
+              selectedItems: args,
+            ),
+          );
+        }
+        return _errorRoute();
       case Routes.order_view:
-        return MaterialPageRoute(builder: (_) => OrderScreen());
-      case Routes.sign_up:
+        if (args is List<Order>) {
+          return MaterialPageRoute(
+              builder: (_) => OrderScreen(orderList: args));
+        }
+        return _errorRoute();
+      // return MaterialPageRoute(builder: (_) => OrderScreen());
+      case Routes.register_member:
         return MaterialPageRoute(builder: (_) => SignupScreen());
+      case Routes.pay:
+        return MaterialPageRoute(builder: (_) => PaymentMethodScreen());
+
       case Routes.forget_password:
         return MaterialPageRoute(builder: (_) => ForgetScreen());
       case Routes.recovery_password:
         return MaterialPageRoute(builder: (_) => RecoveryScreen());
-      case Routes.register_member:
+      case Routes.sign_up:
         return MaterialPageRoute(builder: (_) => RegisterNewMember());
-      case Routes.camera:
-        return MaterialPageRoute(builder: (_) => CameraScreen());
-      case Routes.scanner:
-        return MaterialPageRoute(builder: (_) => ScanScreen());
+      // case Routes.camera:
+      //   return MaterialPageRoute(builder: (_) => CameraScreen());
+      // case Routes.scanner:
+      //   return MaterialPageRoute(builder: (_) => ScanScreen());
       case Routes.productCard:
         return MaterialPageRoute(builder: (_) => CarouselLoading());
 
-      case Routes.snackBarScreen:
-        return MaterialPageRoute(builder: (_) => ProductReviewScreen());
+      // case Routes.snackBarScreen:
+
+      //   return MaterialPageRoute(builder: (_) => ProductReviewScreen());
       case Routes.testModelScreen:
         return MaterialPageRoute(builder: (_) => Model());
       case '/pre':

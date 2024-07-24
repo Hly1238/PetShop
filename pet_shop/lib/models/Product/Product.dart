@@ -1,8 +1,19 @@
 import 'dart:convert';
 import 'package:pet_shop/models/Product/category.dart';
 
-List<Product> productListFromJson(String val) => List<Product>.from(
-    json.decode(val)['data'].map((product) => Product.fromJson(product)));
+// List<Product> productListFromJson(String val) => List<Product>.from(
+//     json.decode(val)['data'].map((product) => Product.fromJson(product)));
+List<Product> productListFromJson(String val) {
+  final data = jsonDecode(val);
+  final docs = data['data']['docs'] as List<dynamic>;
+  return List<Product>.from(docs.map((product) => Product.fromJson(product)));
+}
+
+List<Product> productFavListFromJson(String val) {
+  final data = jsonDecode(val);
+  final docs = data['data'] as List<dynamic>;
+  return List<Product>.from(docs.map((product) => Product.fromJson(product)));
+}
 
 List<Product> productListInCate(String val) {
   final data = jsonDecode(val);
@@ -136,27 +147,38 @@ class Product {
   final List<String> slide;
   final List<String> color;
 
-  final Category category;
+  final dynamic category;
 
   factory Product.fromJson(Map<String, dynamic> data) {
     // Parse list of slides
-    List<String> parsedSlides = data["slide"] != null
-        ? List<String>.from(data["slide"])
-        : ["https://picsum.photos/250?image=9"];
 
+    List<String> parsedSlides = data["slide"] != null
+        ? List<String>.from(data["slide"].where((item) => item != null))
+        : ["https://picsum.photos/250?image=9"];
     // Parse list of colors
+
     List<String> parsedColors =
         data["color"] != null ? List<String>.from(data["color"]) : [];
 
+    // Determine if category is an object or a string
+    dynamic parsedCategory;
+    if (data["category"] is Map<String, dynamic>) {
+      parsedCategory = Category.fromJson(data["category"]);
+    } else {
+      parsedCategory = data["category"];
+    }
     return Product(
       id: data["_id"],
-      name: data["name"],
-      description: data["description"],
-      image: data['image'],
-      price: data["price"].toDouble(),
-      category: Category.fromJson(data["category"]),
-      promotion: data['promotion'].toDouble(),
-      quantity: data['quantity'],
+      name: data["name"] ?? "",
+      description: data["description"] ?? "",
+      image: data['image'] ??
+          "https://pbs.twimg.com/profile_images/497929479063224320/LuzRK4sp_400x400.jpeg",
+      price: data["price"].toDouble() ?? 0.0,
+      // category: Category.fromJson(data["category"]),
+      category: parsedCategory,
+
+      promotion: data['promotion'].toDouble() ?? 0.0,
+      quantity: data['quantity'] ?? 0,
       slide: parsedSlides,
       color: parsedColors,
     );

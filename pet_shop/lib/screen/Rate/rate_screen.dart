@@ -17,7 +17,7 @@ class RateScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: 20),
                       Text(
-                        '4.5',
+                        '4.0',
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
@@ -35,11 +35,11 @@ class RateScreen extends StatelessWidget {
                       CircleAvatar(
                         radius: 50,
                         backgroundImage:
-                            AssetImage('assets/images/user_profile.png'),
+                            AssetImage('assets/images/_project/Logo/logo.png'),
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'E. Tumurkhuyag',
+                        'nhunguyen',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class RateScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Text(
-                          'Driver & Cab Review',
+                          'Sản phẩm bạn vừa nhận như thế nào',
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -79,12 +79,9 @@ class RateScreen extends StatelessWidget {
                         spacing: 8.0,
                         runSpacing: 4.0,
                         children: [
-                          ReviewTag(
-                              label: 'Clean & comfy salon', isSelected: true),
-                          ReviewTag(label: 'Luxury', isSelected: false),
-                          ReviewTag(label: 'Funny', isSelected: false),
-                          ReviewTag(
-                              label: 'Gentle & Friendly', isSelected: false),
+                          ReviewTag(label: 'Tốt', isSelected: true),
+                          ReviewTag(label: 'Đúng với mô tả', isSelected: false),
+                          ReviewTag(label: 'Rất thất vọng', isSelected: false),
                         ],
                       ),
                       SizedBox(height: 16),
@@ -104,7 +101,7 @@ class RateScreen extends StatelessWidget {
                   minimumSize: Size(double.infinity, 50),
                 ),
                 child: Text(
-                  'Back to home',
+                  'Đánh giá',
                   style: TextStyle(fontSize: 18),
                 ),
               ),

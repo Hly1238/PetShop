@@ -20,6 +20,7 @@ class PredictController extends GetxController {
     try {
       isPredictLoading(true);
       var result = await PredictService().predict(bytes, fileName);
+
       if (result != null) {
         predList.assignAll(predListFromJson(result));
       } else {

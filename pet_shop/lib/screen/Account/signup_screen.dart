@@ -191,7 +191,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Phone Number",
+                                          "Activate code",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -234,9 +234,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                               horizontal:
                                                   10.0), // Điều chỉnh padding để tăng kích thước input
                                         ),
-                                        autofillHints: [
-                                          AutofillHints.telephoneNumber
-                                        ],
+                                        autofillHints: [AutofillHints.email],
                                         keyboardType: TextInputType.phone,
                                         validator: (name) =>
                                             TValidation.validatePhoneNumber(
@@ -362,10 +360,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                               ScaffoldMessenger.of(context)
                                                   .showSnackBar(const SnackBar(
                                                 content:
-                                                    Text("Trying to Login"),
+                                                    Text("Trying to activate"),
                                               ));
-                                              Navigator.of(context).pushNamed(
-                                                  Routes.register_member);
+                                              Navigator.of(context)
+                                                  .pushNamed(Routes.sign_in);
                                             }
                                           },
                                           child: Container(

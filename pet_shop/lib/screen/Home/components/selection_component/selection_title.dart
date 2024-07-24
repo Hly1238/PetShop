@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/route/route_generator.dart';
@@ -38,13 +39,19 @@ class SelectionTitle extends StatelessWidget {
           Align(
             alignment: Alignment.topCenter,
             child: InkWell(
-              onTap: () {
+              onTap: () async {
                 if (isCategory) {
                   Navigator.of(context).pushNamed(Routes.list_category);
                 } else {
-                  Navigator.of(context).pushNamed(Routes.product_category,
-                      arguments:
-                          SelectionTitleArguments(name: name, productList: []));
+                  var isDone =
+                      ProductController.instance.getProductsByCategory(id);
+                  if (await isDone) {
+                    Navigator.of(context).pushNamed(Routes.product_category,
+                        arguments: SelectionTitleArguments(
+                            name: name,
+                            productList:
+                                ProductController.instance.productList));
+                  }
                 }
               },
               child: Text(

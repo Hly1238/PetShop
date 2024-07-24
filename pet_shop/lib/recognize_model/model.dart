@@ -121,7 +121,7 @@ class UploadApiImage {
 
   Future<dynamic> uploadImage(Uint8List bytes, String fileName) async {
     // Uri url = Uri.parse("http://192.168.1.191:3000/aa");
-    Uri url = Uri.parse("http://192.168.1.191:3000/api/model/predict");
+    Uri url = Uri.parse("http://192.168.1.191:3100/api/recognize/predict");
     var request = http.MultipartRequest("POST", url);
     var myFile = http.MultipartFile(
       "file",
@@ -135,16 +135,16 @@ class UploadApiImage {
       if (respones.statusCode == 201) {
         var data = await respones.stream.bytesToString();
         print(data);
-        predList.assignAll(predListFromJson(data));
+        // predList.assignAll(predListFromJson(data));
 
         return jsonDecode(data);
       }
     } catch (e) {
       return null;
     } finally {
-      for (var i = 0; i < predList.length; i++) {
-        print("aaaaaa ${predList[i].probability}");
-      }
+      // for (var i = 0; i < predList.length; i++) {
+      //   print("aaaaaa ${predList[i].probability}");
+      // }
       print("wwwwwwwwww ${predList.length}");
     }
   }

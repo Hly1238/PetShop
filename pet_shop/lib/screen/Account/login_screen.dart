@@ -9,6 +9,7 @@ import 'package:pet_shop/config/responsive/responsive_widget.dart';
 import 'package:pet_shop/config/validators/validation.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/models/Account/login_request_model.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/servies/Account/account_api_service.dart';
@@ -216,11 +217,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                               horizontal:
                                                   10.0), // Điều chỉnh padding để tăng kích thước input
                                         ),
-                                        keyboardType: TextInputType.phone,
+                                        keyboardType:
+                                            TextInputType.emailAddress,
                                         autofillHints: [AutofillHints.username],
                                         validator: (name) =>
-                                            TValidation.validatePhoneNumber(
-                                                name),
+                                            TValidation.validateEmail(name),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                       ),
@@ -344,16 +345,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                           onTap: () async {
                                             if (globalKey.currentState!
                                                 .validate()) {
-                                              bool isLogin = await loginUser();
-                                              if (isLogin) {
-                                                Navigator.pushReplacementNamed(
-                                                    context, Routes.homepage);
-                                              } else {
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(SnackBar(
-                                                  content: Text("Login failed"),
-                                                ));
-                                              }
+                                              HandleLogin(_userController.text,
+                                                  _passwordController.text);
+                                              // if (isLogin) {
+                                              //   Navigator.pushReplacementNamed(
+                                              //       context, Routes.homepage);
+                                              // } else {
+                                              //   ScaffoldMessenger.of(context)
+                                              //       .showSnackBar(SnackBar(
+                                              //     content: Text("Login failed"),
+                                              //   ));
+                                              // }
                                             }
                                           },
                                           child: Container(
@@ -538,6 +540,15 @@ class _LoginScreenState extends State<LoginScreen> {
         _isNotValidate = true;
       });
       return false;
+    }
+  }
+
+  void HandleLogin(String text, String text2) async {
+    var isRegisted =
+        AuthController.instance.login(email: text, password: text2);
+    if (await isRegisted) {
+      // Navigator.of(context).pushReplacementNamed(Routes.homepage);
+      Navigator.pop(context);
     }
   }
 }

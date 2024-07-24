@@ -9,11 +9,11 @@ class Category {
 
   factory Category.fromJson(Map<String, dynamic> data) => Category(
         id: data['_id'],
-        name: data['name'],
+        name: data['name'] ?? "",
         image: data['image'] ??
             "https://pbs.twimg.com/profile_images/497929479063224320/LuzRK4sp_400x400.jpeg",
-        description: data['description'],
-        slug: data['slug'],
+        description: data['description'] ?? "",
+        slug: data['slug'] ?? "",
       );
 
   Category({
@@ -26,7 +26,7 @@ class Category {
 }
 
 List<Category> categoryListFromJson(String val) {
-  final data = json.decode(val);
-  return List<Category>.from(
-      data['docs'].map((category) => Category.fromJson(category)));
+  final data = jsonDecode(val);
+  final docs = data['data']['docs'] as List<dynamic>;
+  return List<Category>.from(docs.map((cate) => Category.fromJson(cate)));
 }

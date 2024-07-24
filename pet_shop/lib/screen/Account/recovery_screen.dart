@@ -453,7 +453,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                             onPressed: () {
                                               Navigator.of(context)
                                                   .pushReplacementNamed(
-                                                      Routes.sign_up);
+                                                      Routes.sign_in);
                                             },
                                             style: TextButton.styleFrom(
                                               padding: EdgeInsets.zero,

@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:pet_shop/components/Search/custom_search_delegate.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/models/Product/product.dart';
+import 'package:pet_shop/route/route_generator.dart';
 
 class Header_Appbar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBack;
@@ -84,7 +86,13 @@ class Header_Appbar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            if (AuthController.instance.isLogin == false) {
+              Navigator.of(context).pushNamed(Routes.sign_in);
+            } else {
+              Navigator.of(context).pushNamed(Routes.cart);
+            }
+          },
           child: Image(
             image: AssetImage(
               "assets/images/_project/Icons/shopping-bag-blue.png",

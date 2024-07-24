@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/controllers/Home/home_controller.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_slider_view.dart';
@@ -132,31 +133,71 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
 
+              // todo [List Product By Category]
+              // GestureDetector(
+              //   onTap: () {
+              //     // ProductController.instance
+              //     //     .getProductsByCategory("669616d55fb2af72ada6888e");
+              //     // ProductController.instance
+              //     //     .getProductByName("o", page: "1", limit: "10000");
+              //     // ProductController.instance
+              //     //     .getProductByPrice(50, 500, page: "1", limit: "10000");
+              //     // ProductController.instance
+              //     //     .getProductReview("669617705fb2af72ada688bc");
+              //   },
+              //   child: Container(
+              //     height: 100,
+              //     width: 100,
+              //     color: Colors.amber,
+              //   ),
+              // ),
+
               //todo [Product]
               SizedBox(height: 20),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  children: [
-                    SelectionTitle(name: "Đồ ăn chó mèo"),
-                    Obx(() {
-                      //? Show
-                      if (HomeController.instance.productList.isNotEmpty) {
-                        return ProductShowing(
-                            productList: HomeController.instance.productList);
-                      }
-                      //? Loading
-                      else {
-                        return ProductLoading();
-                      }
-                    }),
-                  ],
-                ),
-              ),
+
+              Obx(() {
+                if (HomeController.instance.categoryList.isNotEmpty) {
+                  return Column(
+                    children:
+                        HomeController.instance.categoryList.map((category) {
+                      return Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          children: [
+                            SelectionTitle(
+                              name: category.name,
+                              id: category.id,
+                            ),
+                            Obx(() {
+                              final productsByCategory = HomeController
+                                  .instance.productList
+                                  .where((product) =>
+                                      product.category.id == category.id)
+                                  .toList();
+                              //? Show
+                              if (productsByCategory.isNotEmpty) {
+                                return ProductShowing(
+                                    productList: productsByCategory);
+                              }
+                              //? Loading
+                              else {
+                                return ProductLoading();
+                              }
+                            }),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  );
+                } else {
+                  return Container();
+                }
+              }),
             ],
           ),
         ),

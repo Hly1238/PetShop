@@ -275,7 +275,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Phone Number",
+                                          "Email",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -341,8 +341,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                           AutofillHints.email
                                         ],
                                         validator: (name) =>
-                                            TValidation.validatePhoneNumber(
-                                                name),
+                                            TValidation.validateEmail(name),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                       ),

@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:get/get.dart';
 import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
+import 'package:pet_shop/models/Product/review.dart';
 import 'package:pet_shop/screen/Product/Review/component/user_review_card.dart';
 
 class ProductReviewScreen extends StatelessWidget {
-  const ProductReviewScreen({Key? key}) : super(key: key);
+  final List<Review> reviewList;
+
+  const ProductReviewScreen({Key? key, required this.reviewList})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,26 +23,61 @@ class ProductReviewScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Review_Product(),
+      body: Container(
+        child: Obx(() {
+          if (ProductController.instance.reviewList.isNotEmpty) {
+            return Review_Product(
+                reviewList: ProductController.instance.reviewList,
+                length: reviewList.length);
+          } else {
+            return Container();
+          }
+        }),
+      ),
     );
   }
 }
 
 class Review_Product extends StatelessWidget {
+  final List<Review> reviewList;
+  final int length;
   const Review_Product({
     super.key,
+    required this.reviewList,
+    this.length = 5,
   });
 
   @override
   Widget build(BuildContext context) {
+    double averageRating = 0;
+    if (reviewList.isNotEmpty) {
+      double totalRating =
+          reviewList.map((review) => review.rating).reduce((a, b) => a + b);
+      averageRating = totalRating / reviewList.length;
+    }
+
+    // Count ratings
+    Map<int, int> ratingCounts = {
+      5: 0,
+      4: 0,
+      3: 0,
+      2: 0,
+      1: 0,
+    };
+    reviewList.forEach((review) {
+      int starRating = review.rating.round();
+      if (ratingCounts.containsKey(starRating)) {
+        ratingCounts[starRating] = ratingCounts[starRating]! + 1;
+      }
+    });
+
     return SingleChildScrollView(
       child: Padding(
         padding: EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultricies, odio id scelerisque ultricies, ligula urna scelerisque purus, sit amet pharetra leo augue eget mauris. Phasellus commodo laoreet laoreet. Aenean ullamcorper metus ac lobortis tempus. Aliquam nec arcu ut tellus euismod maximus eget vel turpis. Nullam risus lacus, imperdiet placerat aliquam ut, efficitur ac velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. "),
+            Text("Average Rating: ${averageRating.toStringAsFixed(1)}"),
             SizedBox(
               height: 10,
             ),
@@ -45,7 +86,7 @@ class Review_Product extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Text(
-                    '4.8',
+                    averageRating.toStringAsFixed(1),
                     style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
@@ -53,33 +94,18 @@ class Review_Product extends StatelessWidget {
                   flex: 7,
                   child: Column(
                     children: [
-                      ProgressIndicator(
-                        value: 1,
-                        text: '5',
-                      ),
-                      ProgressIndicator(
-                        value: 0.8,
-                        text: '4',
-                      ),
-                      ProgressIndicator(
-                        value: 0.6,
-                        text: '3',
-                      ),
-                      ProgressIndicator(
-                        value: 0.4,
-                        text: '2',
-                      ),
-                      ProgressIndicator(
-                        value: 0.2,
-                        text: '1',
-                      ),
+                      for (var i = 5; i >= 1; i--)
+                        ProgressIndicator(
+                          value: ratingCounts[i]! / reviewList.length,
+                          text: '$i',
+                        ),
                     ],
                   ),
                 )
               ],
             ),
             RatingBarIndicator(
-              rating: 3.5,
+              rating: averageRating,
               itemSize: 20,
               unratedColor: Colors.grey,
               itemBuilder: (_, __) => Icon(
@@ -87,13 +113,23 @@ class Review_Product extends StatelessWidget {
                 color: Colors.amber,
               ),
             ),
-            Text("12,611", style: Theme.of(context).textTheme.bodySmall),
+            Text('${reviewList.length}',
+                style: Theme.of(context).textTheme.bodySmall),
             SizedBox(
               height: 32.0,
             ),
 
             //todo [Review List]
-            UserReviewCard(),
+            Column(
+              children: [
+                Column(
+                  children: reviewList
+                      .take(length)
+                      .map((review) => UserReviewCard(item: review))
+                      .toList(),
+                ),
+              ],
+            ),
           ],
         ),
       ),

@@ -225,7 +225,7 @@
 //     );
 //   }
 // }
-
+// !!!!!!!!!!!!!!!!
 import 'package:flutter/material.dart';
 import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/route/route_generator.dart';
@@ -270,7 +270,7 @@ class ProductCardVertical extends StatelessWidget {
                             child: product.image.isNotEmpty &&
                                     product.image[0] != null
                                 ? Image.network(
-                                    product.image[0],
+                                    product.image,
                                     fit: BoxFit.cover,
                                   )
                                 : Image.asset(
@@ -279,55 +279,55 @@ class ProductCardVertical extends StatelessWidget {
                                   ),
                           ),
                         ),
-                        if (product.promotion != null)
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: RoundedContainer(
-                              radius: 10,
-                              backgroundColor: Colors.purple.withOpacity(1),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8.0, vertical: 4),
-                              child: Text(
-                                '${product.promotion}% Discount',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .labelLarge!
-                                    .apply(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                        Positioned(
-                          top: 4,
-                          left: 0,
-                          child: RoundedContainer(
-                            radius: 10,
-                            backgroundColor: Colors.amber,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8.0, vertical: 4),
-                            child: Row(
-                              children: [
-                                Icon(Icons.star, size: 16, color: Colors.red),
-                                SizedBox(width: 4),
-                                product.promotion == 0
-                                    ? Text(
-                                        '5.0',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge!
-                                            .apply(color: Colors.black),
-                                      )
-                                    : Text(
-                                        '${product.promotion}% Discount',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelLarge!
-                                            .apply(color: Colors.black),
-                                      ),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // if (product.promotion != null)
+                        //   Positioned(
+                        //     bottom: 0,
+                        //     right: 0,
+                        //     child: RoundedContainer(
+                        //       radius: 10,
+                        //       backgroundColor: Colors.purple.withOpacity(1),
+                        //       padding: const EdgeInsets.symmetric(
+                        //           horizontal: 8.0, vertical: 4),
+                        //       child: Text(
+                        //         '${product.promotion}% Discount',
+                        //         style: Theme.of(context)
+                        //             .textTheme
+                        //             .labelLarge!
+                        //             .apply(color: Colors.black),
+                        //       ),
+                        //     ),
+                        //   ),
+                        // Positioned(
+                        //   top: 4,
+                        //   left: 0,
+                        //   child: RoundedContainer(
+                        //     radius: 10,
+                        //     backgroundColor: Colors.amber,
+                        //     padding: const EdgeInsets.symmetric(
+                        //         horizontal: 8.0, vertical: 4),
+                        //     child: Row(
+                        //       children: [
+                        //         Icon(Icons.star, size: 16, color: Colors.red),
+                        //         SizedBox(width: 4),
+                        //         product.promotion == 0
+                        //             ? Text(
+                        //                 '5.0',
+                        //                 style: Theme.of(context)
+                        //                     .textTheme
+                        //                     .labelLarge!
+                        //                     .apply(color: Colors.black),
+                        //               )
+                        //             : Text(
+                        //                 '${product.promotion}% Discount',
+                        //                 style: Theme.of(context)
+                        //                     .textTheme
+                        //                     .labelLarge!
+                        //                     .apply(color: Colors.black),
+                        //               ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
@@ -370,7 +370,7 @@ class ProductCardVertical extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '${product.price}',
+                              '${product.promotion}',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: Theme.of(context).textTheme.headlineMedium,

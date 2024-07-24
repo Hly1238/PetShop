@@ -5,11 +5,15 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Predict/predict_controller.dart';
+import 'package:pet_shop/controllers/Product/cart_controller.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/ModelPredict/model_product.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/screen/CartAndPayment/cart_screen.dart';
 import 'package:pet_shop/screen/Home/home_screen.dart';
+import 'package:pet_shop/screen/Order/order_screen.dart';
 import 'package:pet_shop/screen/Profile/FavScreen/favorite_screen.dart';
 import 'package:pet_shop/screen/Profile/profile_screen.dart';
 import 'package:oktoast/oktoast.dart';
@@ -32,7 +36,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
   List<Widget> pages = [
     HomeScreen(),
-    CartScreen(),
+    // CartScreen(),
+    OrderScreen(),
     FavoriteScreen(),
     ProfileScreen(),
   ];
@@ -40,6 +45,16 @@ class _NavigationScreenState extends State<NavigationScreen> {
   //Pick and Take options
   Uint8List? _image;
   File? selectedIMage;
+  void _onItemTapped(int index) {
+    if (index != 0 && AuthController.instance.isLogin == false) {
+      Navigator.of(context).pushNamed(Routes.sign_in);
+    } else {
+      setState(() {
+        pageIndex = index;
+        ProductController.instance.getAllFavoriteProduct();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,28 +78,54 @@ class _NavigationScreenState extends State<NavigationScreen> {
           backgroundColor: Color(0xFFDB3022),
         ),
       ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // bottomNavigationBar: AnimatedBottomNavigationBar(
+      //     icons: [
+      //       CupertinoIcons.house_alt_fill,
+      //       // CupertinoIcons.cart_fill,
+      //       CupertinoIcons.rectangle_on_rectangle_angled,
+      //       CupertinoIcons.heart_fill,
+      //       CupertinoIcons.profile_circled,
+      //     ],
+      //     inactiveColor: Colors.black.withOpacity(0.5),
+      //     activeColor: Color(0xFFDB3022),
+      //     gapLocation: GapLocation.center,
+      //     activeIndex: pageIndex,
+      //     notchSmoothness: NotchSmoothness.softEdge,
+      //     leftCornerRadius: 10,
+      //     iconSize: 25,
+      //     rightCornerRadius: 10,
+      //     elevation: 0,
+      //     onTap: (index) {
+      //       _onItemTapped;
+      //       ProductController.instance.getAllFavoriteProduct();
+      //     }
+      //     // (index) {
+      //     //   ,
+      //     //   setState(() {
+      //     //     pageIndex = index;
+      //     //   });
+      //     // },
+      //     ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
-          icons: [
-            CupertinoIcons.house_alt_fill,
-            CupertinoIcons.cart_fill,
-            CupertinoIcons.heart_fill,
-            CupertinoIcons.profile_circled
-          ],
-          inactiveColor: Colors.black.withOpacity(0.5),
-          activeColor: Color(0xFFDB3022),
-          gapLocation: GapLocation.center,
-          activeIndex: pageIndex,
-          notchSmoothness: NotchSmoothness.softEdge,
-          leftCornerRadius: 10,
-          iconSize: 25,
-          rightCornerRadius: 10,
-          elevation: 0,
-          onTap: (index) {
-            setState(() {
-              pageIndex = index;
-            });
-          }),
+        icons: [
+          CupertinoIcons.house_alt_fill,
+          CupertinoIcons.rectangle_on_rectangle_angled,
+          CupertinoIcons.heart_fill,
+          CupertinoIcons.profile_circled,
+        ],
+        inactiveColor: Colors.black.withOpacity(0.5),
+        activeColor: Color(0xFFDB3022),
+        gapLocation: GapLocation.center,
+        activeIndex: pageIndex,
+        notchSmoothness: NotchSmoothness.softEdge,
+        leftCornerRadius: 10,
+        iconSize: 25,
+        rightCornerRadius: 10,
+        elevation: 0,
+        onTap: _onItemTapped,
+      ),
     );
   }
 
@@ -210,7 +251,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      print("Aaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
       // setState(() {
       //   isLoading = true;
       // });

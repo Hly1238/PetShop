@@ -14,9 +14,14 @@ class FavoriteScreen extends StatefulWidget {
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
   @override
-  Widget build(BuildContext context) {
-    // Get.put(ProductController());
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    ProductController.instance.getAllFavoriteProduct();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: Header_Appbar(
         context: context,
@@ -27,7 +32,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         children: [
           Expanded(
             child: Obx(() {
-              if (ProductController.instance.favoriteList.isNotEmpty) {
+              if (ProductController.instance.productList.isNotEmpty) {
                 return ProductShowingGrid(
                     productList: ProductController.instance.productList);
               } else {

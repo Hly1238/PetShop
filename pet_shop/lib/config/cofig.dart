@@ -16,65 +16,63 @@ class Config {
   //!Register
   static const String apiSignUp = "/api/auth/register";
 
-  //!Login
-  static const String loginAPI = "/api/u/login";
-  static const String bannerAPI = "api/product/banners";
+  //!Login--hết giờ
+  static const String loginAPI = "/api/auth/login";
+  static const String bannerAPI = "/api/news/search";
+
+  //! Forget password
 
   // ! Category
   static const String categoryAPI = "/api/category/searchMobile";
-  static const String categorySearchByName = "/api/category/searchByName";
-  static const String categoryContainProducts = "/api/category/products/";
+  static const String categorySearchByName = "/api/category/searchByNameMobile";
+  static const String categoryContainProducts = "/api/category/productsM/";
   // http://localhost:3100/api/category/products/6694177f68ad0eb07017e421?page=1&&limit=1
 
-  // ? token
-  // eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7Il9pZCI6IjY2OTQxNDkwNjhhZDBlYjA3MDE3ZTQxYSIsImVtYWlsIjoicmVxIiwicGhvbmUiOiIwOTA5MDkwOTA5IiwidXNlcm5hbWUiOiIxMjMiLCJwYXNzd29yZCI6IiQyYiQxMCRYVFJLQ0NIY2drSWVrSHJWZUlEdXguMDdVNnFlOG5EQlVxWllYbGhoajdXNk9hR3RFdUZKMiIsInJvbGUiOiIiLCJzdGF0dXMiOiJub2FjdGl2ZSIsImltYWdlIjoiaHR0cHM6Ly96b3MuYWxpcGF5b2JqZWN0cy5jb20vcm1zcG9ydGFsL09EVExjanhBZnZxYnhIblZYQ1lYLnBuZyIsImNyZWF0ZWRBdCI6IjIwMjQtMDctMTRUMTg6MTA6MjQuODg2WiIsInVwZGF0ZWRBdCI6IjIwMjQtMDctMTRUMTg6MTA6MjQuODg2WiIsIl9fdiI6MH0sImlhdCI6MTcyMDk4MDcyNiwiZXhwIjoxNzMwOTgwNzI2fQ.uYGms9xoS5kPEKrQ5WH-jUOYMo9PYbv0JwNzsu1i5uI //req.headers.authorization
-
-  //! Login
-  // http://localhost:3100/api/auth/login
-
   // ! Profile
-  // http://localhost:3100/api/user/profile
+  static const String getProfile = "/api/user/profile";
 
   // ! Product
   static const String productAPI = "/api/product/search";
-  //http://localhost:3100/api/product/searchByName?name=eeeeeeeeeee
-  //http://localhost:3100/api/product/searchByPrice
-  // {
-  //     "minPrice": 50,
-  // "maxPrice": 500
-  // }
+  static const String productSearchName = "/api/product/searchByNameMobile/";
+  static const String productSearchPrice = "/api/product/searchByPrice/";
+
   ///recommend/:id
-  ///Comment: http://localhost:3100/api/product/66941f97c376073d185ab773/reviews
+
+  // !Comment
+  static const String productGetReviews = "/api/product/";
+  static const String productPostReviews = '/api/product/';
+
   ///http://localhost:3100/api/product/66941f97c376073d185ab773/reviews
 
   //!Order
+  // ? post
   static const String createOrderAPI = "/api/order";
-  // {
-  //     "userId": "6694149068ad0eb07017e41a",
-  //     "products": [
-  //         {
-  //             "product": "66941f8ec376073d185ab770",
-  //             "quantity": 2,
-  //             "price": 100
-  //         },
-  //         {
-  //             "product": "66941f97c376073d185ab773",
-  //             "quantity": 1,
-  //             "price": 150
-  //         }
-  //     ],
-  //     "orderTotal": 350,
-  //     "address": "123 Main St, Springfield",
-  //     "billing": "cod",
-  //     "status": "pending",
-  //     "description": "This is a sample order"
+  static const String getUserOrder = "/api/order/user";
+  static const String getLastestAddress = "/api/order/latestOrderAddress";
+  // http://localhost:3100/api/order/view?status=pending
+  //http://localhost:3100/api/order/change-state/66954066178464e463889d48
   // }
-  // http://localhost:3100/api/order/user
+
+  // {
+  //     "status": "canceled"
+  // }
+
   // http://localhost:3100/api/order/searchByName?name=350
   // http://localhost:3100/api/order/669486dd598f9574912217dc --sửa
+  // http://localhost:3100/api/order/ordersByTotal?minTotal=200&maxTotal=500
+  // http://localhost:3100/api/order/ordersByMonth?month=6&year=2024
+  // http://localhost:3100/api/order/uniqueAddresses
 
-  //Favorite
-  static const String favoriteAPI = "api/favourite/u/";
-  //Predict
-  static const String predict = "/api/model/predict";
+  //!Favorite
+  static const String favoriteGetAllAPI = "/api/favourites/getAll";
+  static const String favoriteAPI = "api/favourites/";
+  static const String updateFavAPI = "api/favourites/";
+
+  //!Cart
+  static const String cartAPI = "api/cart/";
+  static const String deleteCartAPI = "api/cart/clear";
+  static const String subtractCartAPI = "api/cart/sub";
+
+  //!Predict
+  static const String predict = "/api/recognize/predict";
 }
