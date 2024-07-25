@@ -31,36 +31,15 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
   TextEditingController _userController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmpasswordController = TextEditingController();
-  TextEditingController _username = TextEditingController();
-  TextEditingController _phone = TextEditingController();
+  TextEditingController _phoneNumberController = TextEditingController();
+
   var _isObscured;
   final FocusNode _userFocusNode = FocusNode();
   final FocusNode _passwordFocusNode = FocusNode();
   final FocusNode _confirmpasswordFocusNode = FocusNode();
+  final FocusNode _phoneNumberFocusNode = FocusNode();
+
   bool _isNotValidate = false;
-
-  void registerUser() async {
-    if (_userController.text.isNotEmpty &&
-        _confirmpasswordController.text.isNotEmpty) {
-      var reqBody = {
-        "FullName": "091232434",
-        "Email": "admin6@gmail.com",
-        "PhoneNumber": "091232434",
-        "Password": "091232434",
-        "Otp": "JWUIj2"
-      };
-
-      var response = await http.post(Uri.parse(registration),
-          headers: {"Content-Type": "application/json"},
-          body: jsonEncode(reqBody));
-      var jsonResponse = jsonDecode(response.body);
-      print(jsonResponse);
-    } else {
-      setState(() {
-        _isNotValidate = true;
-      });
-    }
-  }
 
   @override
   void initState() {
@@ -203,7 +182,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Username",
+                                          "Email",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -221,7 +200,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter email/phone number',
+                                          hintText: 'Nhập email',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -241,13 +220,11 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
+                                              vertical: 20.0, horizontal: 10.0),
                                         ),
                                         keyboardType:
                                             TextInputType.emailAddress,
-                                        autofillHints: [AutofillHints.username],
+                                        autofillHints: [AutofillHints.email],
                                         validator: (name) =>
                                             TValidation.validateEmail(name),
                                         autovalidateMode:
@@ -278,7 +255,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter Password',
+                                          hintText: 'Nhập Password',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -353,7 +330,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Confirm Password',
+                                          hintText: 'Xác thực mật khẩu',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -404,11 +381,14 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                         onEditingComplete: () =>
                                             TextInput.finishAutofillContext(),
                                       ),
-                                      //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Tmp
+                                      //todo [Unique phone number :)))]
+                                      const SizedBox(
+                                        height: 15,
+                                      ),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Phone Number",
+                                          "Phone number",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -419,15 +399,14 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                         height: 6.0,
                                       ),
                                       TextFormField(
-                                        maxLength: 11,
-                                        controller: _phone,
-                                        focusNode: _userFocusNode,
+                                        controller: _phoneNumberController,
+                                        focusNode: _phoneNumberFocusNode,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter phone number',
+                                          hintText: 'Nhập số điện thoại',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -441,85 +420,31 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             ),
                                             child: Icon(Icons.phone),
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.orange,
-                                                width: 2.0),
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
-                                        ),
-                                        autofillHints: [
-                                          AutofillHints.telephoneNumber
-                                        ],
-                                        keyboardType: TextInputType.phone,
-                                        validator: (name) =>
-                                            TValidation.validatePhoneNumber(
-                                                name),
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Username",
-                                          style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
-                                              color: textColor1,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 6.0,
-                                      ),
-                                      TextFormField(
-                                        controller: _username,
-                                        focusNode: _userFocusNode,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: 'Enter Username',
-                                          prefixIcon: Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 16.0),
-                                            padding: const EdgeInsets.all(10.0),
-                                            decoration: const BoxDecoration(
-                                              border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Color(0xAAAA000000)),
-                                              ),
-                                            ),
-                                            child: Icon(Icons.person),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.orange,
-                                                width: 2.0),
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
-                                        ),
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        autofillHints: [AutofillHints.username],
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                      ),
 
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.orange,
+                                                width: 2.0),
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 20.0,
+                                              horizontal:
+                                                  10.0), // Điều chỉnh padding để tăng kích thước input
+                                        ),
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        validator: (value) =>
+                                            TValidation.validatePhoneNumber(
+                                                value),
+                                        onEditingComplete: () =>
+                                            TextInput.finishAutofillContext(),
+                                      ),
                                       // TODO [Input Form/Content/Form/Button]
                                       SizedBox(
                                         height: height * 0.04,
                                       ),
                                       MouseRegion(
-                                        cursor: SystemMouseCursors
-                                            .click, // Thay đổi con trỏ chuột thành hình bàn tay
+                                        cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
                                           onTap: () {
                                             if (globalKey.currentState!
@@ -531,15 +456,15 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                     .showSnackBar(
                                                   const SnackBar(
                                                     content: Text(
-                                                        "Password are not the same"),
+                                                        "Mật khẩu xác thực không chính xác!"),
                                                   ),
                                                 );
                                               } else {
                                                 HandleRegister(
                                                     _userController.text,
                                                     _passwordController.text,
-                                                    _username.text,
-                                                    _phone.text);
+                                                    _phoneNumberController
+                                                        .text);
                                               }
                                             }
                                           },
@@ -574,7 +499,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Have an account? ",
+                                            "Đã có tài khoản? ",
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
@@ -596,7 +521,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                       .shrinkWrap,
                                             ),
                                             child: Text(
-                                              "Sign In",
+                                              "Đăng nhập",
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,
@@ -626,10 +551,9 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
     );
   }
 
-  void HandleRegister(
-      String email, String password, String username, String phone) async {
-    var isRegisted = AuthController.instance.signUp(
-        email: email, password: password, username: username, phone: phone);
+  void HandleRegister(String email, String password, String phone) async {
+    var isRegisted = AuthController.instance
+        .signUp(email: email, password: password, phone: phone);
     if (await isRegisted) {
       Navigator.of(context).pushReplacementNamed(Routes.register_member);
     }

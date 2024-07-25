@@ -43,3 +43,101 @@ void main() async {
   confidLoading();
   runApp(MyApp(settingsController: settingsController));
 }
+
+
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+// import 'package:flutter/material.dart';
+
+// void main() {
+//   runApp(MyApp());
+// }
+
+// class MyApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       home: HomePage(),
+//     );
+//   }
+// }
+
+// class HomePage extends StatefulWidget {
+//   @override
+//   _HomePageState createState() => _HomePageState();
+// }
+
+// class _HomePageState extends State<HomePage> {
+//   List<String> _allChips = [
+//     'Portland',
+//     'Biking',
+//     'Nature',
+//     'Nightlife',
+//     'November'
+//   ];
+//   List<String> _selectedChips = [];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Photo Info'),
+//         actions: [
+//           IconButton(
+//             icon: Icon(Icons.search),
+//             onPressed: () {
+//               // Implement search functionality
+//             },
+//           ),
+//         ],
+//       ),
+//       drawer: Drawer(),
+//       body: Padding(
+//         padding: const EdgeInsets.all(8.0),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             SingleChildScrollView(
+//               scrollDirection: Axis.horizontal,
+//               child: Row(
+//                 children: _selectedChips.map((chip) {
+//                   return Padding(
+//                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
+//                     child: Chip(
+//                       label: Text(chip),
+//                       onDeleted: () {
+//                         setState(() {
+//                           _selectedChips.remove(chip);
+//                         });
+//                       },
+//                     ),
+//                   );
+//                 }).toList(),
+//               ),
+//             ),
+//             Divider(),
+//             Wrap(
+//               spacing: 8.0,
+//               children: _allChips.map((chip) {
+//                 return ChoiceChip(
+//                   label: Text(chip),
+//                   selected: _selectedChips.contains(chip),
+//                   onSelected: (isSelected) {
+//                     setState(() {
+//                       if (isSelected) {
+//                         _selectedChips.add(chip);
+//                       } else {
+//                         _selectedChips.remove(chip);
+//                       }
+//                     });
+//                   },
+//                 );
+//               }).toList(),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }

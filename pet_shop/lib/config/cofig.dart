@@ -13,12 +13,13 @@ class Config {
   static const String appName = "Shopping App";
   static const String apiURL = "192.168.1.191:3100";
 
+  //!News
+  static const String bannerAPI = "/api/news/search";
   //!Register
   static const String apiSignUp = "/api/auth/register";
-
   //!Login--hết giờ
-  static const String loginAPI = "/api/auth/loginM";
-  static const String bannerAPI = "/api/news/search";
+  static const String loginAPI = "/api/auth/login";
+  static const String activateAPI = "/api/auth/activate/";
 
   //! Forget password
   static const String getOtpAPI = "/api/auth/forget_password";

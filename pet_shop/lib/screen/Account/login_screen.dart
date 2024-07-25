@@ -498,7 +498,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var isSuccessLogin =
         AuthController.instance.login(email: email, password: password);
     if (await isSuccessLogin == 1) {
-      Navigator.pop(context);
+      Navigator.of(context).pushReplacementNamed(Routes.homepage);
     } else if (await isSuccessLogin == -1) {
       FocusScope.of(context).requestFocus(_passwordFocusNode);
       // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -507,6 +507,8 @@ class _LoginScreenState extends State<LoginScreen> {
       //         "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin."));
     } else if (await isSuccessLogin == -2) {
       FocusScope.of(context).requestFocus(_userFocusNode);
+    } else if (await isSuccessLogin == -3) {
+      Navigator.of(context).pushNamed(Routes.register_member);
     }
   }
 }

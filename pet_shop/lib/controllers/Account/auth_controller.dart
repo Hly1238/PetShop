@@ -18,12 +18,10 @@ class AuthController extends GetxController {
   }
 
   //!Register
-  Future<bool> signUp({
-    required String email,
-    required String password,
-    required String username,
-    required String phone,
-  }) async {
+  Future<bool> signUp(
+      {required String email,
+      required String password,
+      required String phone}) async {
     try {
       EasyLoading.show(
         status: 'Loading',
@@ -31,18 +29,25 @@ class AuthController extends GetxController {
       );
 
       var result = await AccountApiService.signup(
-          email: email.trim(),
-          password: password.trim(),
-          username: username.trim(),
-          phone: phone.trim());
+          email: email.trim(), password: password.trim(), phone: phone);
       if (result.statusCode == 200) {
-        EasyLoading.showSuccess("Chào mừng bạn đã đến Pet Shop");
+        var data = json.decode(result.body);
+
+        if (data == "Email is exist") {
+          EasyLoading.showError("Email này đã được sử dụng");
+          return false;
+        }
+        EasyLoading.showSuccess(
+            "Thành công! Vui lòng kiểm tra thư trong hòm thư của bạn");
         return true;
       } else {
-        EasyLoading.showError("Try again");
+        EasyLoading.showError(
+            "Số điện thoại này đã được dùng để đăng ký tài khoản khác");
         return false;
       }
     } catch (e) {
+      EasyLoading.showError(
+          "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");
       return false;
     } finally {
       EasyLoading.dismiss();
@@ -119,6 +124,10 @@ class AuthController extends GetxController {
         } else if (data['message']?.trim() == "Unregistered account!") {
           EasyLoading.showError("Không tồn tại gmail này");
           return -2;
+        } else if (data['message']?.trim() == "Account is not active!") {
+          EasyLoading.showError(
+              "Tài khoản này chưa được kích hoạt, vui lòng kích hoạt tài khoản");
+          return -3;
         }
         EasyLoading.showError("Hệ thống đang xảy ra lỗi, vui lòng thử lại sau");
         return 0;
@@ -127,7 +136,7 @@ class AuthController extends GetxController {
       EasyLoading.showError(
           "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");
       isLogin(false);
-      return -3;
+      return 0;
     } finally {
       EasyLoading.dismiss();
     }
@@ -203,6 +212,74 @@ class AuthController extends GetxController {
             "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút");
         return 0;
       }
+    } catch (e) {
+      EasyLoading.showError(
+          "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");
+      return 0;
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  // !Update Password OTP
+  Future<int> updatePasswordOtp({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      EasyLoading.show(
+        status: 'Loading',
+        dismissOnTap: false,
+      );
+      var result = await AccountApiService.updatePassOtp(
+          email: email.trim(), password: password.trim());
+      if (result.statusCode == 200) {
+        EasyLoading.showSuccess(
+            "Cập nhật mật khẩu thành công! Vui lòng đăng nhập lại");
+        return 1;
+      } else {
+        var data = json.decode(result.body);
+        var message = data['message'];
+        if (message?.trim() ==
+            "New password cannot be the same as the old password") {
+          EasyLoading.showError(
+              "Mật khẩu mới không được trùng với mật khẩu cũ");
+          return -1;
+        }
+        EasyLoading.showError(
+            "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút");
+        return 0;
+      }
+    } catch (e) {
+      EasyLoading.showError(
+          "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");
+      return 0;
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  // ! Activate Acc
+  Future<int> activateAcc({
+    required String activationCode,
+  }) async {
+    try {
+      EasyLoading.show(
+        status: 'Loading',
+        dismissOnTap: false,
+      );
+      var result =
+          await AccountApiService.activateAcc(activatecode: activationCode);
+      if (result.statusCode == 200) {
+        EasyLoading.showSuccess("Tài khoản kích hoạt thành công");
+        return 1;
+      } else if (result.statusCode == 404) {
+        EasyLoading.showError("Mã kích hoạt không hợp lệ");
+        return 0;
+      }
+      EasyLoading.showError(
+          "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút");
+      return 0;
     } catch (e) {
       EasyLoading.showError(
           "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");

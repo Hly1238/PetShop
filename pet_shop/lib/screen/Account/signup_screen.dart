@@ -24,35 +24,20 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  //Signup Input
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController passwordConfirmController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  bool _isNotValidate = false;
+  AuthController authController = Get.find<AuthController>();
 
   //Form
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   TextEditingController _userController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
   final FocusNode _userFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
 
   @override
   void dispose() {
     // Dispose controllers
     _userController.dispose();
-    _passwordController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    passwordConfirmController.dispose();
-    nameController.dispose();
-    phoneNumberController.dispose();
 
     // Dispose focus nodes
     _userFocusNode.dispose();
-    _passwordFocusNode.dispose();
 
     super.dispose();
   }
@@ -156,7 +141,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Welcome! PetShop provides you \nall stuffs you want for your \'Best Friends\'',
+                                    'Vui lòng nhập mã kích hoạt, để có thể sử dụng tài khoản của bạn. Mã kích hoạt ở hòm thư Email của bạn. Nếu không tìm thấy vui lòng kiểm tra mục Spam',
                                     style: GoogleFonts.raleway().copyWith(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w400,
@@ -176,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Activate code",
+                                          "Mã kích hoạt của bạn",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -187,7 +172,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                         height: 6.0,
                                       ),
                                       TextFormField(
-                                        maxLength: 11,
+                                        maxLength: 6,
                                         controller: _userController,
                                         focusNode: _userFocusNode,
                                         decoration: InputDecoration(
@@ -195,7 +180,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter phone number',
+                                          hintText: 'Nhập mã kích hoạt',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -207,7 +192,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                                     color: Color(0xAAAA000000)),
                                               ),
                                             ),
-                                            child: Icon(Icons.phone),
+                                            child:
+                                                Icon(Icons.qr_code_2_outlined),
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
@@ -215,15 +201,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
+                                              vertical: 20.0, horizontal: 10.0),
                                         ),
-                                        autofillHints: [AutofillHints.email],
-                                        keyboardType: TextInputType.phone,
-                                        validator: (name) =>
-                                            TValidation.validatePhoneNumber(
-                                                name),
+                                        autofillHints: [AutofillHints.username],
+                                        keyboardType: TextInputType.name,
+                                        validator: (name) {
+                                          if (name == null ||
+                                              name.length != 6) {
+                                            return 'Name must be exactly 6 characters long';
+                                          }
+                                          return null;
+                                        },
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                       ),
@@ -327,7 +315,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                       //   ],
                                       // ),
 
-                                      // TODO [Input Form/Content/Form/Forget Password]
                                       SizedBox(
                                         height: height * 0.009,
                                       ),
@@ -342,13 +329,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                           onTap: () {
                                             if (globalKey.currentState!
                                                 .validate()) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Trying to activate"),
-                                              ));
-                                              Navigator.of(context)
-                                                  .pushNamed(Routes.sign_in);
+                                              HandleActivate(
+                                                  _userController.text);
                                             }
                                           },
                                           child: Container(
@@ -432,5 +414,18 @@ class _SignupScreenState extends State<SignupScreen> {
       ),
     );
   }
-  //Handle Sign Up
+
+  //Handle Activate
+  void HandleActivate(String activateCode) async {
+    var activeStatus = authController.activateAcc(activationCode: activateCode);
+    switch (await activeStatus) {
+      case 1:
+        Navigator.of(context).pushReplacementNamed(Routes.sign_in);
+        break;
+      case 0:
+        break;
+      default:
+        break;
+    }
+  }
 }

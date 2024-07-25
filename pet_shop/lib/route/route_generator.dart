@@ -154,7 +154,6 @@ class RouteGenerator {
               builder: (_) => OrderScreen(orderList: args));
         }
         return _errorRoute();
-      // return MaterialPageRoute(builder: (_) => OrderScreen());
       case Routes.register_member:
         return MaterialPageRoute(builder: (_) => SignupScreen());
       case Routes.pay:

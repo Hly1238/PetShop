@@ -343,9 +343,12 @@
 // }
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
+import 'package:pet_shop/payment/flutter_zalopay_sdk.dart';
+import 'package:pet_shop/payment/repo/payment.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/servies/Order/order_service.dart';
 
@@ -422,6 +425,13 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                     ),
                     SizedBox(height: 16),
                     VoucherSection(),
+                    SizedBox(height: 16),
+                    PaymentMethod(
+                      address: address,
+                      selectedItems: widget.selectedItems,
+                      billing: 'cod',
+                      total: calculateTotalPrice(),
+                    ),
                     SizedBox(height: 16),
                     ContinueButton(
                       isEnabled: address.isNotEmpty,
@@ -798,8 +808,8 @@ class ContinueButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isEnabled
             ? () async {
-                var isSuccess = OrderController.instance
-                    .createOrder(selectedItems, total, address, billing);
+                var isSuccess =
+                    await createOrder(selectedItems, total, address, billing);
                 if (await isSuccess) {
                   Navigator.of(context).pushReplacementNamed(
                       Routes.order_detail,
@@ -829,5 +839,107 @@ class ContinueButton extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<bool> createOrder(List<ProductOrder> selectedItems, double total,
+      String address, String billing) async {
+    var isSuccess = OrderController.instance
+        .createOrder(selectedItems, total, address, billing);
+    return isSuccess;
+  }
+}
+
+class PaymentMethod extends StatelessWidget {
+  final double total;
+  final String address;
+  final String billing;
+  final List<ProductOrder> selectedItems;
+
+  const PaymentMethod(
+      {super.key,
+      required this.total,
+      required this.address,
+      required this.billing,
+      required this.selectedItems});
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          // Expanded(
+          //   flex: 1,
+          //   child: ElevatedButton(
+          //     onPressed: () {},
+          //     style: ElevatedButton.styleFrom(
+          //       backgroundColor: Colors.orange,
+          //     ),
+          //     child: Text('Thanh toán khi nhận hàng'),
+          //   ),
+          // ),
+          // SizedBox(width: 16),
+          Expanded(
+            child: ElevatedButton(
+              onPressed: () async {
+                var result = await createOrder(10000);
+                if (result != null) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackbarCustom()
+                      .showErorSnackBar("${result.zptranstoken}"));
+
+                  FlutterZaloPaySdk.payOrder(zpToken: result.zptranstoken)
+                      .then((event) {
+                    switch (event) {
+                      case FlutterZaloPayStatus.cancelled:
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackbarCustom()
+                                .showErorSnackBar("User Huỷ Thanh Toán"));
+                        break;
+                      case FlutterZaloPayStatus.success:
+                        createPayment(context);
+                        break;
+                      case FlutterZaloPayStatus.failed:
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackbarCustom()
+                                .showErorSnackBar("Thanh toán thất bại"));
+
+                        break;
+                      default:
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            SnackbarCustom()
+                                .showErorSnackBar("Thanh toán thất bại"));
+                        break;
+                    }
+                  });
+                }
+              },
+              child: Text('Chọn phương thức thanh toán'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void createPayment(BuildContext context) async {
+    bool isOrderCreated = await OrderController.instance
+        .createOrder(selectedItems, total, address, "paypal");
+    if (isOrderCreated) {
+      Navigator.of(context).pushNamed(Routes.sign_in);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackbarCustom().showErorSnackBar("Tạo đơn hàng thất bại"));
+    }
   }
 }

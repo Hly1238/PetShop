@@ -5,6 +5,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Predict/predict_controller.dart';
 import 'package:pet_shop/controllers/Product/cart_controller.dart';
@@ -45,8 +46,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
   //Pick and Take options
   Uint8List? _image;
   File? selectedIMage;
-  void _onItemTapped(int index) {
-    if (index != 0 && AuthController.instance.isLogin == false) {
+  void _onItemTapped(int index) async {
+    // if (index != 0 && AuthController.instance.isLogin == false) {
+    if (index != 0 &&
+        await SecurityStorage().readSecureData("token") == false) {
       Navigator.of(context).pushNamed(Routes.sign_in);
     } else {
       setState(() {

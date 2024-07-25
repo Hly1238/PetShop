@@ -21,7 +21,7 @@ class OrderController extends GetxController {
   //todo [Get list Order]
   void getListOrder() async {
     try {
-      isOrderLoading(true);
+      // isOrderLoading(true);
       var result = await OrderService().get();
       if (result != null) {
         orderList.assignAll(orderListfromJson(result.body));
@@ -30,9 +30,8 @@ class OrderController extends GetxController {
       }
     } catch (e) {
       print("Error loading orders: $e");
+      // isOrderLoading(false);
     } finally {
-      isOrderLoading(false);
-
       print("Final orders length: ${orderList.length}");
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pet_shop/config/cofig.dart';
 import 'package:pet_shop/config/constant.dart';
@@ -8,6 +9,7 @@ import 'package:pet_shop/config/responsive/responsive_widget.dart';
 import 'package:pet_shop/config/validators/validation.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/route/route_generator.dart';
 
 class RecoveryScreen extends StatefulWidget {
@@ -19,7 +21,10 @@ class RecoveryScreen extends StatefulWidget {
 }
 
 class _RecoveryScreenState extends State<RecoveryScreen> {
-  //Form
+  //? AuthController
+  AuthController authController = Get.find<AuthController>();
+
+  // ? Form
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _confirmPasswordController = TextEditingController();
@@ -412,5 +417,17 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
   }
 
   //Handle change Password
-  void HandleUpdateForgetPass(String email, String password) {}
+  void HandleUpdateForgetPass(String email, String password) async {
+    var changeStatus =
+        authController.updatePasswordOtp(email: email, password: password);
+    switch (await changeStatus) {
+      case 1:
+        Navigator.of(context).pushReplacementNamed(Routes.sign_in);
+        break;
+      case 0:
+        break;
+      case -1:
+        break;
+    }
+  }
 }

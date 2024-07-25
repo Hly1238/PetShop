@@ -516,169 +516,171 @@ class _ProductDetailPopupState extends State<ProductDetailPopup> {
       Colors.amber
     ];
 
-    return InkWell(
-      onTap: () {
-        showModalBottomSheet(
-          backgroundColor: Colors.transparent,
-          context: context,
-          builder: (context) => Container(
-            height: MediaQuery.of(context).size.height / 2.5,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+    return Expanded(
+      child: InkWell(
+        onTap: () {
+          showModalBottomSheet(
+            backgroundColor: Colors.transparent,
+            context: context,
+            builder: (context) => Container(
+              height: MediaQuery.of(context).size.height / 2.5,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
               ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.all(30),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Số Lượng:",
-                                style: iStyle,
-                              ),
-                              SizedBox(
-                                height: 20,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 30,
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      if (_quantityNotifier.value > 1) {
-                                        _quantityNotifier.value--;
-                                      }
-                                    },
-                                    child: Text(
-                                      "-",
-                                      style: iStyle,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
-                                  ValueListenableBuilder<int>(
-                                    valueListenable: _quantityNotifier,
-                                    builder: (context, value, _) {
-                                      return Text(
-                                        "$value",
-                                        style: iStyle,
-                                      );
-                                    },
-                                  ),
-                                  SizedBox(
-                                    width: 30,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      if (_quantityNotifier.value <
-                                          widget.quantity) {
-                                        _quantityNotifier.value++;
-                                      }
-                                    },
-                                    child: Text(
-                                      "+",
-                                      style: iStyle,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Tổng Tiền:",
-                            style: iStyle,
-                          ),
-                          ValueListenableBuilder<int>(
-                            valueListenable: _quantityNotifier,
-                            builder: (context, value, _) {
-                              return Text(
-                                "\$${value * widget.price}",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFFDB3022),
+              child: Padding(
+                padding: EdgeInsets.all(30),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Column(
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Số Lượng:",
+                                  style: iStyle,
                                 ),
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Expanded(
-                        child: InkWell(
-                          onTap: () {
-                            CartController.instance.addToCart(
-                                widget.productId,
-                                _quantityNotifier.value,
-                                _quantityNotifier.value * widget.price);
-
-                            Fluttertoast.showToast(
-                              msg:
-                                  "Số Lượng: ${_quantityNotifier.value}\nTổng Tiền: \$${_quantityNotifier.value * widget.price}",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM,
-                              backgroundColor: Colors.black54,
-                              textColor: Colors.white,
-                              fontSize: 16.0,
-                            );
-
-                            // Set quantity back to 1
-                            _quantityNotifier.value = 1;
-
-                            // Close the bottom sheet
-                            Navigator.pop(context);
-                          },
-                          child: ContainerButtonModel(
-                            containerWidth: MediaQuery.of(context).size.width,
-                            itext: "Thêm Vào Giỏ Hàng",
-                            bgColor: CustomAppColor.primaryColorOrange,
-                          ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              width: 30,
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        if (_quantityNotifier.value > 1) {
+                                          _quantityNotifier.value--;
+                                        }
+                                      },
+                                      child: Text(
+                                        "-",
+                                        style: iStyle,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    ValueListenableBuilder<int>(
+                                      valueListenable: _quantityNotifier,
+                                      builder: (context, value, _) {
+                                        return Text(
+                                          "$value",
+                                          style: iStyle,
+                                        );
+                                      },
+                                    ),
+                                    SizedBox(
+                                      width: 30,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        if (_quantityNotifier.value <
+                                            widget.quantity) {
+                                          _quantityNotifier.value++;
+                                        }
+                                      },
+                                      child: Text(
+                                        "+",
+                                        style: iStyle,
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  )
-                ],
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Tổng Tiền:",
+                              style: iStyle,
+                            ),
+                            ValueListenableBuilder<int>(
+                              valueListenable: _quantityNotifier,
+                              builder: (context, value, _) {
+                                return Text(
+                                  "\$${value * widget.price}",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFDB3022),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              CartController.instance.addToCart(
+                                  widget.productId,
+                                  _quantityNotifier.value,
+                                  _quantityNotifier.value * widget.price);
+
+                              Fluttertoast.showToast(
+                                msg:
+                                    "Số Lượng: ${_quantityNotifier.value}\nTổng Tiền: \$${_quantityNotifier.value * widget.price}",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                fontSize: 16.0,
+                              );
+
+                              // Set quantity back to 1
+                              _quantityNotifier.value = 1;
+
+                              // Close the bottom sheet
+                              Navigator.pop(context);
+                            },
+                            child: ContainerButtonModel(
+                              containerWidth: MediaQuery.of(context).size.width,
+                              itext: "Thêm Vào Giỏ Hàng",
+                              bgColor: CustomAppColor.primaryColorOrange,
+                            ),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        );
-      },
-      child: ContainerButtonModel(
-        containerWidth: MediaQuery.of(context).size.width / 1.27,
-        itext: "Mua Ngay",
-        bgColor: CustomAppColor.primaryColorOrange,
+          );
+        },
+        child: ContainerButtonModel(
+          containerWidth: MediaQuery.of(context).size.width / 1.27,
+          itext: "Mua Ngay",
+          bgColor: CustomAppColor.primaryColorOrange,
+        ),
       ),
     );
   }
@@ -689,3 +691,131 @@ class _ProductDetailPopupState extends State<ProductDetailPopup> {
     super.dispose();
   }
 }
+
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!
+    // int _counter = 1;
+
+    // void _incrementCounter() {
+    //   setState(() {
+    //     _counter++;
+    //   });
+    // }
+
+    // void _decrementCounter() {
+    //   setState(() {
+    //     if (_counter > 1) {
+    //       _counter--;
+    //     }
+    //   });
+    // }
+
+    // return Dialog(
+    //   shape: RoundedRectangleBorder(
+    //     borderRadius: BorderRadius.circular(20),
+    //   ),
+    //   child: Padding(
+    //     padding: const EdgeInsets.all(20.0),
+    //     child: Column(
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: [
+    //         Row(
+    //           children: [
+    //             CircleAvatar(
+    //               radius: 30,
+    //               backgroundImage: AssetImage(
+    //                   'assets/images/dog.jpg'), // Replace with your image asset
+    //             ),
+    //             SizedBox(width: 10),
+    //             Column(
+    //               crossAxisAlignment: CrossAxisAlignment.start,
+    //               children: [
+    //                 Text(
+    //                   '\$42.00',
+    //                   style: TextStyle(
+    //                     fontSize: 24,
+    //                     fontWeight: FontWeight.bold,
+    //                   ),
+    //                 ),
+    //                 Text('Sold 549'),
+    //               ],
+    //             ),
+    //           ],
+    //         ),
+    //         SizedBox(height: 20),
+    //         Text('Weight'),
+    //         Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //           children: [
+    //             ChoiceChip(label: Text('100g'), selected: false),
+    //             ChoiceChip(label: Text('200g'), selected: true),
+    //             ChoiceChip(label: Text('500g'), selected: false),
+    //             ChoiceChip(label: Text('1kg'), selected: false),
+    //           ],
+    //         ),
+    //         SizedBox(height: 20),
+    //         Row(
+    //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    //           children: [
+    //             ChoiceChip(label: Text('6 month'), selected: false),
+    //             ChoiceChip(label: Text('Female'), selected: true),
+    //             ChoiceChip(label: Text('1.2 kg'), selected: false),
+    //           ],
+    //         ),
+    //         SizedBox(height: 20),
+    //         Row(
+    //           mainAxisAlignment: MainAxisAlignment.center,
+    //           children: [
+    //             ElevatedButton(
+    //               onPressed: _decrementCounter,
+    //               style: ElevatedButton.styleFrom(
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(8),
+    //                 ),
+    //               ),
+    //               child: Icon(
+    //                 Icons.remove,
+    //                 color: Colors.black,
+    //               ),
+    //             ),
+    //             Padding(
+    //               padding:
+    //                   const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+    //               child: Text(
+    //                 '$_counter',
+    //                 style: TextStyle(
+    //                   fontSize: 18,
+    //                   color: Colors.green,
+    //                 ),
+    //               ),
+    //             ),
+    //             ElevatedButton(
+    //               onPressed: _incrementCounter,
+    //               style: ElevatedButton.styleFrom(
+    //                 shape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(8),
+    //                 ),
+    //               ),
+    //               child: Icon(
+    //                 Icons.add,
+    //                 color: Colors.black,
+    //               ),
+    //             ),
+    //           ],
+    //         ),
+    //         SizedBox(height: 20),
+    //         ElevatedButton(
+    //           style: ElevatedButton.styleFrom(
+    //             shape: RoundedRectangleBorder(
+    //               borderRadius: BorderRadius.circular(20),
+    //             ),
+    //           ),
+    //           onPressed: () {},
+    //           child: Text('Adoption'),
+    //         ),
+    //       ],
+    //     ),
+    //   ),
+    // );
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!
