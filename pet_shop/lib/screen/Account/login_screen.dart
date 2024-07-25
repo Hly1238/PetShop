@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pet_shop/config/cofig.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/responsive/responsive_widget.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
 import 'package:pet_shop/config/validators/validation.dart';
 
-import 'package:http/http.dart' as http;
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/models/Account/login_request_model.dart';
 import 'package:pet_shop/route/route_generator.dart';
@@ -175,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Username",
+                                          "Email",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter email/phone number',
+                                          hintText: 'Nhập email của bạn',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -219,7 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                         keyboardType:
                                             TextInputType.emailAddress,
-                                        autofillHints: [AutofillHints.username],
+                                        autofillHints: [AutofillHints.email],
                                         validator: (name) =>
                                             TValidation.validateEmail(name),
                                         autovalidateMode:
@@ -249,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter Password',
+                                          hintText: 'Nhập Password',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -328,34 +328,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                         height: height * 0.01,
                                       ),
                                       MouseRegion(
-                                        cursor: SystemMouseCursors
-                                            .click, // Thay đổi con trỏ chuột thành hình bàn tay
+                                        cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
-                                          // onTap: () {
-                                          //   if (globalKey.currentState!
-                                          //       .validate()) {
-                                          //     // ScaffoldMessenger.of(context)
-                                          //     //     .showSnackBar(const SnackBar(
-                                          //     //   content:
-                                          //     //       Text("Trying to Login"),
-                                          //     // ));
-                                          //     bool isLogin = loginUser();
-                                          //   }
-                                          // },
                                           onTap: () async {
                                             if (globalKey.currentState!
                                                 .validate()) {
                                               HandleLogin(_userController.text,
                                                   _passwordController.text);
-                                              // if (isLogin) {
-                                              //   Navigator.pushReplacementNamed(
-                                              //       context, Routes.homepage);
-                                              // } else {
-                                              //   ScaffoldMessenger.of(context)
-                                              //       .showSnackBar(SnackBar(
-                                              //     content: Text("Login failed"),
-                                              //   ));
-                                              // }
                                             }
                                           },
                                           child: Container(
@@ -367,7 +346,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                "Sign In",
+                                                "Đăng Nhập",
                                                 style: GoogleFonts.raleway()
                                                     .copyWith(
                                                   color: Colors.white,
@@ -380,55 +359,56 @@ class _LoginScreenState extends State<LoginScreen> {
                                         ),
                                       ),
                                       // TODO [Input Form/Content/Form/Social Button]
-                                      SizedBox(
-                                        height: height * 0.04,
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 25.0),
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Divider(
-                                                thickness: 0.5,
-                                                color: kTextLightColor,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10.0),
-                                              child: Text(
-                                                'Or Continue with',
-                                                style: TextStyle(
-                                                    color: Colors.grey),
-                                              ),
-                                            ),
-                                            Expanded(
-                                              child: Divider(
-                                                thickness: 0.5,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.015,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SocialButton(
-                                              "assets/images/_project/Logo/social/google.png"),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          SocialButton(
-                                              "assets/images/_project/Logo/social/facebook.png"),
-                                        ],
-                                      ),
+                                      // SizedBox(
+                                      //   height: height * 0.04,
+                                      // ),
+                                      // Container(
+                                      //   margin: EdgeInsets.symmetric(
+                                      //       horizontal: 25.0),
+                                      //   child: Row(
+                                      //     children: [
+                                      //       Expanded(
+                                      //         child: Divider(
+                                      //           thickness: 0.5,
+                                      //           color: kTextLightColor,
+                                      //         ),
+                                      //       ),
+                                      //       Padding(
+                                      //         padding:
+                                      //             const EdgeInsets.symmetric(
+                                      //                 horizontal: 10.0),
+                                      //         child: Text(
+                                      //           'Or Continue with',
+                                      //           style: TextStyle(
+                                      //               color: Colors.grey),
+                                      //         ),
+                                      //       ),
+                                      //       Expanded(
+                                      //         child: Divider(
+                                      //           thickness: 0.5,
+                                      //           color: Colors.grey,
+                                      //         ),
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      // SizedBox(
+                                      //   height: height * 0.015,
+                                      // ),
+                                      // Row(
+                                      //   mainAxisAlignment:
+                                      //       MainAxisAlignment.center,
+                                      //   children: [
+                                      //     SocialButton(
+                                      //         "assets/images/_project/Logo/social/google.png"),
+                                      //     SizedBox(
+                                      //       width: 10,
+                                      //     ),
+                                      //     SocialButton(
+                                      //         "assets/images/_project/Logo/social/facebook.png"),
+                                      //   ],
+                                      // ),
+
                                       // TODO [Input Form/Content/Form/Sign Up]
                                       SizedBox(
                                         height: height * 0.03,
@@ -514,44 +494,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   //Handle Sign In
-
-  Future<bool> loginUser() async {
-    if (_userController.text.isNotEmpty &&
-        _passwordController.text.isNotEmpty) {
-      var model = LoginRequestModel(
-        // Email: _userController.text,
-        // Password: _passwordController.text,
-        Email: "admin5@gmail.com",
-        Password: "091232434",
-      );
-
-      bool success = await AccountApiService.login(model);
-
-      if (success) {
-        // Handle successful login
-        print("Login successful");
-      } else {
-        // Handle failed login
-        print("Login failed");
-      }
-      return success;
-    } else {
-      setState(() {
-        _isNotValidate = true;
-      });
-      return false;
-    }
-  }
-
-  void HandleLogin(String text, String text2) async {
-    var isRegisted =
-        AuthController.instance.login(email: text, password: text2);
-    if (await isRegisted) {
-      // Navigator.of(context).pushReplacementNamed(Routes.homepage);
+  void HandleLogin(String email, String password) async {
+    var isSuccessLogin =
+        AuthController.instance.login(email: email, password: password);
+    if (await isSuccessLogin == 1) {
       Navigator.pop(context);
+    } else if (await isSuccessLogin == -1) {
+      FocusScope.of(context).requestFocus(_passwordFocusNode);
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // ScaffoldMessenger.of(context).showSnackBar(SnackbarCustom()
+      //     .showErorSnackBar(
+      //         "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin."));
+    } else if (await isSuccessLogin == -2) {
+      FocusScope.of(context).requestFocus(_userFocusNode);
     }
   }
 }
+
+// ? Copponent comment
 // Container(
 //   decoration: BoxDecoration(
 //       gradient: LinearGradient(
@@ -562,3 +522,6 @@ class _LoginScreenState extends State<LoginScreen> {
 //         backgroundColor3
 //       ])),
 // ),
+//   ScaffoldMessenger.of(context)
+//       .showSnackBar(SnackBar(
+//     content: Text("Login failed"),

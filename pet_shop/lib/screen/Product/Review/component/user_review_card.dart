@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:pet_shop/models/Product/review.dart';
+import 'package:intl/intl.dart';
 
 class UserReviewCard extends StatelessWidget {
   final Review item;
@@ -8,6 +9,9 @@ class UserReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate =
+        DateFormat('hh:mm, dd/MM/yyyy').format(item.createdAt);
+
     print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return Column(
       children: [
@@ -17,58 +21,68 @@ class UserReviewCard extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
+                  radius: 23,
                   backgroundImage:
                       AssetImage("assets/images/_project/Logo/logo.png"),
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Text(
-                  item.username,
-                  style: Theme.of(context).textTheme.titleLarge,
+                Column(
+                  // mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 3,
+                        ),
+                        Text(
+                          item.username,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: Icon(Icons.more_vert),
+                        // ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        RatingBarIndicator(
+                          rating: item.rating,
+                          itemSize: 20,
+                          unratedColor: Colors.grey,
+                          itemBuilder: (_, __) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 30,
+                        ),
+                        Text(
+                          '${formattedDate}',
+                          textAlign: TextAlign.end,
+                          style: TextStyle(fontSize: 12, color: Colors.black38),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ],
             ),
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.more_vert),
-            ),
           ],
-        ),
-        SizedBox(
-          height: 10,
         ),
 
         //Review
-        Row(
-          children: [
-            RatingBarIndicator(
-              rating: item.rating,
-              itemSize: 20,
-              unratedColor: Colors.grey,
-              itemBuilder: (_, __) => Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Align(
-              alignment: Alignment.topRight,
-              child: Text(
-                '${item.createdAt}',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-          ],
-        ),
+
         SizedBox(
-          height: 10,
+          height: 15,
         ),
         Text('${item.comment}'),
         SizedBox(
-          height: 32,
+          height: 20,
         ),
         // Container(
         //   child: Padding(

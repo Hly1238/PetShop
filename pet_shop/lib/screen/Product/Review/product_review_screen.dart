@@ -72,26 +72,60 @@ class Review_Product extends StatelessWidget {
     });
 
     return SingleChildScrollView(
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
+      child: Container(
+        padding: EdgeInsets.all(15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: Colors.white,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Average Rating: ${averageRating.toStringAsFixed(1)}"),
             SizedBox(
               height: 10,
+              width: 10,
             ),
             Row(
               children: [
-                Expanded(
-                  flex: 3,
-                  child: Text(
-                    averageRating.toStringAsFixed(1),
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Đánh Giá".toUpperCase(),
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      averageRating.toStringAsFixed(1),
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    RatingBarIndicator(
+                      rating: averageRating,
+                      itemSize: 20,
+                      unratedColor: Colors.grey,
+                      itemBuilder: (_, __) => Icon(
+                        Icons.star,
+                        color: Colors.amber,
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 10),
+                      alignment: AlignmentDirectional.center,
+                      height: 20,
+                      width: 120,
+                      decoration: BoxDecoration(
+                          color: Colors.black12,
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      child: Text('${reviewList.length}\ đánh giá',
+                          style: TextStyle(
+                              fontSize: 13, fontWeight: FontWeight.w600)),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  width: 20,
                 ),
                 Expanded(
-                  flex: 7,
                   child: Column(
                     children: [
                       for (var i = 5; i >= 1; i--)
@@ -104,17 +138,7 @@ class Review_Product extends StatelessWidget {
                 )
               ],
             ),
-            RatingBarIndicator(
-              rating: averageRating,
-              itemSize: 20,
-              unratedColor: Colors.grey,
-              itemBuilder: (_, __) => Icon(
-                Icons.star,
-                color: Colors.amber,
-              ),
-            ),
-            Text('${reviewList.length}',
-                style: Theme.of(context).textTheme.bodySmall),
+
             SizedBox(
               height: 32.0,
             ),
@@ -122,12 +146,36 @@ class Review_Product extends StatelessWidget {
             //todo [Review List]
             Column(
               children: [
-                Column(
-                  children: reviewList
-                      .take(length)
-                      .map((review) => UserReviewCard(item: review))
-                      .toList(),
-                ),
+                Column(children: [
+                  Column(
+                    children: reviewList
+                        .take(length)
+                        .map((review) => UserReviewCard(item: review))
+                        .toList(),
+                  ),
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                    TextButton(
+                        onPressed: () async {
+                          await showDialog(
+                            context: context,
+                            builder: (_) =>
+                                ReviewListDialog(review_List: reviewList),
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            Text(
+                              "Xem Thêm",
+                              style: TextStyle(color: Colors.blue),
+                            ),
+                            Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.blue,
+                            )
+                          ],
+                        )),
+                  ])
+                ]),
               ],
             ),
           ],
@@ -172,5 +220,42 @@ class ProgressIndicator extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class ReviewListDialog extends StatefulWidget {
+  final List<Review> review_List;
+  const ReviewListDialog({
+    super.key,
+    required this.review_List,
+  });
+
+  @override
+  State<ReviewListDialog> createState() => _ReviewListDialogState();
+}
+
+class _ReviewListDialogState extends State<ReviewListDialog> {
+  @override
+  Widget build(BuildContext context) {
+    return Dialog.fullscreen(
+        child: Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("Reviews"),
+        leading: BackButton(),
+        backgroundColor: CustomAppColor.primaryColorOrange,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+            padding: EdgeInsets.all(20),
+            child: Column(
+                children: widget.review_List
+                    .map((review) => UserReviewCard(item: review))
+                    .toList())),
+      ),
+    ));
   }
 }

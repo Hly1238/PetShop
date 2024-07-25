@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
 
 import 'src/app.dart';
@@ -13,14 +14,21 @@ import 'src/settings/settings_service.dart';
 
 List<CameraDescription> cameras = [];
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   // cameras = await availableCameras();
   await Hive.initFlutter();
   // Set up the SettingsController,  which will glue user settings to multiple
   // Flutter Widgets.
-  final settingsController = SettingsController(SettingsService());
 
+  // !!!!! Setting notification
+  final settingsController = SettingsController(SettingsService());
   // Load the user's preferred the  me while the splash screen is displayed.
+  // SecurityStorage().deleteSecureData("token");
+  // SecurityStorage().deleteSecureData("phone");
+  // SecurityStorage().deleteSecureData("username");
+  // SecurityStorage().deleteSecureData("image");
+  // SecurityStorage().deleteSecureData("password");
+  // SecurityStorage().deleteSecureData("id");
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
 

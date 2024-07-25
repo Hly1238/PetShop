@@ -12,6 +12,7 @@ import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/product.dart';
+import 'package:pet_shop/payment/payment_screen.dart';
 import 'package:pet_shop/recognize_model/model.dart';
 import 'package:pet_shop/screen/Account/forget_screen.dart';
 import 'package:pet_shop/screen/Account/login_screen.dart';
@@ -157,12 +158,19 @@ class RouteGenerator {
       case Routes.register_member:
         return MaterialPageRoute(builder: (_) => SignupScreen());
       case Routes.pay:
-        return MaterialPageRoute(builder: (_) => PaymentMethodScreen());
+        return MaterialPageRoute(
+            builder: (_) => Dashboard(
+                  title: "A",
+                  version: "a",
+                ));
 
       case Routes.forget_password:
         return MaterialPageRoute(builder: (_) => ForgetScreen());
       case Routes.recovery_password:
-        return MaterialPageRoute(builder: (_) => RecoveryScreen());
+        if (args is String) {
+          return MaterialPageRoute(builder: (_) => RecoveryScreen(email: args));
+        }
+        return _errorRoute();
       case Routes.sign_up:
         return MaterialPageRoute(builder: (_) => RegisterNewMember());
       // case Routes.camera:
@@ -181,7 +189,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => PreAccess());
 
       case Routes.otp_verified:
-        return MaterialPageRoute(builder: (_) => OtpVerifyScreen());
+        if (args is String) {
+          return MaterialPageRoute(
+              builder: (_) => OtpVerifyScreen(email: args));
+        }
+        return _errorRoute();
+
       default:
         return _errorRoute();
     }

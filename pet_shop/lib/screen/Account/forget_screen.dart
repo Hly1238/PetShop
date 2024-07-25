@@ -1,19 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/screen/Account/recovery_screen.dart';
 import 'package:pet_shop/screen/Account/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:pet_shop/config/cofig.dart';
-import 'package:pet_shop/route/route_generator.dart';
-import 'package:pet_shop/screen/Account/login_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:pet_shop/config/cofig.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/responsive/responsive_widget.dart';
 import 'package:pet_shop/config/validators/validation.dart';
-
-import 'package:http/http.dart' as http;
 
 class ForgetScreen extends StatefulWidget {
   const ForgetScreen({Key? key}) : super(key: key);
@@ -23,6 +20,9 @@ class ForgetScreen extends StatefulWidget {
 }
 
 class _ForgetScreenState extends State<ForgetScreen> {
+  // ? [Controller]
+  AuthController authController = Get.find<AuthController>();
+
   bool clrBtn = false;
   TextEditingController emailController = TextEditingController();
 
@@ -48,115 +48,6 @@ class _ForgetScreenState extends State<ForgetScreen> {
     _passwordFocusNode.dispose();
     super.dispose();
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       backgroundColor: Colors.transparent,
-  //       elevation: 0,
-  //       leading: BackButton(),
-  //       foregroundColor: Colors.black,
-  //     ),
-  //     body: SingleChildScrollView(
-  //       child: Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 10),
-  //         child: Column(
-  //           // crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             SizedBox(
-  //               height: 20,
-  //             ),
-  //             Align(
-  //               alignment: Alignment.topLeft,
-  //               child: Text(
-  //                 "Forgot Password",
-  //                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 60,
-  //             ),
-  //             Text(
-  //               "Please enter your number. You will receive a OTP to create or set a new password via number",
-  //               style: TextStyle(fontSize: 15),
-  //             ),
-  //             SizedBox(
-  //               height: 20,
-  //             ),
-  //             TextFormField(
-  //               controller: emailController,
-  //               onChanged: (val) {
-  //                 if (val != "") {
-  //                   setState(() {
-  //                     clrBtn = true;
-  //                   });
-  //                 }
-  //               },
-  //               decoration: InputDecoration(
-  //                 border: OutlineInputBorder(),
-  //                 labelText: "Email",
-  //                 suffix: InkWell(
-  //                   onTap: () {
-  //                     setState(() {
-  //                       emailController.clear();
-  //                     });
-  //                   },
-  //                   child: Icon(
-  //                     CupertinoIcons.multiply,
-  //                     color: Color(0xFFDB3022),
-  //                   ),
-  //                 ),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 50,
-  //             ),
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 Navigator.push(
-  //                     context,
-  //                     MaterialPageRoute(
-  //                       builder: (context) => RecoveryScreen(),
-  //                     ));
-  //               },
-  //               child: Text(
-  //                 "Send Code",
-  //                 style: TextStyle(color: Colors.white),
-  //               ),
-  //               style: ElevatedButton.styleFrom(
-  //                   minimumSize: Size.fromHeight(55),
-  //                   backgroundColor: Color(0xFFDB3022),
-  //                   shape: RoundedRectangleBorder(
-  //                       borderRadius: BorderRadius.circular(8))),
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.center,
-  //               children: [
-  //                 SizedBox(
-  //                   height: 20,
-  //                 ),
-  //                 Text("OR"),
-  //                 TextButton(
-  //                     onPressed: () {
-  //                       Navigator.of(context)
-  //                           .pushReplacementNamed(Routes.otp_verified);
-  //                     },
-  //                     child: Text(
-  //                       "Veryfy Using Number",
-  //                       style: TextStyle(
-  //                           color: Color(0xFFDB3022),
-  //                           fontSize: 15,
-  //                           fontWeight: FontWeight.bold),
-  //                     ))
-  //               ],
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +146,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Please enter your number or email.\nYou will receive a OTP to create or set a new password.',
+                                    'Please enter your email.\nYou will receive a OTP to create or set a new password.',
                                     style: GoogleFonts.raleway().copyWith(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w400,
@@ -300,8 +191,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText:
-                                              'Enter phone number/email address',
+                                          hintText: 'Nhập email',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -313,7 +203,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                                     color: Color(0xAAAA000000)),
                                               ),
                                             ),
-                                            child: Icon(Icons.person_2_rounded),
+                                            child: Icon(Icons.email_outlined),
                                           ),
                                           suffix: InkWell(
                                             onTap: () {
@@ -332,14 +222,9 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
+                                              vertical: 20.0, horizontal: 10.0),
                                         ),
-                                        autofillHints: [
-                                          AutofillHints.telephoneNumber,
-                                          AutofillHints.email
-                                        ],
+                                        autofillHints: [AutofillHints.email],
                                         validator: (name) =>
                                             TValidation.validateEmail(name),
                                         autovalidateMode:
@@ -351,19 +236,13 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                         height: height * 0.05,
                                       ),
                                       MouseRegion(
-                                        cursor: SystemMouseCursors
-                                            .click, // Thay đổi con trỏ chuột thành hình bàn tay
+                                        cursor: SystemMouseCursors.click,
                                         child: GestureDetector(
                                           onTap: () {
                                             if (globalKey.currentState!
                                                 .validate()) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Trying to Login"),
-                                              ));
-                                              Navigator.of(context).pushNamed(
-                                                  Routes.otp_verified);
+                                              HandleSendOTP(
+                                                  _userController.text);
                                             }
                                           },
                                           child: Container(
@@ -409,5 +288,27 @@ class _ForgetScreenState extends State<ForgetScreen> {
       ),
     );
   }
-  //Handle Sign Up
+
+  //Handle ForgetPassword
+  void HandleSendOTP(String email) async {
+    var statusOtp = authController.getOTP(email: email);
+    switch (await statusOtp) {
+      case 1:
+        Navigator.of(context).pushNamed(Routes.otp_verified, arguments: email);
+        break;
+      case 0:
+        break;
+      case -1:
+        FocusScope.of(context).requestFocus(_userFocusNode);
+        break;
+      case -2:
+        Navigator.of(context).pushNamed(Routes.register_member);
+        break;
+      case -3:
+        FocusScope.of(context).requestFocus(_userFocusNode);
+        break;
+      default:
+        break;
+    }
+  }
 }

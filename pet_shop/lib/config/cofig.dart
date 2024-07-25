@@ -17,10 +17,13 @@ class Config {
   static const String apiSignUp = "/api/auth/register";
 
   //!Login--hết giờ
-  static const String loginAPI = "/api/auth/login";
+  static const String loginAPI = "/api/auth/loginM";
   static const String bannerAPI = "/api/news/search";
 
   //! Forget password
+  static const String getOtpAPI = "/api/auth/forget_password";
+  static const String verifyOtpAPI = "/api/auth/verify_otp";
+  static const String updatePassOtpAPI = "/api/auth/update_forget_password";
 
   // ! Category
   static const String categoryAPI = "/api/category/searchMobile";
@@ -30,6 +33,7 @@ class Config {
 
   // ! Profile
   static const String getProfile = "/api/user/profile";
+  static const String updatePasswordAPI = "/api/auth/update_password";
 
   // ! Product
   static const String productAPI = "/api/product/search";

@@ -11,100 +11,21 @@ import 'package:http/http.dart' as http;
 import 'package:pet_shop/route/route_generator.dart';
 
 class RecoveryScreen extends StatefulWidget {
-  const RecoveryScreen({Key? key}) : super(key: key);
+  final String email;
+  const RecoveryScreen({Key? key, required this.email}) : super(key: key);
 
   @override
   _RecoveryScreenState createState() => _RecoveryScreenState();
 }
 
 class _RecoveryScreenState extends State<RecoveryScreen> {
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       backgroundColor: Colors.transparent,
-  //       elevation: 0,
-  //       leading: BackButton(),
-  //       foregroundColor: Colors.black,
-  //     ),
-  //     body: SingleChildScrollView(
-  //       child: Padding(
-  //         padding: EdgeInsets.symmetric(horizontal: 10),
-  //         child: Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             SizedBox(
-  //               height: 20,
-  //             ),
-  //             Text(
-  //               "Forgot Password",
-  //               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-  //             ),
-  //             SizedBox(
-  //               height: 60,
-  //             ),
-  //             TextFormField(
-  //               decoration: InputDecoration(
-  //                 border: OutlineInputBorder(),
-  //                 labelText: "Reset Code",
-  //                 prefixIcon: Icon(Icons.numbers),
-  //               ),
-  //             ),
-  //             SizedBox(
-  //               height: 15,
-  //             ),
-  //             TextFormField(
-  //               decoration: InputDecoration(
-  //                   border: OutlineInputBorder(),
-  //                   labelText: "New Password",
-  //                   prefixIcon: Icon(Icons.lock),
-  //                   suffixIcon: Icon(Icons.remove_red_eye)),
-  //             ),
-  //             SizedBox(
-  //               height: 15,
-  //             ),
-  //             TextFormField(
-  //               decoration: InputDecoration(
-  //                   border: OutlineInputBorder(),
-  //                   labelText: "Confirm password",
-  //                   prefixIcon: Icon(Icons.lock),
-  //                   suffixIcon: Icon(Icons.remove_red_eye)),
-  //             ),
-  //             SizedBox(
-  //               height: 50,
-  //             ),
-  //             ElevatedButton(
-  //               onPressed: () {
-  //                 // Navigator.push(
-  //                 //     context,
-  //                 //     MaterialPageRoute(
-  //                 //       builder: (context) => HomeScreen(),
-  //                 //     ));
-  //               },
-  //               child: Text(
-  //                 "Reset Password",
-  //                 style: TextStyle(color: Colors.white),
-  //               ),
-  //               style: ElevatedButton.styleFrom(
-  //                   minimumSize: Size.fromHeight(55),
-  //                   backgroundColor: Color(0xFFDB3022),
-  //                   shape: RoundedRectangleBorder(
-  //                       borderRadius: BorderRadius.circular(8))),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
   //Form
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
-  TextEditingController _userController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  TextEditingController _confirmPasswordController = TextEditingController();
   var _isObscured;
-  final FocusNode _userFocusNode = FocusNode();
-  final FocusNode _passwordFocusNode = FocusNode();
+  final FocusNode _passwordNode = FocusNode();
+  final FocusNode _confirmPasswordFocusNode = FocusNode();
 
   @override
   void initState() {
@@ -114,10 +35,10 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
 
   @override
   void dispose() {
-    _userController.dispose();
     _passwordController.dispose();
-    _userFocusNode.dispose();
-    _passwordFocusNode.dispose();
+    _confirmPasswordController.dispose();
+    _passwordNode.dispose();
+    _confirmPasswordFocusNode.dispose();
     super.dispose();
   }
 
@@ -157,16 +78,6 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                 color: Colors.amber,
                 child: Stack(
                   children: [
-                    // ! [Image Decoration]
-                    // Align(
-                    //   alignment: Alignment.topRight,
-                    //   child: Image(
-                    //     image: AssetImage(
-                    //         "assets/images/_project/Account/login-dog-2.png"),
-                    //     width: 350,
-                    //   ),
-                    // ),
-
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Image(
@@ -259,13 +170,13 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       ),
                                       TextFormField(
                                         controller: _passwordController,
-                                        focusNode: _passwordFocusNode,
+                                        focusNode: _passwordNode,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Enter Password',
+                                          hintText: 'Nhập Password',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -304,9 +215,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
+                                              vertical: 20.0, horizontal: 10.0),
                                         ),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
@@ -322,7 +231,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Password",
+                                          "Confirm Password",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
                                               color: textColor1,
@@ -333,14 +242,14 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                         height: 6.0,
                                       ),
                                       TextFormField(
-                                        controller: _passwordController,
-                                        focusNode: _passwordFocusNode,
+                                        controller: _confirmPasswordController,
+                                        focusNode: _confirmPasswordFocusNode,
                                         decoration: InputDecoration(
                                           border: OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.circular(5.0),
                                           ),
-                                          hintText: 'Confirm Password',
+                                          hintText: 'Xác nhận password',
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -403,11 +312,21 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           onTap: () {
                                             if (globalKey.currentState!
                                                 .validate()) {
-                                              ScaffoldMessenger.of(context)
-                                                  .showSnackBar(const SnackBar(
-                                                content:
-                                                    Text("Trying to Login"),
-                                              ));
+                                              if (_confirmPasswordController
+                                                      .text !=
+                                                  _passwordController.text) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    content: Text(
+                                                        "Mật khẩu xác thực không đúng!"),
+                                                  ),
+                                                );
+                                              } else {
+                                                HandleUpdateForgetPass(
+                                                    widget.email,
+                                                    _passwordController.text);
+                                              }
                                             }
                                           },
                                           child: Container(
@@ -419,7 +338,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                             ),
                                             child: Center(
                                               child: Text(
-                                                "Sign In",
+                                                "Cập nhật",
                                                 style: GoogleFonts.raleway()
                                                     .copyWith(
                                                   color: Colors.white,
@@ -452,8 +371,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      Routes.sign_in);
+                                                  .pushNamed(Routes.sign_in);
                                             },
                                             style: TextButton.styleFrom(
                                               padding: EdgeInsets.zero,
@@ -492,4 +410,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
       ),
     );
   }
+
+  //Handle change Password
+  void HandleUpdateForgetPass(String email, String password) {}
 }

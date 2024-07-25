@@ -190,14 +190,14 @@
 //   _CartScreenState createState() => _CartScreenState();
 // }
 
-// class Product {
+// class Productt {
 //   final String image;
 //   final String title;
 //   final String price;
 //   int quantity;
 //   bool selected;
 
-//   Product({
+//   Productt({
 //     required this.image,
 //     required this.title,
 //     required this.price,
@@ -207,20 +207,20 @@
 // }
 
 // class _CartScreenState extends State<CartScreen> {
-//   List<Product> products = [
-//     Product(
+//   List<Productt> products = [
+//     Productt(
 //         image: "assets/images/_project/Products/food_1.jpg",
 //         title: "Warm Zipper",
 //         price: "\$300"),
-//     Product(
+//     Productt(
 //         image: "assets/images/_project/Products/food_2.jpg",
 //         title: "Knitter Woo",
 //         price: "\$300"),
-//     Product(
+//     Productt(
 //         image: "assets/images/_project/Products/food_3.jpg",
 //         title: "Zipper Win",
 //         price: "\$300"),
-//     Product(
+//     Productt(
 //         image: "assets/images/_project/Products/food_4.jpg",
 //         title: "Child Win",
 //         price: "\$300"),
@@ -764,9 +764,9 @@ class _CartScreenState extends State<CartScreen> {
         centerTitle: true,
       ),
       body: Obx(() {
-        if (cartController.isCartLoading.value) {
-          return Center(child: CircularProgressIndicator());
-        }
+        // if (cartController.isCartLoading.value) {
+        //   return Center(child: CircularProgressIndicator());
+        // }
         items = cartController.itemCartList;
 
         return Column(
@@ -868,8 +868,9 @@ class _CartScreenState extends State<CartScreen> {
                                 ),
                               ),
                             ),
-                            Column(
+                            Row(
                               children: [
+                                //todo [Minus Button]
                                 IconButton(
                                   icon: Icon(CupertinoIcons.minus,
                                       color: Colors.green),
@@ -883,12 +884,15 @@ class _CartScreenState extends State<CartScreen> {
                                     });
                                   },
                                 ),
+
+                                //todo [Number Quantity]
                                 Text(
                                   "${items[index].quantity}",
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
                                 ),
+                                //todo [Plus Button]
                                 IconButton(
                                   icon: Icon(CupertinoIcons.plus,
                                       color: Color(0xFFDB3022)),
@@ -904,7 +908,7 @@ class _CartScreenState extends State<CartScreen> {
                                             .showSnackBar(
                                           SnackBar(
                                             content: Text(
-                                                'Exceeded available quantity'),
+                                                '${items[index].quantity} là sản phẩm tối đa còn lại'),
                                             duration: Duration(seconds: 2),
                                           ),
                                         );

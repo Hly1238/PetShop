@@ -41,36 +41,21 @@ class _SignupScreenState extends State<SignupScreen> {
 
   @override
   void dispose() {
+    // Dispose controllers
     _userController.dispose();
     _passwordController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    passwordConfirmController.dispose();
+    nameController.dispose();
+    phoneNumberController.dispose();
+
+    // Dispose focus nodes
     _userFocusNode.dispose();
     _passwordFocusNode.dispose();
-    _userController.dispose();
-    _passwordController.dispose();
+
     super.dispose();
   }
-
-  // void registerUser() async {
-  //   if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
-  //     var reqBody = {
-  //       "FullName": "091232434",
-  //       "Email": "admin5@gmail.com",
-  //       "PhoneNumber": "091232434",
-  //       "Password": "091232434",
-  //       "Otp": "JWUIj2"
-  //     };
-
-  //     var response = await http.post(Uri.parse(registration),
-  //         headers: {"Content-Type": "application/json"},
-  //         body: jsonEncode(reqBody));
-  //     var jsonResponse = jsonDecode(response.body);
-  //     print(jsonResponse);
-  //   } else {
-  //     setState(() {
-  //       _isNotValidate = true;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

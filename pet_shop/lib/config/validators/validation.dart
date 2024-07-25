@@ -8,6 +8,7 @@ class TValidation {
   }
 
   static String? validateEmail(String? value) {
+    value = value?.trim();
     if (value == null || value.isEmpty) {
       return "Email không được để trống";
     }
@@ -22,6 +23,7 @@ class TValidation {
   }
 
   static String? validatePassword(String? value) {
+    value = value?.trim();
     if (value == null || value.isEmpty) {
       return 'Mật khẩu không được để trống';
     }
@@ -41,10 +43,17 @@ class TValidation {
     if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
       return "Mật khẩu phải chứa ít nhất một ký tự đặc biệt";
     }
+
+    // Kiểm tra nếu có khoảng trắng
+    if (value.contains(RegExp(r'\s'))) {
+      return "Mật khẩu không được chứa dấu cách";
+    }
     return null;
   }
 
   static String? validatePhoneNumber(String? value) {
+    value = value?.trim();
+
     if (value == null || value.isEmpty) {
       return 'Số điện thoại không được bỏ trống';
     }
