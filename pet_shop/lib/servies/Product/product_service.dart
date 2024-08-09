@@ -16,6 +16,37 @@ class ProductService {
     return response;
   }
 
+  //todo [Get New Product]
+  Future<dynamic> getNewProduct() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.http(Config.apiURL, Config.getNewProduct);
+
+    var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
+  Future<dynamic> getPopularProduct() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.http(Config.apiURL, Config.getPopularProduct);
+
+    var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
+  Future<dynamic> getHighRecommendProduct() async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.http(Config.apiURL, Config.getHighRecommendProduct);
+
+    var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
   // todo [Search]
   Future<dynamic> searchByName(
       String regrex, String? page, String? limit) async {
@@ -59,6 +90,34 @@ class ProductService {
     var url = Uri.http(
         Config.apiURL, Config.productGetReviews + '$productId/reviews');
     var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
+  //todo [Get recommend order]
+  Future<dynamic> recommendProduct(String productId) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.http(Config.apiURL, Config.recommendedProduct + '$productId');
+    var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
+  // todo [Filter Product]
+  Future<dynamic> filterProduct(Map<String, Object?> dataFilter, String? page,
+      String? limit, String? idCate) async {
+    var url = Uri.http(Config.apiURL, Config.filterProduct);
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var body = {
+      if (page != null && page.isNotEmpty) 'page': page,
+      if (limit != null && limit.isNotEmpty) 'limit': limit,
+      'dataFilter': dataFilter,
+      if (idCate != null && idCate.isNotEmpty) 'idCate': idCate
+    };
+    var response =
+        await client.post(url, headers: requestHeaders, body: jsonEncode(body));
     return response;
   }
 }

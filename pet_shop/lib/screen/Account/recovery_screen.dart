@@ -83,14 +83,14 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                 color: Colors.amber,
                 child: Stack(
                   children: [
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Image(
-                        image: AssetImage(
-                            "assets/images/_project/Account/login-dog-1.png"),
-                        width: 250,
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Image(
+                    //     image: AssetImage(
+                    //         "assets/images/_project/Account/login-dog-1.png"),
+                    //     width: 250,
+                    //   ),
+                    // ),
 
                     //! [Input Form]
                     SingleChildScrollView(
@@ -120,7 +120,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: "Change ",
+                                          text: "Đổi ",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
                                               color: textColor1,
@@ -143,7 +143,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Hey, Enter your new password\nfor your account.',
+                                    'Hãy nhập mật khẩu mới, để khôi phục tài khoản của bạn.',
                                     style: GoogleFonts.raleway().copyWith(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w400,
@@ -151,7 +151,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: height * 0.034,
+                                  height: height * 0.02,
                                 ),
 
                                 // TODO [Input Form/Content/Form]
@@ -165,13 +165,13 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                         child: Text(
                                           "Password",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 6.0,
+                                        height: 4.0,
                                       ),
                                       TextFormField(
                                         controller: _passwordController,
@@ -182,6 +182,11 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Nhập Password',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -220,7 +225,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0, horizontal: 10.0),
+                                              vertical: 15.0, horizontal: 10.0),
                                         ),
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
@@ -236,15 +241,15 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Confirm Password",
+                                          "Xác nhận Password",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 6.0,
+                                        height: 4.0,
                                       ),
                                       TextFormField(
                                         controller: _confirmPasswordController,
@@ -255,6 +260,11 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Xác nhận password',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -308,7 +318,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
 
                                       // TODO [Input Form/Content/Form/Button]
                                       SizedBox(
-                                        height: height * 0.05,
+                                        height: height * 0.03,
                                       ),
                                       MouseRegion(
                                         cursor: SystemMouseCursors
@@ -365,7 +375,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Haven't got any account? ",
+                                            "Đã có tài khoản? ",
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
@@ -376,7 +386,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           TextButton(
                                             onPressed: () {
                                               Navigator.of(context)
-                                                  .pushNamed(Routes.sign_in);
+                                                  .pushReplacementNamed(
+                                                      Routes.sign_in);
                                             },
                                             style: TextButton.styleFrom(
                                               padding: EdgeInsets.zero,
@@ -386,7 +397,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                                       .shrinkWrap,
                                             ),
                                             child: Text(
-                                              "Register Now",
+                                              "Đăng Nhập",
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,

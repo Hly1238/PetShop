@@ -30,6 +30,7 @@ class CategoryCard extends StatelessWidget {
     if (await isSuccess) {
       Navigator.of(context).pushNamed(Routes.product_category,
           arguments: SelectionTitleArguments(
+              idCate: '',
               name: category.name,
               productList: ProductController.instance.productList));
     }

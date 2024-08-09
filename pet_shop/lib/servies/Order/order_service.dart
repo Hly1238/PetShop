@@ -21,15 +21,40 @@ class OrderService {
   }
 
   Future<dynamic> get() async {
-    await init();
     var url = Uri.http(Config.apiURL, Config.getUserOrder);
+    await init();
 
     var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
     return response;
   }
 
-  Future<dynamic> order(List<ProductOrder> selectedItems, double total,
-      String address, String billing) async {
+  // todo [Get List Order Status]
+  Future<dynamic> getOrderByStatus(String status) async {
+    var url =
+        Uri.http(Config.apiURL, Config.getOrderStauts, {'status': status});
+    await init();
+    var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
+    return response;
+  }
+
+  // todo [Update is confirm]
+  Future<dynamic> updateIsConfirm(String id) async {
+    var url = Uri.http(Config.apiURL, Config.updateIsConfirm, {'id': id});
+    await init();
+    var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
+    return response;
+  }
+
+  // todo [Get Unreviewd Item]
+  Future<dynamic> getUnreviewedItem() async {
+    var url = Uri.http(Config.apiURL, Config.getUnreviewdItem);
+    await init();
+    var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
+    return response;
+  }
+
+  Future<dynamic> order(List<ProductOrder> selectedItems, int total,
+      String address, String billing, String status, String description) async {
     await init();
 
     var url = Uri.http(Config.apiURL, Config.createOrderAPI);
@@ -46,8 +71,8 @@ class OrderService {
       "orderTotal": total,
       "address": address,
       "billing": billing,
-      "status": "pending",
-      "description": ""
+      "status": status ?? "pending",
+      "description": description ?? ""
     };
 
     var response = await client.post(Uri.parse('$url'),
@@ -69,4 +94,22 @@ class OrderService {
   }
 
   Future<dynamic> reOrder() async {}
+
+  //todo [Post Reviews]
+  Future<dynamic> commentProduct(
+      String comment, double rating, String id_order, String idProduct) async {
+    await init();
+    var url = Uri.http(
+        Config.apiURL, "${Config.productPostReviews}/$idProduct/reviews");
+
+    var body = {
+      'comment': comment,
+      "rating": rating,
+      "id_order": id_order,
+    };
+
+    var response = await client.post(Uri.parse('$url'),
+        headers: requestHeaders, body: jsonEncode(body));
+    return response;
+  }
 }

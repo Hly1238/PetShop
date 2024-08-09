@@ -1,13 +1,20 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pet_shop/models/Home/Banners/ad_banner.dart';
+import 'package:pet_shop/route/route_generator.dart';
 import 'package:shimmer/shimmer.dart';
 
 class BannerCart extends StatelessWidget {
   final String id;
   final String imageUrl;
+  final AdBanner banner;
 
-  const BannerCart({Key? key, required this.id, required this.imageUrl})
+  const BannerCart(
+      {Key? key,
+      required this.id,
+      required this.imageUrl,
+      required this.banner})
       : super(key: key);
 
   void _showToast(BuildContext context, String id) {
@@ -23,7 +30,10 @@ class BannerCart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showToast(context, id),
+      onTap: () {
+        Navigator.of(context)
+            .pushNamed(Routes.bannerDetails, arguments: banner);
+      },
       child: Container(
         margin: const EdgeInsets.all(10),
         child: ClipRRect(

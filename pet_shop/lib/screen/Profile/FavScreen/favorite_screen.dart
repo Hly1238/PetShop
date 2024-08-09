@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/components/Header/header_appbar.dart';
+import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/screen/Product/components/product_loading_grid.dart';
 import 'package:pet_shop/screen/Product/components/product_showing_grid.dart';
@@ -13,16 +14,18 @@ class FavoriteScreen extends StatefulWidget {
 }
 
 class _FavoriteScreenState extends State<FavoriteScreen> {
+  ProductController productController = Get.find<ProductController>();
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    ProductController.instance.getAllFavoriteProduct();
+    productController.getAllFavoriteProduct();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: Header_Appbar(
         context: context,
         isShowingCart: true,
@@ -32,9 +35,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         children: [
           Expanded(
             child: Obx(() {
-              if (ProductController.instance.productList.isNotEmpty) {
+              if (productController.favoriteList.isNotEmpty) {
                 return ProductShowingGrid(
-                    productList: ProductController.instance.productList);
+                    productList: productController.favoriteList);
               } else {
                 return ProductLoadingGrid();
               }

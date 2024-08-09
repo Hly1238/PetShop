@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
 import 'package:pet_shop/models/Pagination/pagination.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/favorite_product.dart';
@@ -18,8 +20,9 @@ class ProductController extends GetxController {
   RxList<Product> favoriteList = <Product>[].obs;
   RxBool isFav = false.obs;
 
-  List<Product> productList = <Product>[].obs;
-  List<Product> productListSearch = <Product>[].obs;
+  RxList<Product> productList = <Product>[].obs;
+  RxList<Product> productListSearch = <Product>[].obs;
+  RxList<Product> productRecommended = <Product>[].obs;
 
   //todo [Review List]
   List<Review> reviewList = <Review>[].obs;
@@ -77,14 +80,14 @@ class ProductController extends GetxController {
 
       var results = await FavoriteProductService().getAll();
       if (results != null && results.statusCode == 200) {
-        productList.assignAll(productFavListFromJson(results.body));
+        favoriteList.assignAll(productFavListFromJson(results.body));
       }
     } catch (e) {
       print("Exception while fetching favorite products: $e");
     } finally {
       isFavoriteLoading(false);
 
-      print("Final Favorite length: ${productList.length}");
+      print("Final Favorite length: ${favoriteList.length}");
     }
   }
 
@@ -124,6 +127,7 @@ class ProductController extends GetxController {
       toggleFavorite();
 
       var results = await FavoriteProductService().updateFav(id);
+
       if (results != null && results.statusCode == 200) {
         data = jsonDecode(results.body);
         result = data['data'] as bool;
@@ -131,8 +135,9 @@ class ProductController extends GetxController {
       if (result) {}
     } catch (e) {
       print("Exception while fetching favorite products: $e");
-      // Revert the change if an exception occurs
     } finally {
+      getAllFavoriteProduct();
+
       isFavoriteLoading(false);
       print("is Fav $result");
     }
@@ -157,6 +162,24 @@ class ProductController extends GetxController {
       print("Final Products list In Cate length: ${productList.length}");
       return true;
     }
+  }
+
+  Future<List<Product>> getMoreProductByCategory(String id,
+      {String? page, String? limit}) async {
+    List<Product> products = [];
+    try {
+      isProductLoading(true);
+      var result =
+          await CategoryService().getProductInCategory(id, page, limit);
+      if (result != null && result.body != null) {
+        products = productListInCate(result.body);
+      }
+    } catch (e) {
+      print("Exception while fetching category with products: $e");
+    } finally {
+      isProductLoading(false);
+    }
+    return products;
   }
 
   //todo [Product Search By Name]
@@ -217,10 +240,28 @@ class ProductController extends GetxController {
       return false;
     } finally {
       isProductLoading(false);
-      for (var element in reviewList) {
-        print(element);
-      }
+
       print("Final Products Searreviewch length: ${reviewList.length}");
+      return true;
+    }
+  }
+
+  //todo [Product Recommend]
+  Future<bool> getRecommendProduct(String id) async {
+    try {
+      isProductLoading(true);
+      var result = await ProductService().recommendProduct(id);
+      if (result != null) {
+        productRecommended
+            .assignAll(productListRecommendedFromJson(result.body));
+      }
+    } catch (e) {
+      print("Exception while fetching category with products: $e");
+      return false;
+    } finally {
+      isProductLoading(false);
+      print(
+          "Final Products Recommend list In Cate length: ${productList.length}");
       return true;
     }
   }

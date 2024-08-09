@@ -1,407 +1,12 @@
-// import 'package:flutter/material.dart';
-
-// class ProfileScreen extends StatefulWidget {
-//   const ProfileScreen({Key? key}) : super(key: key);
-
-//   @override
-//   _ProfileScreenState createState() => _ProfileScreenState();
-// }
-
-// class _ProfileScreenState extends State<ProfileScreen> {
-//   // @override
-//   // Widget build(BuildContext context) {
-//   //   return Scaffold(
-//   //       body: Center(
-//   //     child: Text('Profile Screen'),
-//   //   ));
-//   // }
-//   String? userId;
-//   @override
-//   void initState() {
-//     super.initState();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: SingleChildScrollView(
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SizedBox(
-//               height: 355,
-//               child: Stack(
-//                 children: [
-//                   Align(
-//                     alignment: Alignment.topCenter,
-//                     child: Container(
-//                       height: 300,
-//                       width: MediaQuery.of(context).size.width,
-//                       color: Colors.blue,
-//                       alignment: Alignment.center,
-//                       child: FadeInImage(
-//                         height: double.infinity,
-//                         width: double.infinity,
-//                         fit: BoxFit.cover,
-//                         placeholder: const AssetImage(
-//                             'assets/images/_project/Logo/logo.png'),
-//                         image: const AssetImage(
-//                             'assets/images/_project/Logo/logo.png'),
-//                         imageErrorBuilder: (context, error, stackTrace) =>
-//                             Image.asset(
-//                           'assets/images/_project/Logo/logo.png',
-//                           fit: BoxFit.cover,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   Align(
-//                     alignment: Alignment.center,
-//                     child: Column(
-//                       mainAxisSize: MainAxisSize.min,
-//                       children: [
-//                         GestureDetector(
-//                           onTap: () async {},
-//                           child: Container(
-//                             decoration: BoxDecoration(
-//                               shape: BoxShape.circle,
-//                               border: Border.all(color: Colors.white, width: 1),
-//                             ),
-//                             child: ClipRRect(
-//                               borderRadius: BorderRadius.circular(300),
-//                               child: SizedBox(
-//                                 height: 100,
-//                                 width: 100,
-//                                 child: FadeInImage(
-//                                   fit: BoxFit.cover,
-//                                   placeholder: const AssetImage(
-//                                       'assets/images/_project/Logo/logo.png'),
-//                                   image: const AssetImage(
-//                                       'assets/images/_project/Logo/logo.png'),
-//                                   imageErrorBuilder:
-//                                       (context, error, stackTrace) =>
-//                                           Image.asset(
-//                                     'assets/images/_project/Logo/logo.png',
-//                                     fit: BoxFit.cover,
-//                                   ),
-//                                 ),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                         Text(
-//                           "Username",
-//                           style: const TextStyle(
-//                               color: Color(0xff04236c),
-//                               fontSize: 20,
-//                               fontWeight: FontWeight.w600),
-//                         ),
-//                       ],
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//             Padding(
-//               padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//               child: Column(
-//                 crossAxisAlignment: CrossAxisAlignment.start,
-//                 children: [
-//                   const Text(
-//                     'User information',
-//                     style: TextStyle(
-//                         fontWeight: FontWeight.w500,
-//                         color: Color(0xff1b2794),
-//                         fontSize: 20),
-//                   ),
-//                   Container(
-//                     margin: const EdgeInsets.only(top: 8),
-//                     padding: const EdgeInsets.all(5),
-//                     decoration: BoxDecoration(
-//                         color: const Color(0xffd0d4ec),
-//                         borderRadius: BorderRadius.circular(10),
-//                         border: Border.all(
-//                           color: const Color(0xff647ebb),
-//                         ),
-//                         boxShadow: const [
-//                           BoxShadow(
-//                               color: Color(0xffc8d7ef),
-//                               blurRadius: 20.0,
-//                               offset: Offset(0, 10))
-//                         ]),
-//                     child: Column(
-//                       children: <Widget>[
-//                         Container(
-//                           padding: const EdgeInsets.all(8.0),
-//                           decoration: const BoxDecoration(
-//                               border: Border(
-//                                   bottom:
-//                                       BorderSide(color: Color(0xff647ebb)))),
-//                           child: GestureDetector(
-//                             onTap: () async {
-//                               TextEditingController textController =
-//                                   TextEditingController();
-//                               await showDialog(
-//                                 context: context,
-//                                 builder: (context) => AlertDialog(
-//                                   title: const Text('Change Username'),
-//                                   content: TextField(
-//                                     controller: textController,
-//                                     autofocus: true,
-//                                     decoration: const InputDecoration(
-//                                         hintText: "Enter your new name"),
-//                                   ),
-//                                   actions: <Widget>[
-//                                     TextButton(
-//                                       style: TextButton.styleFrom(
-//                                         textStyle: Theme.of(context)
-//                                             .textTheme
-//                                             .labelLarge,
-//                                       ),
-//                                       child: const Text('Cancel'),
-//                                       onPressed: () {
-//                                         Navigator.of(context).pop();
-//                                       },
-//                                     ),
-//                                     TextButton(
-//                                       style: TextButton.styleFrom(
-//                                         textStyle: Theme.of(context)
-//                                             .textTheme
-//                                             .labelLarge,
-//                                       ),
-//                                       child: const Text('Confirm'),
-//                                       onPressed: () async {
-//                                         if (textController.text.isNotEmpty) {}
-//                                       },
-//                                     ),
-//                                   ],
-//                                 ),
-//                               );
-//                             },
-//                             child: ListTile(
-//                               title: const Text(
-//                                 'Username',
-//                                 style: TextStyle(
-//                                     fontWeight: FontWeight.bold,
-//                                     color: Color(0xff1b2794)),
-//                               ),
-//                               subtitle: Text(
-//                                 "Username",
-//                                 style:
-//                                     const TextStyle(color: Color(0xff2c38a4)),
-//                               ),
-//                               trailing: const Icon(Icons.navigate_next),
-//                             ),
-//                           ),
-//                         ),
-//                         Container(
-//                           padding: const EdgeInsets.all(8.0),
-//                           decoration: const BoxDecoration(
-//                               border: Border(
-//                                   bottom:
-//                                       BorderSide(color: Color(0xff647ebb)))),
-//                           child: ListTile(
-//                             title: const Text(
-//                               'Email',
-//                               style: TextStyle(
-//                                   fontWeight: FontWeight.bold,
-//                                   color: Color(0xff1b2794)),
-//                             ),
-//                             subtitle: Text(
-//                               "email@gmail.com",
-//                               style: const TextStyle(color: Color(0xff2c38a4)),
-//                             ),
-//                             trailing: const Icon(Icons.navigate_next),
-//                           ),
-//                         ),
-//                         GestureDetector(
-//                           onTap: () {
-//                             showDialog(
-//                               context: context,
-//                               builder: (context) {
-//                                 return const SimpleDialog(
-//                                   title: Text(
-//                                     'Change Password',
-//                                     style:
-//                                         TextStyle(fontWeight: FontWeight.w600),
-//                                   ),
-//                                   children: [UpdatePasswordForm()],
-//                                 );
-//                               },
-//                             );
-//                           },
-//                           child: Container(
-//                             padding: const EdgeInsets.all(8.0),
-//                             child: const ListTile(
-//                               title: Text(
-//                                 'Password',
-//                                 style: TextStyle(
-//                                     fontWeight: FontWeight.bold,
-//                                     color: Color(0xff1b2794)),
-//                               ),
-//                               trailing: Icon(Icons.navigate_next),
-//                             ),
-//                           ),
-//                         )
-//                       ],
-//                     ),
-//                   ),
-//                   const SizedBox(
-//                     height: 32,
-//                   ),
-//                   SizedBox(
-//                     width: double.maxFinite,
-//                     child: ElevatedButton(
-//                         style: ElevatedButton.styleFrom(
-//                           elevation: 2,
-//                           backgroundColor: const Color(0xffe2e9ff),
-//                           shape: RoundedRectangleBorder(
-//                             side: const BorderSide(color: Color(0xff647ebb)),
-//                             borderRadius: BorderRadius.circular(8),
-//                           ),
-//                         ),
-//                         onPressed: () async {},
-//                         child: const Padding(
-//                           padding: EdgeInsets.all(8.0),
-//                           child: Text(
-//                             'Log out',
-//                             style: TextStyle(
-//                                 color: Color(0xff1b2794), fontSize: 24),
-//                           ),
-//                         )),
-//                   ),
-//                   const SizedBox(
-//                     height: 70,
-//                   ),
-//                 ],
-//               ),
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class UpdatePasswordForm extends StatefulWidget {
-//   const UpdatePasswordForm({super.key});
-
-//   @override
-//   State<UpdatePasswordForm> createState() => _UpdatePasswordFormState();
-// }
-
-// class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
-//   final _formKey = GlobalKey<FormState>();
-//   String? newPassword;
-//   String? oldPassword;
-//   String? renewPassword;
-//   String error = '';
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-//       child: Form(
-//         key: _formKey,
-//         child: SizedBox(
-//           width: MediaQuery.of(context).size.width * 0.75,
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               TextFormField(
-//                 obscureText: true,
-//                 decoration: const InputDecoration(
-//                     labelText: 'Password',
-//                     labelStyle: TextStyle(color: Colors.grey)),
-//                 validator: (value) {
-//                   if (value == null || value.isEmpty) {
-//                     return 'Please enter some text';
-//                   }
-
-//                   return null;
-//                 },
-//                 onSaved: (newValue) {
-//                   oldPassword = newValue;
-//                 },
-//               ),
-//               TextFormField(
-//                 obscureText: true,
-//                 decoration: const InputDecoration(
-//                     labelText: 'New Password',
-//                     labelStyle: TextStyle(color: Colors.grey)),
-//                 validator: (value) {
-//                   if (value == null || value.isEmpty) {
-//                     return 'Please enter some text';
-//                   }
-//                   if (newPassword != renewPassword) {
-//                     return 'New password now match with re new password';
-//                   }
-
-//                   return null;
-//                 },
-//                 onSaved: (newValue) {
-//                   newPassword = newValue;
-//                 },
-//               ),
-//               TextFormField(
-//                 obscureText: true,
-//                 decoration: const InputDecoration(
-//                     labelText: 'Confirm Password',
-//                     labelStyle: TextStyle(color: Colors.grey)),
-//                 validator: (value) {
-//                   if (value == null || value.isEmpty) {
-//                     return 'Please enter some text';
-//                   }
-//                   if (newPassword != renewPassword) {
-//                     return 'New password now match with re new password';
-//                   }
-//                   return null;
-//                 },
-//                 onSaved: (newValue) {
-//                   renewPassword = newValue;
-//                 },
-//               ),
-//               const SizedBox(
-//                 height: 16,
-//               ),
-//               Text(
-//                 error,
-//                 style: const TextStyle(color: Colors.red),
-//               ),
-//               Container(
-//                 padding: const EdgeInsets.symmetric(vertical: 16),
-//                 width: double.maxFinite,
-//                 child: ElevatedButton(
-//                   style: ElevatedButton.styleFrom(
-//                       shadowColor: Colors.black,
-//                       elevation: 2,
-//                       backgroundColor: Colors.white,
-//                       shape: RoundedRectangleBorder(
-//                           side: const BorderSide(color: Colors.black),
-//                           borderRadius: BorderRadius.circular(8))),
-//                   onPressed: () async {
-//                     _formKey.currentState!.save();
-//                     if (_formKey.currentState!.validate()) {
-//                       bool isValid = true;
-//                     }
-//                   },
-//                   child: const Text(
-//                     'Submit',
-//                     style:
-//                         TextStyle(color: Colors.black, fontFamily: "Pacifico"),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:pet_shop/config/cofig.dart';
+import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/models/Account/user_model.dart';
 import 'package:pet_shop/route/route_generator.dart';
@@ -415,11 +20,68 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final AuthController authController = Get.find<AuthController>();
-  bool _enNotification = false;
+  bool _enNotification = true;
+  String name = "";
+  String email = "";
+  @override
+  void initState() {
+    super.initState();
+
+    getData();
+  }
+
+  void getData() async {
+    var isLogin = await SecurityStorage().readSecureData("token");
+    if (isLogin) {
+      String fetchedName =
+          await SecurityStorage().getSecureData("username") as String;
+      setState(() {
+        name = fetchedName;
+      });
+      String fetchedMail =
+          await SecurityStorage().getSecureData("email") as String;
+      setState(() {
+        email = fetchedMail;
+      });
+
+      // ! Find Notification
+      bool isSetNotification =
+          await SecurityStorage().readSecureData("noti_id");
+      //is set
+      if (isSetNotification) {
+        String isReadNotification =
+            await SecurityStorage().getSecureData("noti_id");
+        if (isReadNotification == "") {
+          setState(() {
+            _enNotification = false;
+          });
+        } else if (isReadNotification == "-1") {
+          //just init
+          setState(() {
+            _enNotification = true;
+          });
+        } else {
+          setState(() {
+            _enNotification = true;
+          });
+        }
+      }
+      //not set => auto true
+      else {
+        await SecurityStorage().writeSecureData("noti_id", "-1");
+        setState(() {
+          _enNotification = true;
+        });
+      }
+      config(_enNotification, authController);
+    }
+    ;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -484,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         Text(
-                          "userInfo.username",
+                          name,
                           style: const TextStyle(
                               color: Color(0xff04236c),
                               fontSize: 20,
@@ -548,56 +210,70 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               BorderSide(color: Colors.black))),
                                   child: GestureDetector(
                                     onTap: () async {
-                                      TextEditingController textController =
-                                          TextEditingController();
-                                      await showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('Change Username'),
-                                          content: TextField(
-                                            controller: textController,
-                                            autofocus: true,
-                                            decoration: const InputDecoration(
-                                                hintText:
-                                                    "Enter your new name"),
-                                          ),
-                                          actions: <Widget>[
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              child: const Text('Cancel'),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            ),
-                                            TextButton(
-                                              style: TextButton.styleFrom(
-                                                textStyle: Theme.of(context)
-                                                    .textTheme
-                                                    .labelLarge,
-                                              ),
-                                              child: const Text('Confirm'),
-                                              onPressed: () async {
-                                                if (textController
-                                                    .text.isNotEmpty) {}
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      );
+                                      // TextEditingController textController =
+                                      //     TextEditingController();
+                                      // await showDialog(
+                                      //   context: context,
+                                      //   builder: (context) => AlertDialog(
+                                      //     title: const Text('Change Username'),
+                                      //     content: TextField(
+                                      //       controller: textController,
+                                      //       autofocus: true,
+                                      //       decoration: const InputDecoration(
+                                      //           hintText:
+                                      //               "Enter your new name"),
+                                      //     ),
+                                      //     actions: <Widget>[
+                                      //       TextButton(
+                                      //         style: TextButton.styleFrom(
+                                      //           textStyle: Theme.of(context)
+                                      //               .textTheme
+                                      //               .labelLarge,
+                                      //         ),
+                                      //         child: const Text('Cancel'),
+                                      //         onPressed: () {
+                                      //           Navigator.of(context).pop();
+                                      //         },
+                                      //       ),
+                                      //       TextButton(
+                                      //         style: TextButton.styleFrom(
+                                      //           textStyle: Theme.of(context)
+                                      //               .textTheme
+                                      //               .labelLarge,
+                                      //         ),
+                                      //         child: const Text('Confirm'),
+                                      //         onPressed: () async {
+                                      //           if (textController
+                                      //               .text.isNotEmpty) {}
+                                      //         },
+                                      //       ),
+                                      //     ],
+                                      //   ),
+                                      // );
                                     },
+                                    // child: ListTile(
+                                    //   title: const Text(
+                                    //     'Username',
+                                    //     style: TextStyle(
+                                    //         fontWeight: FontWeight.bold,
+                                    //         color: Color(0xff1b2794)),
+                                    //   ),
+                                    //   subtitle: Text(
+                                    //     name,
+                                    //     style: const TextStyle(
+                                    //         color: Color(0xff2c38a4)),
+                                    //   ),
+                                    //   trailing: const Icon(Icons.navigate_next),
+                                    // ),
                                     child: ListTile(
                                       title: const Text(
-                                        'Username',
+                                        'Thông tin cá nhân',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xff1b2794)),
                                       ),
                                       subtitle: Text(
-                                        "userInfo.username",
+                                        "Chỉnh sửa",
                                         style: const TextStyle(
                                             color: Color(0xff2c38a4)),
                                       ),
@@ -605,27 +281,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          bottom:
-                                              BorderSide(color: Colors.black))),
-                                  child: ListTile(
-                                    title: const Text(
-                                      'Email',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(0xff1b2794)),
-                                    ),
-                                    subtitle: Text(
-                                      "userInfo.email",
-                                      style: const TextStyle(
-                                          color: Color(0xff2c38a4)),
-                                    ),
-                                    trailing: const Icon(Icons.navigate_next),
-                                  ),
-                                ),
+                                // Container(
+                                //   padding: const EdgeInsets.all(8.0),
+                                //   decoration: const BoxDecoration(
+                                //       border: Border(
+                                //           bottom:
+                                //               BorderSide(color: Colors.black))),
+                                //   child: ListTile(
+                                //     title: const Text(
+                                //       'Email',
+                                //       style: TextStyle(
+                                //           fontWeight: FontWeight.bold,
+                                //           color: Color(0xff1b2794)),
+                                //     ),
+                                //     subtitle: Text(
+                                //       email,
+                                //       style: const TextStyle(
+                                //           color: Color(0xff2c38a4)),
+                                //     ),
+                                //     trailing: const Icon(Icons.navigate_next),
+                                //   ),
+                                // ),
+
                                 GestureDetector(
                                   onTap: () {
                                     showDialog(
@@ -663,6 +340,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ],
                       ),
+
+                      //todo [Notification]
                       const Divider(
                           height: 0,
                           endIndent: 25,
@@ -678,24 +357,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               children: [
                                 Icon(Icons.notifications,
                                     color: Colors.black38),
-                                const SizedBox(
-                                  width: 10,
-                                ),
+                                const SizedBox(width: 10),
                                 Text(
-                                  "Notification",
+                                  "Thông báo",
                                   style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
+                                    fontSize: 15,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ],
                             ),
                             CupertinoSwitch(
                               value: _enNotification,
-                              onChanged: (value) {
+                              onChanged: (value) async {
                                 setState(() {
                                   _enNotification = value;
                                 });
+                                _handleNotification(
+                                    _enNotification, authController);
                               },
                             ),
                           ],
@@ -708,13 +388,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           thickness: 0.1,
                           color: Colors.black),
                       GestureDetector(
-                        onTap: () {
-                          setState(() async {
-                            authController.isLogin.value = false;
-                            // Navigate to login screen or any other screen after logout
+                        onTap: () async {
+                          var isLogOut = authController.logout();
+                          if (await isLogOut) {
                             Navigator.of(context)
                                 .pushReplacementNamed(Routes.homepage);
-                          });
+                          }
                         },
                         child: _buildSelectionSetting(Icons.logout, "Sign out",
                             null, Icons.arrow_forward_ios),
@@ -836,6 +515,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+//!!!!!!!!!!!!!!!!!!!!!!!-------Notification-------!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+void config(bool value, AuthController authController) async {
+  if (value) {
+    //todo create
+    OneSignal.initialize(Config.oneSignalApp);
+
+    //todo get id
+    var onesignalId = await OneSignal.User.getOnesignalId();
+    SecurityStorage().writeSecureData("noti_id", onesignalId!);
+
+    await OneSignal.Notifications.requestPermission(true);
+    await OneSignal.User.pushSubscription.optIn();
+
+    //todo add device
+    await authController.addDevice(id_device: onesignalId);
+
+    // OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+    // Login to OneSignal (if needed)
+    // await OneSignal.login(onesignalId);
+  } else {
+    //todo log out
+    await OneSignal.User.pushSubscription.optOut();
+
+    //todo add device
+    await authController.addDevice(id_device: "");
+    SecurityStorage().writeSecureData("noti_id", "");
+
+    // (might not be necessary if opting out)
+    // await OneSignal.Notifications.requestPermission(false);
+    // Logout from OneSignal
+    // await OneSignal.logout();
+    // Clear all notifications
+    // await OneSignal.Notifications.clearAll();
+  }
+}
+
+//todo [Handle Notification]
+void _handleNotification(
+    bool enNotification, AuthController authController) async {
+  config(enNotification, authController);
+}
+
 class UpdatePasswordForm extends StatefulWidget {
   const UpdatePasswordForm({Key? key}) : super(key: key);
 
@@ -844,11 +565,49 @@ class UpdatePasswordForm extends StatefulWidget {
 }
 
 class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
+  final AuthController authController = Get.find<AuthController>();
+
   final _formKey = GlobalKey<FormState>();
-  String? newPassword;
+  final TextEditingController newPasswordController = TextEditingController();
+  final TextEditingController renewPasswordController = TextEditingController();
   String? oldPassword;
-  String? renewPassword;
   String error = '';
+
+  @override
+  void dispose() {
+    newPasswordController.dispose();
+    renewPasswordController.dispose();
+    super.dispose();
+  }
+
+  static String? validatePassword(String? value) {
+    value = value?.trim();
+    if (value == null || value.isEmpty) {
+      return 'Mật khẩu không được để trống';
+    }
+
+    if (value.length < 6) {
+      return 'Phải có độ dài ít nhất là 6';
+    }
+
+    if (!value.contains(RegExp(r'[A-Z]'))) {
+      return "Phải chứa ký tự in hoa";
+    }
+
+    if (!value.contains(RegExp(r'[0-9]'))) {
+      return "Phải chứa ít nhất một chữ số";
+    }
+
+    if (!value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'))) {
+      return "Phải chứa ký tự đặc biệt";
+    }
+
+    // Kiểm tra nếu có khoảng trắng
+    if (value.contains(RegExp(r'\s'))) {
+      return "không được chứa dấu cách";
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -862,15 +621,13 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                obscureText: true,
                 decoration: const InputDecoration(
                     labelText: 'Password',
                     labelStyle: TextStyle(color: Colors.grey)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Vui lòng nhập';
                   }
-
                   return null;
                 },
                 onSaved: (newValue) {
@@ -878,35 +635,31 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
                 },
               ),
               TextFormField(
-                obscureText: true,
+                controller: newPasswordController,
                 decoration: const InputDecoration(
                     labelText: 'New Password',
                     labelStyle: TextStyle(color: Colors.grey)),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-
-                  return null;
-                },
+                validator: validatePassword,
                 onSaved: (newValue) {
-                  newPassword = newValue;
+                  // No need to save here as we use the controller
                 },
               ),
               TextFormField(
-                obscureText: true,
+                controller: renewPasswordController,
                 decoration: const InputDecoration(
                     labelText: 'Re-enter Password',
                     labelStyle: TextStyle(color: Colors.grey)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
+                    return 'Vui lòng nhập';
                   }
-
+                  if (value.trim() != newPasswordController.text.trim()) {
+                    return 'Xác thực không đúng';
+                  }
                   return null;
                 },
                 onSaved: (newValue) {
-                  renewPassword = newValue;
+                  // No need to save here as we use the controller
                 },
               ),
               const SizedBox(
@@ -919,6 +672,8 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
                       onPressed: () {
                         if (_formKey.currentState?.validate() == true) {
                           _formKey.currentState?.save();
+                          HandleUpdatePassword(
+                              newPasswordController.text, oldPassword!);
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -946,5 +701,11 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
         ),
       ),
     );
+  }
+
+  void HandleUpdatePassword(String newPassword, String oldPassword) {
+    var isSuccess = authController.updatePassword(
+        oldPassword: oldPassword, newPassword: newPassword);
+    // Handle success or error
   }
 }

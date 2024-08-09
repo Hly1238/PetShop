@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:pet_shop/config/constant.dart';
 
 class InfoColumn extends StatelessWidget {
-  final String title;
   final String value;
   final Color color;
 
   const InfoColumn({
     Key? key,
-    required this.title,
     required this.value,
     required this.color,
   }) : super(key: key);
@@ -30,14 +28,10 @@ class InfoColumn extends StatelessWidget {
         ),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.w400,
-              fontSize: 13,
-            ),
-          ),
-          Text(
             value,
+            maxLines: 5,
+            softWrap: true,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.black,

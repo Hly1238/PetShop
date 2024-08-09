@@ -38,22 +38,28 @@ class ProductReviewScreen extends StatelessWidget {
   }
 }
 
-class Review_Product extends StatelessWidget {
+class Review_Product extends StatefulWidget {
   final List<Review> reviewList;
   final int length;
   const Review_Product({
-    super.key,
+    Key? key,
     required this.reviewList,
-    this.length = 5,
-  });
+    this.length = 1,
+  }) : super(key: key);
 
+  @override
+  _ProductReviewScreenState createState() => _ProductReviewScreenState();
+}
+
+class _ProductReviewScreenState extends State<Review_Product> {
   @override
   Widget build(BuildContext context) {
     double averageRating = 0;
-    if (reviewList.isNotEmpty) {
-      double totalRating =
-          reviewList.map((review) => review.rating).reduce((a, b) => a + b);
-      averageRating = totalRating / reviewList.length;
+    if (widget.reviewList.isNotEmpty) {
+      double totalRating = widget.reviewList
+          .map((review) => review.rating)
+          .reduce((a, b) => a + b);
+      averageRating = totalRating / widget.reviewList.length;
     }
 
     // Count ratings
@@ -64,7 +70,7 @@ class Review_Product extends StatelessWidget {
       2: 0,
       1: 0,
     };
-    reviewList.forEach((review) {
+    widget.reviewList.forEach((review) {
       int starRating = review.rating.round();
       if (ratingCounts.containsKey(starRating)) {
         ratingCounts[starRating] = ratingCounts[starRating]! + 1;
@@ -81,10 +87,7 @@ class Review_Product extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              height: 10,
-              width: 10,
-            ),
+            SizedBox(height: 10, width: 10),
             Row(
               children: [
                 Column(
@@ -96,8 +99,10 @@ class Review_Product extends StatelessWidget {
                           TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      averageRating.toStringAsFixed(1),
-                      style: Theme.of(context).textTheme.displayLarge,
+                      widget.reviewList.isEmpty
+                          ? '0.0'
+                          : averageRating.toStringAsFixed(1),
+                      style: TextStyle(fontSize: 20),
                     ),
                     RatingBarIndicator(
                       rating: averageRating,
@@ -109,28 +114,31 @@ class Review_Product extends StatelessWidget {
                       ),
                     ),
                     Container(
+                      padding: EdgeInsets.all(6),
                       margin: EdgeInsets.only(top: 10),
                       alignment: AlignmentDirectional.center,
-                      height: 20,
-                      width: 120,
+                      // height: 20,
+                      // width: 120,
                       decoration: BoxDecoration(
                           color: Colors.black12,
                           borderRadius: BorderRadius.all(Radius.circular(10))),
-                      child: Text('${reviewList.length}\ đánh giá',
-                          style: TextStyle(
-                              fontSize: 13, fontWeight: FontWeight.w600)),
+                      child: Text(
+                        '${widget.reviewList.isEmpty ? '0' : widget.reviewList.length} đánh giá',
+                        style: TextStyle(
+                            fontSize: 13, fontWeight: FontWeight.w600),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(
-                  width: 20,
-                ),
+                SizedBox(width: 20),
                 Expanded(
                   child: Column(
                     children: [
                       for (var i = 5; i >= 1; i--)
                         ProgressIndicator(
-                          value: ratingCounts[i]! / reviewList.length,
+                          value: widget.reviewList.isEmpty
+                              ? 0.0
+                              : ratingCounts[i]! / widget.reviewList.length,
                           text: '$i',
                         ),
                     ],
@@ -138,46 +146,45 @@ class Review_Product extends StatelessWidget {
                 )
               ],
             ),
-
-            SizedBox(
-              height: 32.0,
-            ),
-
-            //todo [Review List]
-            Column(
-              children: [
-                Column(children: [
-                  Column(
-                    children: reviewList
-                        .take(length)
-                        .map((review) => UserReviewCard(item: review))
-                        .toList(),
-                  ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    TextButton(
-                        onPressed: () async {
-                          await showDialog(
-                            context: context,
-                            builder: (_) =>
-                                ReviewListDialog(review_List: reviewList),
-                          );
-                        },
-                        child: Row(
-                          children: [
-                            Text(
-                              "Xem Thêm",
-                              style: TextStyle(color: Colors.blue),
+            SizedBox(height: 32.0),
+            widget.reviewList.isEmpty
+                ? Center(child: Text('Chưa có bình luận'))
+                : Column(
+                    children: [
+                      Column(
+                        children: widget.reviewList
+                            .take(widget.length)
+                            .map((review) => UserReviewCard(item: review))
+                            .toList(),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextButton(
+                            onPressed: () async {
+                              await showDialog(
+                                context: context,
+                                builder: (_) => ReviewListDialog(
+                                    review_List: widget.reviewList),
+                              );
+                            },
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Xem Thêm",
+                                  style: TextStyle(color: Colors.blue),
+                                ),
+                                Icon(
+                                  Icons.arrow_drop_down_outlined,
+                                  color: Colors.blue,
+                                )
+                              ],
                             ),
-                            Icon(
-                              Icons.arrow_drop_down_outlined,
-                              color: Colors.blue,
-                            )
-                          ],
-                        )),
-                  ])
-                ]),
-              ],
-            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
           ],
         ),
       ),

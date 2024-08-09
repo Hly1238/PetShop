@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'package:pet_shop/models/Product/category.dart';
 
-// List<Product> productListFromJson(String val) => List<Product>.from(
-//     json.decode(val)['data'].map((product) => Product.fromJson(product)));
 List<Product> productListFromJson(String val) {
   final data = jsonDecode(val);
   final docs = data['data']['docs'] as List<dynamic>;
@@ -18,6 +16,12 @@ List<Product> productFavListFromJson(String val) {
 List<Product> productListInCate(String val) {
   final data = jsonDecode(val);
   final docs = data['data']['docs'] as List<dynamic>;
+  return List<Product>.from(docs.map((product) => Product.fromJson(product)));
+}
+
+List<Product> productListRecommendedFromJson(String val) {
+  final data = jsonDecode(val);
+  final docs = data['recommendations'] as List<dynamic>;
   return List<Product>.from(docs.map((product) => Product.fromJson(product)));
 }
 
@@ -146,6 +150,9 @@ class Product {
   final String image;
   final List<String> slide;
   final List<String> color;
+  final int sold;
+  final double rating_point;
+  final int number_comment;
 
   final dynamic category;
 
@@ -181,6 +188,10 @@ class Product {
       quantity: data['quantity'] ?? 0,
       slide: parsedSlides,
       color: parsedColors,
+
+      sold: data["sold"],
+      rating_point: data["rating_point"].toDouble(),
+      number_comment: data["number_comment"],
     );
   }
 
@@ -195,6 +206,9 @@ class Product {
     required this.slide,
     required this.color,
     required this.category,
+    required this.sold,
+    required this.rating_point,
+    required this.number_comment,
   });
 
   @override

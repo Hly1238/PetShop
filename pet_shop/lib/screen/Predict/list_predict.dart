@@ -1,9 +1,12 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet_shop/controllers/Predict/predict_controller.dart';
 import 'package:pet_shop/models/ModelPredict/model_product.dart';
+import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/route/route_generator.dart';
-import 'package:pet_shop/screen/Product/components/rounded_container.dart';
+import 'package:pet_shop/screen/Home/components/selection_component/selection_title.dart';
 import 'package:pet_shop/servies/ModelPredict/predict_service.dart';
 
 class ListPredict extends StatefulWidget {
@@ -17,8 +20,8 @@ class ListPredict extends StatefulWidget {
 class _ListPredictState extends State<ListPredict> {
   List<ModelProduct>? predList;
   bool isLoading = true;
+  PredictController predictController = Get.find<PredictController>();
 
-  // Define a map of breed names to image paths
   final Map<String, String> breedImages = {
     "beagle": "assets/images/_project/Predict/beagle.jpg",
     "bull_mastiff": "assets/images/_project/Predict/bull_mastiff.jpg",
@@ -89,36 +92,40 @@ class _ListPredictState extends State<ListPredict> {
   GestureDetector itemCard(String breed) {
     String? imagePath = breedImages[breed];
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).pushNamed(
-          Routes.dog_detail,
-          arguments: DogDetailsArguments(
-            name: breed.replaceAll('_', ' '),
-            imgPath: imagePath ?? "assets/images/_project/Account/default.png",
-          ),
-        );
+      onTap: () async {
+        var isSuccess = await predictController.getProductsBySlug(breed);
+        if (await isSuccess) {
+          Navigator.of(context).pushNamed(Routes.product_category,
+              arguments: SelectionTitleArguments(
+                  idCate: '',
+                  name: 'Sản phẩm dịch vụ của $breed',
+                  productList: predictController.productList));
+        }
       },
       child: Container(
-        width: 310,
+        width: 350,
         padding: EdgeInsets.all(16),
-        margin: EdgeInsets.all(16),
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
           color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 5,
+              offset: Offset(0, 2),
+            ),
+          ],
         ),
         child: Row(
           children: [
-            RoundedContainer(
-              height: 120,
-              padding: EdgeInsets.all(16),
-              backgroundColor: Colors.white,
-              child: Container(
-                width: 100, // Fixed width
-                height: 100, // Fixed height
-                child: Image.asset(
-                  imagePath ?? "assets/images/_project/Account/black_dog.png",
-                  fit: BoxFit.cover, // Ensure the image covers the container
-                ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Image.asset(
+                imagePath ?? "assets/images/_project/Account/black_dog.png",
+                width: 120,
+                height: 120,
+                fit: BoxFit.cover,
               ),
             ),
             SizedBox(width: 16),
@@ -127,16 +134,16 @@ class _ListPredictState extends State<ListPredict> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    breed.replaceAll('_', ' '),
+                    breed
+                        .split('_')
+                        .map(
+                            (word) => word[0].toUpperCase() + word.substring(1))
+                        .join(' '),
                     style: TextStyle(fontSize: 18, color: Colors.black),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
                   SizedBox(height: 8),
-                  Text(
-                    "Breed Information",
-                    style: TextStyle(fontSize: 14, color: Colors.grey),
-                  ),
                 ],
               ),
             ),
@@ -150,6 +157,7 @@ class _ListPredictState extends State<ListPredict> {
 class DogDetailsArguments {
   final String name;
   final String imgPath;
-
-  DogDetailsArguments({required this.name, required this.imgPath});
+  final List<Product> listProducts;
+  DogDetailsArguments(
+      {required this.name, required this.imgPath, required this.listProducts});
 }

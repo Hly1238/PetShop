@@ -69,7 +69,15 @@ dependencies:
   sprintf: ^7.0.0
   crypto: ^3.0.3
   flutter_zalopay_sdk:
+  onesignal_flutter: ^5.2.2
 
+  # Drop down
+  dropdown_button2: ^2.3.9
+  # Make a call
+  url_launcher: ^6.3.0
+  # flutter_phone_direct_caller: ^2.1.1
+  # Share
+  share_plus: ^10.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -91,6 +99,7 @@ flutter:
     - assets/images/_project/Home/
     - assets/images/_project/Icons/
     - assets/images/_project/Icons/Frame/
+    - assets/images/_project/Icons/Filter/
     - assets/images/_project/Logo/
     - assets/images/_project/Logo/social/
     - assets/images/_project/On_Boarding/

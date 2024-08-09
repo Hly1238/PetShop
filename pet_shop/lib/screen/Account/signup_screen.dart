@@ -363,7 +363,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                             MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            "Already have an account? ",
+                                            "Đã có tài khoản? ",
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
@@ -385,7 +385,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       .shrinkWrap,
                                             ),
                                             child: Text(
-                                              "Sign In Now",
+                                              "Đăng nhập",
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,

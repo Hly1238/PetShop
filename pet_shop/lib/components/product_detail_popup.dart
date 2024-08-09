@@ -472,6 +472,8 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Product/cart_controller.dart';
 import 'package:pet_shop/components/container_button_model.dart';
 
@@ -493,7 +495,7 @@ class ProductDetailPopup extends StatefulWidget {
 
 class _ProductDetailPopupState extends State<ProductDetailPopup> {
   late ValueNotifier<int> _quantityNotifier;
-
+  AuthController authorController = Get.find<AuthController>();
   @override
   void initState() {
     super.initState();

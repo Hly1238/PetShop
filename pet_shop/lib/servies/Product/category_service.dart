@@ -58,4 +58,21 @@ class CategoryService {
 
     return response;
   }
+
+  //todo [Search Category By Slug]
+  Future<dynamic> searchProductsBySlug(
+      String slug, String? page, String? limit) async {
+    final queryParameters = {
+      if (page != null && page.isNotEmpty) 'page': page,
+      if (limit != null && limit.isNotEmpty) 'limit': limit,
+    };
+
+    var url = Uri.http(Config.apiURL, "${Config.searchProductsBySlug}$slug");
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
 }

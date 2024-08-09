@@ -31,7 +31,6 @@ class _ForgetScreenState extends State<ForgetScreen> {
   TextEditingController passwordConfirmController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
-  bool _isNotValidate = false;
 
   //Form
   GlobalKey<FormState> globalKey = GlobalKey<FormState>();
@@ -55,6 +54,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false, // Thêm dòng này
       body: SizedBox(
         height: height,
         width: width,
@@ -85,7 +85,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 color: Colors.amber,
                 child: Stack(
                   children: [
-                    // ! [Image Decoration]
+                    //! [Image Decoration]
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: Image(
@@ -130,7 +130,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
-                                          text: "Forget Password!",
+                                          text: "Quên mật khẩu!",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
                                               color: textColor2,
@@ -146,7 +146,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Please enter your email.\nYou will receive a OTP to create or set a new password.',
+                                    'Vui lòng nhập địa chỉ email hợp lệ để nhận mã OTP.',
                                     style: GoogleFonts.raleway().copyWith(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w400,
@@ -154,7 +154,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: height * 0.034,
+                                  height: height * 0.02,
                                 ),
 
                                 // TODO [Input Form/Content/Form]
@@ -168,7 +168,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                         child: Text(
                                           "Email",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
@@ -192,6 +192,11 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Nhập email',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -222,7 +227,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0, horizontal: 10.0),
+                                              vertical: 15.0, horizontal: 10.0),
                                         ),
                                         autofillHints: [AutofillHints.email],
                                         validator: (name) =>
@@ -233,7 +238,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
 
                                       // TODO [Input Form/Content/Form/Button]
                                       SizedBox(
-                                        height: height * 0.05,
+                                        height: height * 0.03,
                                       ),
                                       MouseRegion(
                                         cursor: SystemMouseCursors.click,
@@ -259,7 +264,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                                     .copyWith(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
+                                                  fontSize: 16,
                                                 ),
                                               ),
                                             ),

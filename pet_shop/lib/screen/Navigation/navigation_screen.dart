@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
@@ -29,6 +30,9 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
+  ProductController productController = Get.find<ProductController>();
+
+  //
   int pageIndex = 0;
   //todo [Predict]
   String isImageUploaded = "";
@@ -54,9 +58,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
     } else {
       setState(() {
         pageIndex = index;
-        ProductController.instance.getAllFavoriteProduct();
+        productController.getAllFavoriteProduct();
       });
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -135,7 +144,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   // todo: [Check Permission]
   checkpermission_opencamera() async {
     var cameraStatus = await Permission.camera.status;
-    var microphoneStatus = await Permission.microphone.status;
+    // var microphoneStatus = await Permission.microphone.status;
 
     //cameraStatus.isGranted == has access to application
     //cameraStatus.isDenied == does not have access to application, you can request again for the permission.

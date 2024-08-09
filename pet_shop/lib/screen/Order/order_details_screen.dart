@@ -1,439 +1,43 @@
-// import 'package:flutter/material.dart';
-// import 'package:intl/intl.dart';
-// import 'package:pet_shop/config/constant.dart';
-// import 'package:pet_shop/models/Order/order.dart';
-// import 'package:pet_shop/models/Order/product_order.dart';
-// import 'package:pet_shop/models/Product/product.dart';
-
-// class OrderDetailsScreen extends StatelessWidget {
-//   final Order item;
-//   const OrderDetailsScreen({Key? key, required this.item}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: BackButton(),
-//         title: Text('Thông tin đơn hàng'),
-//       ),
-//       backgroundColor: CustomAppColor.lightBackgroundColor_Home,
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             OrderInfoSection(
-//               item: item,
-//             ),
-//             SizedBox(height: 16),
-//             ShippingInfoSection(
-//               order: item,
-//             ),
-//             SizedBox(height: 16),
-//             // AddressInfoSection(),
-//             // SizedBox(height: 16),
-//             SelectedItemsSection(items: item.products),
-//             SizedBox(height: 16),
-//             TotalAmountSection(total: item.orderTotal),
-//             SizedBox(height: 16),
-//             // PaymentMethodSection(billing: item.billing),
-//             SizedBox(height: 16),
-//             OrderSummarySection(
-//               order: item,
-//             ),
-//             // SizedBox(height: 16),
-//             // ActionButtons(),
-//           ],
-//         ),
-//       ),
-//       // bottomNavigationBar: BottomAppBar(
-//       //   child: Padding(
-//       //     padding: const EdgeInsets.all(16.0),
-//       //     child: ElevatedButton(
-//       //       onPressed: () {
-//       //         // Handle mua lại action
-//       //       },
-//       //       style: ElevatedButton.styleFrom(
-//       //         padding: EdgeInsets.symmetric(vertical: 16.0),
-//       //       ),
-//       //       child: Text('Mua lại'),
-//       //     ),
-//       //   ),
-//       // ),
-//     );
-//   }
-// }
-
-// class OrderInfoSection extends StatelessWidget {
-//   final Order item;
-
-//   const OrderInfoSection({super.key, required this.item});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             'Mã đơn hàng: ${item.id}',
-//             style: TextStyle(fontWeight: FontWeight.bold),
-//           ),
-//           SizedBox(height: 8),
-//           Row(
-//             children: [
-//               Text('Trạng thái: '),
-//               Text(
-//                 '${item.status}',
-//                 style: TextStyle(color: Colors.green),
-//               ),
-//             ],
-//           ),
-//           SizedBox(height: 8),
-//           Row(
-//             children: [
-//               item.status != "final"
-//                   ? Text('CHƯA THANH TOÁN')
-//                   : Text('ĐÃ GIAO'),
-//               Spacer(),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class ShippingInfoSection extends StatelessWidget {
-//   final Order order;
-
-//   const ShippingInfoSection({super.key, required this.order});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             'Thông tin vận chuyển',
-//             style: TextStyle(fontWeight: FontWeight.bold),
-//           ),
-//           SizedBox(height: 8),
-//           Text('${order.address}'),
-//           SizedBox(height: 8),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class AddressInfoSection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             'Địa chỉ giao hàng',
-//             style: TextStyle(fontWeight: FontWeight.bold),
-//           ),
-//           SizedBox(height: 8),
-//           Text('Haley'),
-//           SizedBox(height: 8),
-//           Text('84906536176'),
-//           SizedBox(height: 8),
-//           Text(
-//               '27/37/4 Đ. Thống Nhất (Phường 16, Quận Gò Vấp, Thành phố Hồ Chí Minh)'),
-//           SizedBox(height: 8),
-//           ElevatedButton(
-//             onPressed: () {
-//               // Handle thay đổi action
-//             },
-//             child: Text('Thay đổi'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class SelectedItemsSection extends StatelessWidget {
-//   final List<ProductOrder> items;
-
-//   const SelectedItemsSection({super.key, required this.items});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             'Mặt hàng đã chọn',
-//             style: TextStyle(fontWeight: FontWeight.bold),
-//           ),
-//           SizedBox(height: 8),
-//           Column(
-//             children: [
-//               Column(
-//                 children: items
-//                     .map(
-//                       (item) => ItemRow(
-//                         imageUrl: item.product.image,
-//                         title: item.product.name,
-//                         price: '${item.product.promotion}',
-//                       ),
-//                     )
-//                     .toList(),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class ItemRow extends StatelessWidget {
-//   final String imageUrl;
-//   final String title;
-//   final String price;
-
-//   const ItemRow({
-//     Key? key,
-//     required this.imageUrl,
-//     required this.title,
-//     required this.price,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Image.asset(
-//           // imageUrl,
-//           "assets/images/_project/Products/food_2.jpg",
-//           width: 60,
-//           height: 60,
-//           fit: BoxFit.cover,
-//         ),
-//         SizedBox(width: 8),
-//         Expanded(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(title),
-//               Text(
-//                 price,
-//                 style: TextStyle(color: Colors.red),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
-// class TotalAmountSection extends StatelessWidget {
-//   final double total;
-
-//   const TotalAmountSection({super.key, required this.total});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text('Thành tiền', style: TextStyle(fontWeight: FontWeight.bold)),
-//               Text('$total'),
-//             ],
-//           ),
-//           SizedBox(height: 8),
-//           // Text('Vui lòng thanh toán ₫40.660 khi nhận hàng.'),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class PaymentMethodSection extends StatelessWidget {
-//   final String billing;
-
-//   const PaymentMethodSection({super.key, required this.billing});
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             'Phương thức thanh toán',
-//             style: TextStyle(fontWeight: FontWeight.bold),
-//           ),
-//           SizedBox(height: 8),
-//           Text('$billing'),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class OrderSummarySection extends StatelessWidget {
-//   final Order order;
-
-//   const OrderSummarySection({super.key, required this.order});
-//   @override
-//   Widget build(BuildContext context) {
-//     String formattedDate = DateFormat('dd/MM/yyyy').format(order.date);
-
-//     return Container(
-//       padding: EdgeInsets.all(16.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 4,
-//             offset: Offset(0, 2),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             'Mã đơn hàng: ${order.id}',
-//             style: TextStyle(fontWeight: FontWeight.bold),
-//           ),
-//           SizedBox(height: 8),
-//           Text('Thời gian cật nhật: $formattedDate'),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class ActionButtons extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Row(
-//       children: [
-//         Expanded(
-//           child: OutlinedButton(
-//             onPressed: () {
-//               // Handle liên hệ shop action
-//             },
-//             child: Text('Liên hệ Shop'),
-//           ),
-//         ),
-//         SizedBox(width: 8),
-//         Expanded(
-//           child: OutlinedButton(
-//             onPressed: () {
-//               // Handle xem đánh giá action
-//             },
-//             child: Text('Xem Đánh Giá'),
-//           ),
-//         ),
-//       ],
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
 import 'package:pet_shop/models/Product/product.dart';
+import 'package:pet_shop/components/container_button_model.dart';
 
-class OrderDetailsScreen extends StatelessWidget {
+class OrderDetailsScreen extends StatefulWidget {
   final Order item;
+
   const OrderDetailsScreen({Key? key, required this.item}) : super(key: key);
+
+  @override
+  _OrderDetailsScreenState createState() => _OrderDetailsScreenState();
+}
+
+class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
+  String name = "";
+  String phone = "";
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    String fetchedPhone = await SecurityStorage().getSecureData("phone");
+    String fetchedName = await SecurityStorage().getSecureData("username");
+    setState(() {
+      phone = fetchedPhone;
+      name = fetchedName;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -449,43 +53,64 @@ class OrderDetailsScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             OrderInfoSection(
-              item: item,
+              item: widget.item,
+            ),
+            // SizedBox(height: 16),
+            // ShippingInfoSection(
+            //   order: widget.item,
+            // ),
+            SizedBox(height: 16),
+            AddressInfoSection(
+              phone: phone,
+              address: widget.item.address,
+              username: name,
             ),
             SizedBox(height: 16),
-            // ShippingInfoSection(
-            //   order: item,
-            // ),
+            SelectedItemsSection(items: widget.item.products),
             SizedBox(height: 16),
-            AddressInfoSection(),
+            TotalAmountSection(total: widget.item.orderTotal),
             SizedBox(height: 16),
-            SelectedItemsSection(items: item.products),
+            PaymentMethodSection(billing: widget.item.billing),
             SizedBox(height: 16),
-            TotalAmountSection(total: item.orderTotal),
-            SizedBox(height: 16),
-            // PaymentMethodSection(billing: item.billing),
-            SizedBox(height: 16),
-            // OrderSummarySection(
-            //   order: item,
-            // ),
+            TimeSection(
+              order: widget.item,
+            ),
             // SizedBox(height: 16),
-            // ActionButtons(),
+            // OrderSummarySection(
+            //   order: widget.item,
+            // ),
           ],
         ),
       ),
-      // bottomNavigationBar: BottomAppBar(
-      //   child: Padding(
-      //     padding: const EdgeInsets.all(16.0),
-      //     child: ElevatedButton(
-      //       onPressed: () {
-      //         // Handle mua lại action
-      //       },
-      //       style: ElevatedButton.styleFrom(
-      //         padding: EdgeInsets.symmetric(vertical: 16.0),
-      //       ),
-      //       child: Text('Mua lại'),
-      //     ),
-      //   ),
-      // ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {},
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          margin: EdgeInsets.all(10),
+          height: 60,
+          decoration: BoxDecoration(
+            color: widget.item.status.trim() == "approved"
+                ? Colors.grey
+                : CustomAppColor.primaryColorOrange, // Màu nền khác là màu cam
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Center(
+            child: Text(
+              widget.item.status.trim() == "pending"
+                  ? "Hủy đơn"
+                  : (widget.item.status.trim() == "final" ||
+                          widget.item.status.trim() == "rejected")
+                      ? "Mua lại"
+                      : "Nhận đơn",
+              style: GoogleFonts.raleway().copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -514,27 +139,122 @@ class OrderInfoSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Mã đơn hàng: ${item.id}',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Row(children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  size: 20,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Thông tin đơn hàng',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+              ],
+            ),
+          ]),
+          SizedBox(
+            height: 5,
           ),
-          SizedBox(height: 8),
-          Row(
+          Column(
             children: [
-              Text('Trạng thái: '),
-              Text(
-                '${item.status}',
-                style: TextStyle(color: Colors.green),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  'Mã đơn hàng: ',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      color: Colors.black54),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topLeft,
+                child: Text(
+                  '${item.id}',
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                ),
               ),
             ],
           ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            children: [
+              Text('Trạng thái: ',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54)),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  '${item.status}',
+                  style: TextStyle(
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            ],
+          ),
+          SizedBox(height: 8),
           SizedBox(height: 8),
           Row(
             children: [
-              item.status != "final"
-                  ? Text('CHƯA THANH TOÁN')
-                  : Text('ĐÃ GIAO'),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                decoration: BoxDecoration(
+                  color: Colors.blue.withOpacity(0.1),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text('ĐƠN HÀNG',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    )),
+              ),
               Spacer(),
+              item.status != "approved"
+                  ? Container(
+                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.amber.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Chưa thanh toán'.toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  : Container(
+                      padding: EdgeInsets.symmetric(vertical: 2, horizontal: 5),
+                      decoration: BoxDecoration(
+                        color: Colors.orange.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Đã thanh toán'.toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
             ],
           ),
         ],
@@ -568,7 +288,7 @@ class ShippingInfoSection extends StatelessWidget {
         children: [
           Text(
             'Thông tin vận chuyển',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
           SizedBox(height: 8),
           Text('${order.address}'),
@@ -580,6 +300,16 @@ class ShippingInfoSection extends StatelessWidget {
 }
 
 class AddressInfoSection extends StatelessWidget {
+  final String phone;
+  final String address;
+  final String username;
+
+  const AddressInfoSection(
+      {super.key,
+      required this.phone,
+      required this.address,
+      required this.username});
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -602,24 +332,39 @@ class AddressInfoSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Địa chỉ giao hàng',
-                style: TextStyle(fontWeight: FontWeight.bold),
+              Row(
+                children: [
+                  Icon(
+                    Icons.local_shipping,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 7,
+                  ),
+                  Text(
+                    'Địa chỉ giao hàng',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                ],
               ),
               SizedBox(height: 8),
-              Text('Haley'),
-              SizedBox(height: 8),
-              Text('84906536176'),
-              SizedBox(height: 8),
-              Text(
-                  '27/37/4 Đ. Thống Nhất (Phường 16, Quận Gò Vấp, Thành phố Hồ Chí Minh)'),
-              SizedBox(height: 8),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     // Handle thay đổi action
-              //   },
-              //   child: Text('Thay đổi'),
-              // ),
+              Padding(
+                padding: EdgeInsets.only(left: 27),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      username,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    Text(phone, style: TextStyle(fontWeight: FontWeight.bold)),
+                    SizedBox(height: 5),
+                    Text(address, style: TextStyle(color: Colors.black54)),
+                    SizedBox(height: 8),
+                  ],
+                ),
+              ),
             ],
           ),
         );
@@ -651,25 +396,44 @@ class SelectedItemsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Mặt hàng đã chọn',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8),
-          Column(
+          Row(
             children: [
-              Column(
-                children: items
-                    .map(
-                      (item) => ItemRow(
-                        imageUrl: item.product.image,
-                        title: item.product.name,
-                        price: '${item.product.promotion}',
-                      ),
-                    )
-                    .toList(),
+              Icon(
+                Icons.shopping_cart,
+                size: 20,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Mặt hàng đã chọn',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ],
+          ),
+          SizedBox(height: 5),
+          SizedBox(
+            height: 350,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Divider(
+                    height: 20,
+                  ),
+                  Column(
+                    children: items
+                        .map(
+                          (item) => ItemRow(
+                            imageUrl: item.product.image,
+                            title: item.product.name,
+                            price: item.product.promotion.toInt(),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
+            ),
           ),
         ],
       ),
@@ -680,7 +444,7 @@ class SelectedItemsSection extends StatelessWidget {
 class ItemRow extends StatelessWidget {
   final String imageUrl;
   final String title;
-  final String price;
+  final int price;
 
   const ItemRow({
     Key? key,
@@ -691,35 +455,49 @@ class ItemRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Image.asset(
-          // imageUrl,
-          "assets/images/_project/Products/food_2.jpg",
-          width: 60,
-          height: 60,
-          fit: BoxFit.cover,
-        ),
-        SizedBox(width: 8),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(title),
-              Text(
-                price,
-                style: TextStyle(color: Colors.red),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
+    return Container(
+        margin: EdgeInsets.only(top: 5),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Image.network(
+                  imageUrl,
+                  width: 70,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)),
+                      Text(
+                        "${TransformCustomApp().formatCurrency(price.toInt())}",
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Divider(
+              height: 30,
+            ),
+          ],
+        ));
   }
 }
 
 class TotalAmountSection extends StatelessWidget {
-  final double total;
+  final int total;
 
   const TotalAmountSection({super.key, required this.total});
   @override
@@ -744,11 +522,14 @@ class TotalAmountSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Thành tiền', style: TextStyle(fontWeight: FontWeight.bold)),
-              Text('$total'),
+              Text('Thành tiền',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              Text('${TransformCustomApp().formatCurrency(total)}',
+                  style: TextStyle(
+                      color: Colors.red, fontWeight: FontWeight.bold)),
             ],
           ),
-          SizedBox(height: 8),
+          // SizedBox(height: 8),
           // Text('Vui lòng thanh toán ₫40.660 khi nhận hàng.'),
         ],
       ),
@@ -777,15 +558,40 @@ class PaymentMethodSection extends StatelessWidget {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Phương thức thanh toán',
-            style: TextStyle(fontWeight: FontWeight.bold),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Phương thức thanh toán',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ],
           ),
-          SizedBox(height: 8),
-          Text(billing),
-          SizedBox(height: 8),
+          SizedBox(height: 5),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  alignment: AlignmentDirectional.center,
+                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 40),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    billing == "cod"
+                        ? 'Thanh Toán Khi Nhận Hàng'
+                        : "Đã Thanh Toán Bằng ZaloPay".toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.amber,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
         ],
       ),
     );
@@ -830,6 +636,96 @@ class OrderSummarySection extends StatelessWidget {
           SizedBox(height: 8),
           Text('Description: ${order.description}'),
           SizedBox(height: 8),
+        ],
+      ),
+    );
+  }
+}
+
+class TimeSection extends StatelessWidget {
+  final Order order;
+
+  const TimeSection({super.key, required this.order});
+  @override
+  Widget build(BuildContext context) {
+    String formattedDate = DateFormat('hh:mm, dd/MM/yyyy').format(order.date);
+
+    return Container(
+      padding: EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            spreadRadius: 2,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        // crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.summarize_outlined,
+                size: 20,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                'Order Summary',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Thời gian đặt hàng: ',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Colors.black54),
+              ),
+              Text(
+                '${formattedDate}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Thời gian cập nhật: ',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: Colors.black54),
+              ),
+              Text(
+                '${formattedDate}',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

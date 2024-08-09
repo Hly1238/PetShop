@@ -13,7 +13,20 @@ class BannersService {
     return response;
   }
 
-  Future<dynamic> getById() async {
-    return;
+  Future<dynamic> getTopNewBanner() async {
+    var url = Uri.http(Config.apiURL, '${Config.bannerNewAPI}');
+    var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
+    return response;
+  }
+
+  Future<dynamic> getById(String id) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.http(Config.apiURL, '${Config.getBannerIdAPI}${id}');
+
+    var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
+
+    return response;
   }
 }

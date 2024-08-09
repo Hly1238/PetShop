@@ -20,7 +20,7 @@ class _CarouselSliderViewState extends State<CarouselSliderView> {
   void initState() {
     super.initState();
     _bannerList = widget.bannerList
-        .map((e) => BannerCart(id: e.id, imageUrl: e.image))
+        .map((e) => BannerCart(id: e.id, imageUrl: e.image, banner: e))
         .toList();
   }
 

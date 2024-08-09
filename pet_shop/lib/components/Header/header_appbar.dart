@@ -73,33 +73,49 @@ class Header_Appbar extends StatelessWidget implements PreferredSizeWidget {
       SizedBox(
         width: kDefaultPaddin,
       ),
-      badges.Badge(
-        badgeContent: Text(
-          '3',
-          style: TextStyle(
-            color: Colors.white,
+      // badges.Badge(
+      //   badgeContent: Text(
+      //     '3',
+      //     style: TextStyle(
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      //   badgeStyle: badges.BadgeStyle(
+      //     badgeColor: kPrimaryColor,
+      //     padding: EdgeInsets.all(7),
+      //     borderRadius: BorderRadius.circular(12),
+      //   ),
+      //   child: InkWell(
+      //     onTap: () {
+      //       if (AuthController.instance.isLogin == false) {
+      //         Navigator.of(context).pushNamed(Routes.sign_in);
+      //       } else {
+      //         Navigator.of(context).pushNamed(Routes.cart);
+      //       }
+      //     },
+      //     child: Image(
+      //       image: AssetImage(
+      //         "assets/images/_project/Icons/shopping-bag-blue.png",
+      //       ),
+      //       width: 30,
+      //       height: 30,
+      //     ),
+      //   ),
+      // ),
+      InkWell(
+        onTap: () {
+          if (AuthController.instance.isLogin == false) {
+            Navigator.of(context).pushNamed(Routes.sign_in);
+          } else {
+            Navigator.of(context).pushNamed(Routes.cart);
+          }
+        },
+        child: Image(
+          image: AssetImage(
+            "assets/images/_project/Icons/shopping-bag-blue.png",
           ),
-        ),
-        badgeStyle: badges.BadgeStyle(
-          badgeColor: kPrimaryColor,
-          padding: EdgeInsets.all(7),
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: InkWell(
-          onTap: () {
-            if (AuthController.instance.isLogin == false) {
-              Navigator.of(context).pushNamed(Routes.sign_in);
-            } else {
-              Navigator.of(context).pushNamed(Routes.cart);
-            }
-          },
-          child: Image(
-            image: AssetImage(
-              "assets/images/_project/Icons/shopping-bag-blue.png",
-            ),
-            width: 30,
-            height: 30,
-          ),
+          width: 30,
+          height: 30,
         ),
       ),
       SizedBox(

@@ -92,372 +92,412 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Image(
                         image: AssetImage(
                             "assets/images/_project/Account/login-dog-2.png"),
-                        width: 350,
+                        width: 280,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Image(
-                        image: AssetImage(
-                            "assets/images/_project/Account/login-dog-1.png"),
-                        width: 250,
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Image(
+                    //     image: AssetImage(
+                    //         "assets/images/_project/Account/login-dog-1.png"),
+                    //     width: 250,
+                    //   ),
+                    // ),
 
                     //! [Input Form]
-                    SingleChildScrollView(
-                      padding: const EdgeInsets.only(bottom: 40),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: height * 0.2,
-                          ),
+                    Container(
+                      margin: EdgeInsets.only(top: 30),
+                      child: SingleChildScrollView(
+                        // padding: const EdgeInsets.only(bottom: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: height * 0.2,
+                            ),
 
-                          // ? [Input Form/Content]
-                          Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal:
-                                    ResponsiveWidget.isSmallScreen(context)
-                                        ? height * 0.032
-                                        : height * 0.12),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                // TODO [Input Form/Content/Intro Text]
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: "Let's ",
-                                          style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 35.0,
-                                              color: textColor1,
-                                              fontWeight: FontWeight.normal),
+                            // ? [Input Form/Content]
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal:
+                                      ResponsiveWidget.isSmallScreen(context)
+                                          ? height * 0.032
+                                          : height * 0.12),
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    // TODO [Input Form/Content/Intro Text]
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: "Chào ",
+                                              style: GoogleFonts.raleway()
+                                                  .copyWith(
+                                                      fontSize: 35.0,
+                                                      color: textColor1,
+                                                      fontWeight:
+                                                          FontWeight.normal),
+                                            ),
+                                            TextSpan(
+                                              text: "Bạn!",
+                                              style: GoogleFonts.raleway()
+                                                  .copyWith(
+                                                      fontSize: 35.0,
+                                                      color: textColor2,
+                                                      fontWeight:
+                                                          FontWeight.w800),
+                                            ),
+                                          ],
                                         ),
-                                        TextSpan(
-                                          text: "Sign In",
-                                          style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 35.0,
-                                              color: textColor2,
-                                              fontWeight: FontWeight.w800),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: height * 0.01,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Hãy đăng nhập\nvào tài khoản của bạn nhé!',
+                                        style: GoogleFonts.raleway().copyWith(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w400,
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height * 0.02,
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Hey, Enter your details to get sign in \nto your account.',
-                                    style: GoogleFonts.raleway().copyWith(
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w400,
+                                    SizedBox(
+                                      height: height * 0.02,
                                     ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: height * 0.034,
-                                ),
 
-                                // TODO [Input Form/Content/Form]
-                                Form(
-                                  key: globalKey,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Email",
-                                          style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
-                                              color: textColor1,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 6.0,
-                                      ),
-                                      TextFormField(
-                                        controller: _userController,
-                                        focusNode: _userFocusNode,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: 'Nhập email của bạn',
-                                          prefixIcon: Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 16.0),
-                                            padding: const EdgeInsets.all(10.0),
-                                            decoration: const BoxDecoration(
-                                              border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Color(0xAAAA000000)),
-                                              ),
+                                    // TODO [Input Form/Content/Form]
+                                    Form(
+                                      key: globalKey,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Email",
+                                              style: GoogleFonts.raleway()
+                                                  .copyWith(
+                                                      fontSize: 14.0,
+                                                      color: textColor1,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                             ),
-                                            child: Icon(Icons.email_outlined),
                                           ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.orange,
-                                                width: 2.0),
+                                          SizedBox(
+                                            height: 4.0,
                                           ),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
-                                        ),
-                                        keyboardType:
-                                            TextInputType.emailAddress,
-                                        autofillHints: [AutofillHints.email],
-                                        validator: (name) =>
-                                            TValidation.validateEmail(name),
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.centerLeft,
-                                        child: Text(
-                                          "Password",
-                                          style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
-                                              color: textColor1,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 6.0,
-                                      ),
-                                      TextFormField(
-                                        controller: _passwordController,
-                                        focusNode: _passwordFocusNode,
-                                        decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                          hintText: 'Nhập Password',
-                                          prefixIcon: Container(
-                                            margin: const EdgeInsets.only(
-                                                right: 16.0),
-                                            padding: const EdgeInsets.all(10.0),
-                                            decoration: const BoxDecoration(
-                                              border: Border(
-                                                right: BorderSide(
-                                                    width: 1.0,
-                                                    color: Color(0xAAAA000000)),
+                                          TextFormField(
+                                            controller: _userController,
+                                            focusNode: _userFocusNode,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
                                               ),
+                                              hintText: 'Nhập email của bạn',
+                                              hintStyle: GoogleFonts.raleway()
+                                                  .copyWith(
+                                                fontSize: 14.0,
+                                                color:
+                                                    textColor1.withOpacity(0.5),
+                                              ),
+                                              prefixIcon: Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 16.0),
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                decoration: const BoxDecoration(
+                                                  border: Border(
+                                                    right: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(
+                                                            0xAAAA000000)),
+                                                  ),
+                                                ),
+                                                child:
+                                                    Icon(Icons.email_outlined),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.orange,
+                                                    width: 2.0),
+                                              ),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 15.0,
+                                                      horizontal: 2.0),
                                             ),
-                                            child: Icon(
-                                                Icons.lock_outline_rounded),
+                                            keyboardType:
+                                                TextInputType.emailAddress,
+                                            autofillHints: [
+                                              AutofillHints.email
+                                            ],
+                                            validator: (name) =>
+                                                TValidation.validateEmail(name),
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
                                           ),
-                                          suffixIcon: Padding(
-                                            padding: const EdgeInsetsDirectional
-                                                .only(end: 12.0),
-                                            child: IconButton(
-                                              icon: Icon(
-                                                _isObscured
-                                                    ? Icons.visibility_outlined
-                                                    : Icons
-                                                        .visibility_off_outlined,
-                                                color: Color(0xAAAA000000),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "Password",
+                                              style: GoogleFonts.raleway()
+                                                  .copyWith(
+                                                      fontSize: 14.0,
+                                                      color: textColor1,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 4.0,
+                                          ),
+                                          TextFormField(
+                                            controller: _passwordController,
+                                            focusNode: _passwordFocusNode,
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(5.0),
                                               ),
+                                              hintText: 'Nhập Password',
+                                              hintStyle: GoogleFonts.raleway()
+                                                  .copyWith(
+                                                fontSize: 14.0,
+                                                color:
+                                                    textColor1.withOpacity(0.5),
+                                              ),
+                                              prefixIcon: Container(
+                                                margin: const EdgeInsets.only(
+                                                    right: 16.0),
+                                                padding:
+                                                    const EdgeInsets.all(10.0),
+                                                decoration: const BoxDecoration(
+                                                  border: Border(
+                                                    right: BorderSide(
+                                                        width: 1.0,
+                                                        color: Color(
+                                                            0xAAAA000000)),
+                                                  ),
+                                                ),
+                                                child: Icon(
+                                                    Icons.lock_outline_rounded),
+                                              ),
+                                              suffixIcon: Padding(
+                                                padding:
+                                                    const EdgeInsetsDirectional
+                                                        .only(end: 12.0),
+                                                child: IconButton(
+                                                  icon: Icon(
+                                                    _isObscured
+                                                        ? Icons
+                                                            .visibility_outlined
+                                                        : Icons
+                                                            .visibility_off_outlined,
+                                                    color: Color(0xAAAA000000),
+                                                  ),
+                                                  onPressed: () {
+                                                    setState(() {
+                                                      _isObscured =
+                                                          !_isObscured;
+                                                    });
+                                                  },
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.orange,
+                                                    width: 2.0),
+                                              ),
+                                              contentPadding: EdgeInsets.symmetric(
+                                                  vertical: 15.0,
+                                                  horizontal:
+                                                      2.0), // Điều chỉnh padding để tăng kích thước input
+                                            ),
+                                            autovalidateMode: AutovalidateMode
+                                                .onUserInteraction,
+                                            validator: (value) =>
+                                                TValidation.validatePassword(
+                                                    value),
+                                            obscureText: _isObscured,
+                                            onEditingComplete: () => TextInput
+                                                .finishAutofillContext(),
+                                          ),
+                                          // TODO [Input Form/Content/Form/Forget Password]
+                                          SizedBox(
+                                            height: height * 0.001,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.bottomRight,
+                                            child: TextButton(
                                               onPressed: () {
-                                                setState(() {
-                                                  _isObscured = !_isObscured;
-                                                });
+                                                Navigator.of(context).pushNamed(
+                                                    Routes.forget_password);
                                               },
-                                            ),
-                                          ),
-                                          focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(
-                                                color: Colors.orange,
-                                                width: 2.0),
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
-                                              horizontal:
-                                                  10.0), // Điều chỉnh padding để tăng kích thước input
-                                        ),
-                                        autovalidateMode:
-                                            AutovalidateMode.onUserInteraction,
-                                        validator: (value) =>
-                                            TValidation.validatePassword(value),
-                                        obscureText: _isObscured,
-                                        onEditingComplete: () =>
-                                            TextInput.finishAutofillContext(),
-                                      ),
-                                      // TODO [Input Form/Content/Form/Forget Password]
-                                      SizedBox(
-                                        height: height * 0.009,
-                                      ),
-                                      Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pushNamed(
-                                                Routes.forget_password);
-                                          },
-                                          child: Text(
-                                            'Quên mật khẩu?',
-                                            textAlign: TextAlign.right,
-                                            style: GoogleFonts.raleway()
-                                                .copyWith(
-                                                    fontSize: 16.0,
-                                                    color: textColor1,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                          ),
-                                        ),
-                                      ),
-                                      // TODO [Input Form/Content/Form/Button]
-                                      SizedBox(
-                                        height: height * 0.01,
-                                      ),
-                                      MouseRegion(
-                                        cursor: SystemMouseCursors.click,
-                                        child: GestureDetector(
-                                          onTap: () async {
-                                            if (globalKey.currentState!
-                                                .validate()) {
-                                              HandleLogin(_userController.text,
-                                                  _passwordController.text);
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(16),
-                                            decoration: BoxDecoration(
-                                              color: primaryColorOrange,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: Center(
                                               child: Text(
-                                                "Đăng Nhập",
+                                                'Quên mật khẩu?',
+                                                textAlign: TextAlign.right,
                                                 style: GoogleFonts.raleway()
                                                     .copyWith(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
+                                                        fontSize: 14.0,
+                                                        color: textColor1,
+                                                        fontWeight:
+                                                            FontWeight.normal),
+                                              ),
+                                            ),
+                                          ),
+                                          // TODO [Input Form/Content/Form/Button]
+                                          SizedBox(
+                                            height: height * 0.001,
+                                          ),
+                                          MouseRegion(
+                                            cursor: SystemMouseCursors.click,
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                if (globalKey.currentState!
+                                                    .validate()) {
+                                                  HandleLogin(
+                                                      _userController.text,
+                                                      _passwordController.text);
+                                                }
+                                              },
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                decoration: BoxDecoration(
+                                                  color: primaryColorOrange,
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    "Đăng Nhập",
+                                                    style: GoogleFonts.raleway()
+                                                        .copyWith(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                      // TODO [Input Form/Content/Form/Social Button]
-                                      // SizedBox(
-                                      //   height: height * 0.04,
-                                      // ),
-                                      // Container(
-                                      //   margin: EdgeInsets.symmetric(
-                                      //       horizontal: 25.0),
-                                      //   child: Row(
-                                      //     children: [
-                                      //       Expanded(
-                                      //         child: Divider(
-                                      //           thickness: 0.5,
-                                      //           color: kTextLightColor,
-                                      //         ),
-                                      //       ),
-                                      //       Padding(
-                                      //         padding:
-                                      //             const EdgeInsets.symmetric(
-                                      //                 horizontal: 10.0),
-                                      //         child: Text(
-                                      //           'Or Continue with',
-                                      //           style: TextStyle(
-                                      //               color: Colors.grey),
-                                      //         ),
-                                      //       ),
-                                      //       Expanded(
-                                      //         child: Divider(
-                                      //           thickness: 0.5,
-                                      //           color: Colors.grey,
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      // SizedBox(
-                                      //   height: height * 0.015,
-                                      // ),
-                                      // Row(
-                                      //   mainAxisAlignment:
-                                      //       MainAxisAlignment.center,
-                                      //   children: [
-                                      //     SocialButton(
-                                      //         "assets/images/_project/Logo/social/google.png"),
-                                      //     SizedBox(
-                                      //       width: 10,
-                                      //     ),
-                                      //     SocialButton(
-                                      //         "assets/images/_project/Logo/social/facebook.png"),
-                                      //   ],
-                                      // ),
+                                          // TODO [Input Form/Content/Form/Social Button]
+                                          // SizedBox(
+                                          //   height: height * 0.04,
+                                          // ),
+                                          // Container(
+                                          //   margin: EdgeInsets.symmetric(
+                                          //       horizontal: 25.0),
+                                          //   child: Row(
+                                          //     children: [
+                                          //       Expanded(
+                                          //         child: Divider(
+                                          //           thickness: 0.5,
+                                          //           color: kTextLightColor,
+                                          //         ),
+                                          //       ),
+                                          //       Padding(
+                                          //         padding:
+                                          //             const EdgeInsets.symmetric(
+                                          //                 horizontal: 10.0),
+                                          //         child: Text(
+                                          //           'Or Continue with',
+                                          //           style: TextStyle(
+                                          //               color: Colors.grey),
+                                          //         ),
+                                          //       ),
+                                          //       Expanded(
+                                          //         child: Divider(
+                                          //           thickness: 0.5,
+                                          //           color: Colors.grey,
+                                          //         ),
+                                          //       ),
+                                          //     ],
+                                          //   ),
+                                          // ),
+                                          // SizedBox(
+                                          //   height: height * 0.015,
+                                          // ),
+                                          // Row(
+                                          //   mainAxisAlignment:
+                                          //       MainAxisAlignment.center,
+                                          //   children: [
+                                          //     SocialButton(
+                                          //         "assets/images/_project/Logo/social/google.png"),
+                                          //     SizedBox(
+                                          //       width: 10,
+                                          //     ),
+                                          //     SocialButton(
+                                          //         "assets/images/_project/Logo/social/facebook.png"),
+                                          //   ],
+                                          // ),
 
-                                      // TODO [Input Form/Content/Form/Sign Up]
-                                      SizedBox(
-                                        height: height * 0.03,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Haven't got any account? ",
-                                            style:
-                                                GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
-                                              color: textColor1,
-                                              fontWeight: FontWeight.w200,
-                                            ),
+                                          // TODO [Input Form/Content/Form/Sign Up]
+                                          SizedBox(
+                                            height: height * 0.03,
                                           ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context)
-                                                  .pushReplacementNamed(
-                                                      Routes.sign_up);
-                                            },
-                                            style: TextButton.styleFrom(
-                                              padding: EdgeInsets.zero,
-                                              minimumSize: Size(0, 0),
-                                              tapTargetSize:
-                                                  MaterialTapTargetSize
-                                                      .shrinkWrap,
-                                            ),
-                                            child: Text(
-                                              "Register Now",
-                                              style: GoogleFonts.raleway()
-                                                  .copyWith(
-                                                fontSize: 16.0,
-                                                color: textColor2,
-                                                fontWeight: FontWeight.w800,
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Chưa có tài khoản? ",
+                                                style: GoogleFonts.raleway()
+                                                    .copyWith(
+                                                  fontSize: 16.0,
+                                                  color: textColor1,
+                                                  fontWeight: FontWeight.w200,
+                                                ),
                                               ),
-                                            ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context)
+                                                      .pushReplacementNamed(
+                                                          Routes.sign_up);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  minimumSize: Size(0, 0),
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                child: Text(
+                                                  "Đăng ký",
+                                                  style: GoogleFonts.raleway()
+                                                      .copyWith(
+                                                    fontSize: 16.0,
+                                                    color: textColor2,
+                                                    fontWeight: FontWeight.w800,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ],

@@ -1,11 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:pet_shop/models/Product/product.dart';
+import 'package:pet_shop/screen/Home/components/selection_component/selection_title.dart';
+import 'package:pet_shop/screen/Product/components/product_showing_grid.dart';
+import 'package:readmore/readmore.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class DogDetailsPage extends StatefulWidget {
   final String name;
   final String imgPath;
-  const DogDetailsPage({super.key, required this.name, required this.imgPath});
+  final List<Product> listProducts;
+  const DogDetailsPage(
+      {super.key,
+      required this.name,
+      required this.imgPath,
+      required this.listProducts});
 
   @override
   State<DogDetailsPage> createState() => _DogDetailsPageState();
@@ -20,30 +31,10 @@ class _DogDetailsPageState extends State<DogDetailsPage> {
       color: Color.fromRGBO(82, 60, 154, 1));
 
   final TextStyle viewAllTextStyle = const TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 20,
-      color: Color.fromRGBO(101, 201, 244, 1));
+    fontWeight: FontWeight.w500,
+    fontSize: 20,
+  );
 
-  final List<HealthCheck> healthChecks = [
-    HealthCheck(
-      title: 'Heart Rate Check',
-      date: '4.11.2022',
-      doctorName: 'Dr. Avery Baker'.toUpperCase(),
-      icon: Icons.favorite,
-    ),
-    HealthCheck(
-      title: 'Parasite Control',
-      date: '16.10.2022',
-      doctorName: 'Dr. Hazel Chapman'.toUpperCase(),
-      icon: Icons.bug_report,
-    ),
-    HealthCheck(
-      title: 'Nutritional Control',
-      date: '2.10.2022',
-      doctorName: 'Dr. Tyler Carter'.toUpperCase(),
-      icon: Icons.local_dining,
-    ),
-  ];
   @override
   void initState() {
     super.initState();
@@ -52,217 +43,116 @@ class _DogDetailsPageState extends State<DogDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(slivers: [
-        SliverFillRemaining(
-          hasScrollBody: false,
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 300,
-                child: Stack(
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 300,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.blue,
-                        alignment: Alignment.center,
-                        child: FadeInImage(
-                          height: double.infinity,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                          placeholder: AssetImage(widget.imgPath ??
-                              'assets/images/_project/Account/black_dog.png'),
-                          image: AssetImage(widget.imgPath ??
-                              'assets/images/_project/Account/black_dog.png'),
-                          imageErrorBuilder: (context, error, stackTrace) =>
-                              Image.asset(
-                            widget.imgPath ??
-                                'assets/images/_project/Account/black_dog.png',
-                            fit: BoxFit.cover,
-                          ),
+      body: CustomScrollView(
+        slivers: [
+          SliverFillRemaining(
+            hasScrollBody: false,
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 300,
+                  child: Stack(
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          height: 300,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.lightBlue,
+                          alignment: Alignment.center,
                         ),
                       ),
-                    ),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          GestureDetector(
-                            onTap: () async {},
-                            child: Container(
+                      Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(top: 30),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border:
                                     Border.all(color: Colors.white, width: 1),
                               ),
-                              child: Stack(
-                                alignment: Alignment.bottomRight,
-                                children: <Widget>[
-                                  CircleAvatar(
-                                    radius: 80,
-                                    backgroundImage: AssetImage(widget
-                                            .imgPath ??
-                                        'assets/images/_project/Account/black_dog.png'),
-                                  ),
-                                  CircleAvatar(
-                                    radius: 20,
-                                    backgroundColor: Colors.black,
-                                    // child: Icon(
-                                    //   // Icons.edit,
-                                    //   size: 18,
-                                    //   color: Colors.white,
-                                    // ),
-                                  ),
-                                ],
+                              child: CircleAvatar(
+                                radius: 80,
+                                backgroundImage: AssetImage(widget.imgPath ??
+                                    'assets/images/_project/Account/black_dog.png'),
                               ),
                             ),
-                          ),
-                          Text(widget.name,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Color.fromRGBO(82, 60, 154, 1))),
-                          Text('Dog',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                  color: Colors.purple)),
-                        ],
+                            Text(widget.name,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    color: Color.fromRGBO(82, 60, 154, 1))),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  InfoCard(title: 'Age', value: '6'),
-                  InfoCard(title: 'Sex', value: 'Male'),
-                  InfoCard(title: 'Weight', value: '48 lbs'),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(20),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 15, right: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            "Last Health Check",
-                            style: titleTextStyle,
-                          ),
-                          GestureDetector(
-                            child: Row(
-                              children: [
-                                Text(
-                                  "View all",
-                                  style: viewAllTextStyle,
-                                ),
-                                Icon(Icons.arrow_forward_ios,
-                                    color: Color.fromRGBO(101, 201, 244, 1))
-                              ],
-                            ),
-                          )
-                        ],
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      SizedBox(height: 8),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: HtmlWidget(
+                          "widget.product.description",
+                          customWidgetBuilder: (element) {
+                            return ReadMoreText(
+                              element.text,
+                              trimLines: 5,
+                              colorClickableText: Colors.pink,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: '\n Xem thêm',
+                              trimExpandedText: '\n Thu nhỏ',
+                              moreStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue),
+                            );
+                          },
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      height: 200,
-                      child: ListView.builder(
-                        itemCount: healthChecks.length,
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            leading: Icon(healthChecks[index].icon),
-                            title: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                GestureDetector(
-                                  child: Text(
-                                    healthChecks[index].title!,
-                                    style: titleTextStyle,
-                                  ),
-                                ),
-                                Text(
-                                  healthChecks[index].date!,
-                                )
-                              ],
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.white,
+                  ),
+                  child: Column(
+                    children: [
+                      Obx(() {
+                        if (widget.listProducts.isNotEmpty) {
+                          return ProductShowingGrid(
+                              productList: widget.listProducts);
+                        } else {
+                          return Container(
+                            height: 50,
+                            child: Center(
+                              child: Text("Chưa tìm được sản phẩm phù hợp"),
                             ),
-                            subtitle: Text('${healthChecks[index].doctorName}'),
                           );
-                        },
-                      ),
-                    )
-                  ],
+                        }
+                      }),
+                    ],
+                  ),
                 ),
-              )
-            ],
+              ],
+            ),
           ),
-        ),
-      ]),
-    );
-  }
-}
-
-class InfoCard extends StatefulWidget {
-  final String? title;
-  final String? value;
-
-  InfoCard({this.title, this.value});
-
-  @override
-  State<InfoCard> createState() => _InfoCardState();
-}
-
-class _InfoCardState extends State<InfoCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      elevation: 5,
-      child: Container(
-        width: 100,
-        height: 100,
-        padding: EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              widget.value!,
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Text(
-              widget.title!,
-              style: TextStyle(
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
+        ],
       ),
     );
   }
-}
-
-class HealthCheck {
-  final String? title;
-  final String? date;
-  final String? doctorName;
-  final IconData? icon;
-
-  HealthCheck({this.title, this.date, this.doctorName, this.icon});
 }

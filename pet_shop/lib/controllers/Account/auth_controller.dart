@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Account/user_model.dart';
 import 'package:pet_shop/servies/Account/account_api_service.dart';
 
@@ -72,7 +73,7 @@ class AuthController extends GetxController {
   }
 
   //! Log out
-  void logout() async {
+  Future<bool> logout() async {
     List<Future<void>> deleteFutures = [
       SecurityStorage().deleteSecureData("token"),
       SecurityStorage().deleteSecureData("phone"),
@@ -80,12 +81,14 @@ class AuthController extends GetxController {
       SecurityStorage().deleteSecureData("image"),
       SecurityStorage().deleteSecureData("password"),
       SecurityStorage().deleteSecureData("id"),
+      SecurityStorage().deleteSecureData("email"),
+      SecurityStorage().deleteSecureData("noti_id"),
     ];
 
     await Future.wait(deleteFutures);
-
     isLogin(false);
-    EasyLoading.showSuccess("Cảm ơn bạn đã ghé thăm!");
+    EasyLoading.showSuccess("Đăng xuất thành công");
+    return true;
   }
 
   //!Login
@@ -114,11 +117,14 @@ class AuthController extends GetxController {
         SecurityStorage().writeSecureData("image", user.value!.image);
         SecurityStorage().writeSecureData("password", user.value!.password);
         SecurityStorage().writeSecureData("id", user.value!.id);
+        SecurityStorage().writeSecureData("email", user.value!.email);
+        SecurityStorage().writeSecureData(
+            "noti_id", user.value!.id_device); // ? get notification allow
         return 1;
       } else {
         var data = json.decode(result.body);
         isLogin(false);
-        if (data['message']?.trim() == "Wrong password!") {
+        if (data['message']?.trim() == "wrong password!") {
           EasyLoading.showError("Xin kiểm tra lại mật khẩu của bạn");
           return -1;
         } else if (data['message']?.trim() == "Unregistered account!") {
@@ -247,7 +253,7 @@ class AuthController extends GetxController {
           return -1;
         }
         EasyLoading.showError(
-            "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút");
+            "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút 1");
         return 0;
       }
     } catch (e) {
@@ -278,7 +284,77 @@ class AuthController extends GetxController {
         return 0;
       }
       EasyLoading.showError(
-          "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút");
+          "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút 2");
+      return 0;
+    } catch (e) {
+      EasyLoading.showError(
+          "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");
+      return 0;
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  // !Update Password
+  Future<int> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+  }) async {
+    try {
+      EasyLoading.show(
+        status: 'Loading',
+        dismissOnTap: false,
+      );
+
+      String id = await SecurityStorage().getSecureData("id");
+      var result = await AccountApiService().updatePassword(
+        id: id,
+        newPassword: newPassword.trim(),
+        oldPassword: oldPassword.trim(),
+      );
+      var data = json.decode(result.body);
+      var message = data['message'];
+      if (result.statusCode == 200) {
+        EasyLoading.showSuccess("Cập nhật mật khẩu thành công!");
+        return 1;
+      } else if (result.statusCode == 400) {
+        if (message?.trim() == "Incorrect current password") {
+          EasyLoading.showError("Mật khẩu không đúng!");
+          return -1;
+        }
+        EasyLoading.showError("Mật khẩu mới không được trùng với mật khẩu cũ");
+        return -2;
+      }
+      EasyLoading.showError(
+          "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút 3");
+      return 0;
+    } catch (e) {
+      EasyLoading.showError(
+          "Hệ thống đang xảy ra lỗi $e, vui lòng thử lại sau");
+      return 0;
+    } finally {
+      EasyLoading.dismiss();
+    }
+  }
+
+  // ! Add device notifictation
+  Future<int> addDevice({
+    String? id_device,
+  }) async {
+    try {
+      EasyLoading.show(
+        status: 'Loading',
+        dismissOnTap: false,
+      );
+      var result = await AccountApiService().addDevice(
+        id_device: id_device ?? "",
+      );
+      if (result.statusCode == 200) {
+        EasyLoading.showSuccess("Cập nhật thành công!");
+        return 1;
+      }
+      EasyLoading.showError(
+          "Xảy ra sự cố với máy chủ. Vui lòng thao tác lại sau vài phút 4");
       return 0;
     } catch (e) {
       EasyLoading.showError(

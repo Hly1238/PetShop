@@ -1,3 +1,4 @@
+import 'package:pet_shop/config/cofig.dart';
 import 'package:pet_shop/payment/models/create_order_response.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -6,15 +7,6 @@ import 'package:pet_shop/payment/utils/endpoints.dart';
 
 import 'package:pet_shop/payment/utils/util.dart' as utils;
 import 'package:sprintf/sprintf.dart';
-
-class ZaloPayConfig {
-  static const String appId = "2553";
-  static const String key1 = "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL";
-  static const String key2 = "kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz";
-
-  static const String appUser = "zalopaydemo";
-  static int transIdDefault = 1;
-}
 
 Future<CreateOrderResponse?> createOrder(int price) async {
   var header = new Map<String, String>();

@@ -1,12 +1,13 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:pet_shop/config/cofig.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
-import 'package:pet_shop/controllers/Account/auth_controller.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
@@ -23,15 +24,9 @@ void main() async {
   // !!!!! Setting notification
   final settingsController = SettingsController(SettingsService());
   // Load the user's preferred the  me while the splash screen is displayed.
-  // SecurityStorage().deleteSecureData("token");
-  // SecurityStorage().deleteSecureData("phone");
-  // SecurityStorage().deleteSecureData("username");
-  // SecurityStorage().deleteSecureData("image");
-  // SecurityStorage().deleteSecureData("password");
-  // SecurityStorage().deleteSecureData("id");
   // This prevents a sudden theme change when the app is first displayed.
   await settingsController.loadSettings();
-
+  // config();
   //Transparent battery bar
   SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(statusBarColor: Colors.transparent));
@@ -44,100 +39,15 @@ void main() async {
   runApp(MyApp(settingsController: settingsController));
 }
 
-
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// import 'package:flutter/material.dart';
-
-// void main() {
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: HomePage(),
-//     );
-//   }
-// }
-
-// class HomePage extends StatefulWidget {
-//   @override
-//   _HomePageState createState() => _HomePageState();
-// }
-
-// class _HomePageState extends State<HomePage> {
-//   List<String> _allChips = [
-//     'Portland',
-//     'Biking',
-//     'Nature',
-//     'Nightlife',
-//     'November'
-//   ];
-//   List<String> _selectedChips = [];
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Photo Info'),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.search),
-//             onPressed: () {
-//               // Implement search functionality
-//             },
-//           ),
-//         ],
-//       ),
-//       drawer: Drawer(),
-//       body: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             SingleChildScrollView(
-//               scrollDirection: Axis.horizontal,
-//               child: Row(
-//                 children: _selectedChips.map((chip) {
-//                   return Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
-//                     child: Chip(
-//                       label: Text(chip),
-//                       onDeleted: () {
-//                         setState(() {
-//                           _selectedChips.remove(chip);
-//                         });
-//                       },
-//                     ),
-//                   );
-//                 }).toList(),
-//               ),
-//             ),
-//             Divider(),
-//             Wrap(
-//               spacing: 8.0,
-//               children: _allChips.map((chip) {
-//                 return ChoiceChip(
-//                   label: Text(chip),
-//                   selected: _selectedChips.contains(chip),
-//                   onSelected: (isSelected) {
-//                     setState(() {
-//                       if (isSelected) {
-//                         _selectedChips.add(chip);
-//                       } else {
-//                         _selectedChips.remove(chip);
-//                       }
-//                     });
-//                   },
-//                 );
-//               }).toList(),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+//todo Handle Notification Permission
+void checkNotiPermission() async {
+  var notiStatus = await Permission.notification.status;
+  if (!notiStatus.isGranted) await Permission.notification.request();
+  if (await Permission.notification.isGranted) {
+  } else {
+    showToast(
+      "Bạn chưa cấp quyền để thực hiện việc gọi",
+      position: ToastPosition.bottom,
+    );
+  }
+}

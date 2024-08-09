@@ -6,7 +6,9 @@ import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/controllers/Predict/predict_controller.dart';
 import 'package:pet_shop/controllers/Product/cart_controller.dart';
+import 'package:pet_shop/controllers/Product/filter_controller.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
+import 'package:pet_shop/models/Home/Banners/ad_banner.dart';
 import 'package:pet_shop/models/ModelPredict/model_product.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
@@ -24,6 +26,7 @@ import 'package:pet_shop/screen/Account/signup_screen.dart';
 import 'package:pet_shop/screen/Camera/camera_screen.dart';
 import 'package:pet_shop/screen/Camera/scan_screen.dart';
 import 'package:pet_shop/screen/CartAndPayment/cart_screen.dart';
+import 'package:pet_shop/screen/Home/components/carousel_slider/banner_details.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Home/components/selection_component/selection_title.dart';
 import 'package:pet_shop/screen/Navigation/navigation_screen.dart';
@@ -69,16 +72,18 @@ class Routes {
   static const String order_detail = "/order_detail";
   static const String cart = "/cart";
   static const String pay = "/pay";
+  static const String bannerDetails = "/banner_detail";
 }
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
+    Get.put(AuthController());
     Get.put(PredictController());
     Get.put(HomeController());
     Get.put(ProductController());
     Get.put(OrderController());
     Get.put(CartController());
-    Get.put(AuthController());
+    Get.put(FilterController());
     final args = settings.arguments;
     switch (settings.name) {
       case '/splash_screen':
@@ -101,6 +106,14 @@ class RouteGenerator {
                   ));
         }
         return _errorRoute();
+      case Routes.bannerDetails:
+        if (args is AdBanner) {
+          return MaterialPageRoute(
+              builder: (_) => BannerDetails(
+                    banner: args,
+                  ));
+        }
+        return _errorRoute();
       case Routes.pred_list:
         if (args is XFile) {
           return MaterialPageRoute(
@@ -116,6 +129,7 @@ class RouteGenerator {
             builder: (_) => DogDetailsPage(
               name: args.name,
               imgPath: args.imgPath,
+              listProducts: args.listProducts,
             ),
           );
         }
@@ -126,6 +140,7 @@ class RouteGenerator {
             builder: (_) => ProductCategory(
               productList: args.productList,
               name: args.name,
+              idCate: args.idCate,
             ),
           );
         }
@@ -137,7 +152,12 @@ class RouteGenerator {
       case Routes.list_category:
         return MaterialPageRoute(builder: (_) => CategoryScreen());
       case Routes.rate_comment:
-        return MaterialPageRoute(builder: (_) => RateScreen());
+        if (args is ProductUnreviewed) {
+          return MaterialPageRoute(
+            builder: (_) => RateScreen(productUnreviewed: args),
+          );
+        }
+        return _errorRoute();
       case Routes.order_sumary:
         // return MaterialPageRoute(builder: (_) => OrderSummaryScreen());
         if (args is List<ProductOrder>) {

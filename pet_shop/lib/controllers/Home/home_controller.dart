@@ -12,6 +12,7 @@ class HomeController extends GetxController {
   //todo [Banners]
   // RxList để lưu trữ danh sách các banner
   RxList<AdBanner> bannerList = List<AdBanner>.empty(growable: true).obs;
+  RxList<AdBanner> bannerNewList = List<AdBanner>.empty(growable: true).obs;
   // RxBool để theo dõi trạng thái đang tải banner
   RxBool isBannerLoading = false.obs;
 
@@ -21,17 +22,29 @@ class HomeController extends GetxController {
 
   //todo [Product]
   RxList<Product> productList = List<Product>.empty(growable: true).obs;
+  RxList<Product> newProductList = List<Product>.empty(growable: true).obs;
+  RxList<Product> popularProductList = List<Product>.empty(growable: true).obs;
+  RxList<Product> highRecommendProductList =
+      List<Product>.empty(growable: true).obs;
   RxBool isProductLoading = false.obs;
 
   @override
   void onInit() {
-    getBanners();
-    getCategory();
-    getProduct();
     super.onInit();
+    getData();
   }
 
-  void getBanners() async {
+  void getData() async {
+    await getBanners();
+    await getCategory();
+    await getProduct();
+    await getTopNewBanner();
+    await getNewProduct();
+    await getHighRecommendProduct();
+    await getPopularProduct();
+  }
+
+  Future<void> getBanners() async {
     try {
       isBannerLoading(true);
       var result = await BannersService().get();
@@ -49,8 +62,25 @@ class HomeController extends GetxController {
     }
   }
 
+  Future<void> getTopNewBanner() async {
+    try {
+      isBannerLoading(true);
+      var result = await BannersService().getTopNewBanner();
+      if (result != null) {
+        bannerNewList.assignAll(adBannerNewListFromJson(result.body));
+      } else {
+        print("Failed to load banners: result is null");
+      }
+    } catch (e) {
+      print("Error loading banners: $e");
+    } finally {
+      isBannerLoading(false);
+      print("Final bannerList length: ${bannerNewList.length}");
+    }
+  }
+
   //todo [Category]
-  void getCategory() async {
+  Future<void> getCategory() async {
     try {
       isCategoryLoading(true);
       var result = await CategoryService().get();
@@ -69,7 +99,7 @@ class HomeController extends GetxController {
   }
 
   //todo [Products]
-  void getProduct() async {
+  Future<void> getProduct() async {
     try {
       isProductLoading(true);
       var result = await ProductService().getAll();
@@ -83,6 +113,58 @@ class HomeController extends GetxController {
     } finally {
       isProductLoading(false);
       print("Final product length: ${productList.length}");
+    }
+  }
+
+  Future<void> getNewProduct() async {
+    try {
+      isProductLoading(true);
+      var result = await ProductService().getNewProduct();
+      if (result != null) {
+        newProductList.assignAll(productListFromJson(result.body));
+      } else {
+        print("Failed to load product: result is null");
+      }
+    } catch (e) {
+      print("Error loading product: $e");
+    } finally {
+      isProductLoading(false);
+      print("Final product length: ${newProductList.length}");
+    }
+  }
+
+  Future<void> getPopularProduct() async {
+    try {
+      isProductLoading(true);
+      var result = await ProductService().getPopularProduct();
+      if (result != null) {
+        popularProductList.assignAll(productListFromJson(result.body));
+      } else {
+        print("Failed to load product: result is null");
+      }
+    } catch (e) {
+      print("Error loading product: $e");
+    } finally {
+      isProductLoading(false);
+      print("Final product popular length: ${popularProductList.length}");
+    }
+  }
+
+  Future<void> getHighRecommendProduct() async {
+    try {
+      isProductLoading(true);
+      var result = await ProductService().getHighRecommendProduct();
+      if (result != null) {
+        highRecommendProductList.assignAll(productListFromJson(result.body));
+      } else {
+        print("Failed to load product: result is null");
+      }
+    } catch (e) {
+      print("Error loading product: $e");
+    } finally {
+      isProductLoading(false);
+      print(
+          "Final product highly recommended length: ${highRecommendProductList.length}");
     }
   }
 }

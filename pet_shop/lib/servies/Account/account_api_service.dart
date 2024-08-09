@@ -1,10 +1,23 @@
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:pet_shop/config/cofig.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 
 class AccountApiService {
   static var client = http.Client();
+  AuthController authController = Get.find<AuthController>();
+  Map<String, String> requestHeadersUpdate = {};
+
+  Future<void> init() async {
+    String token = await SecurityStorage().getSecureData("token");
+    requestHeadersUpdate = {
+      'Content-Type': 'application/json',
+      'Authorization': '${token}'
+    };
+  }
 
   //!Login
   static Future<dynamic> login({
@@ -105,6 +118,35 @@ class AccountApiService {
     var url = Uri.http(Config.apiURL, "${Config.activateAPI}$activatecode");
 
     var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
+  // ! Update Password
+  Future<dynamic> updatePassword(
+      {required String id,
+      required String oldPassword,
+      required String newPassword}) async {
+    await init();
+    var url = Uri.http(Config.apiURL, Config.updatePasswordAPI);
+    var body = {
+      "_id": id,
+      "oldPassword": oldPassword,
+      "newPassword": newPassword
+    };
+    var response = await client.post(url,
+        headers: requestHeadersUpdate, body: jsonEncode(body));
+    return response;
+  }
+
+  // !Add device
+  Future<dynamic> addDevice({String? id_device}) async {
+    await init();
+    var url = Uri.http(Config.apiURL, Config.addDevice);
+    var body = {
+      "id_device": id_device ?? "",
+    };
+    var response = await client.post(url,
+        headers: requestHeadersUpdate, body: jsonEncode(body));
     return response;
   }
 }

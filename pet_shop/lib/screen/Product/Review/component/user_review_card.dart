@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/models/Product/review.dart';
 import 'package:intl/intl.dart';
 
@@ -9,10 +10,6 @@ class UserReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDate =
-        DateFormat('hh:mm, dd/MM/yyyy').format(item.createdAt);
-
-    print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
     return Column(
       children: [
         Row(
@@ -29,7 +26,6 @@ class UserReviewCard extends StatelessWidget {
                   width: 10,
                 ),
                 Column(
-                  // mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -62,7 +58,7 @@ class UserReviewCard extends StatelessWidget {
                           width: 30,
                         ),
                         Text(
-                          '${formattedDate}',
+                          '${TransformCustomApp().formateDateTime(item.createdAt)}',
                           textAlign: TextAlign.end,
                           style: TextStyle(fontSize: 12, color: Colors.black38),
                         ),
@@ -84,33 +80,6 @@ class UserReviewCard extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
-        // Container(
-        //   child: Padding(
-        //     padding: EdgeInsets.all(16),
-        //     child: Column(
-        //       children: [
-        //         Row(
-        //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //           children: [
-        //             Text(
-        //               "T's Store",
-        //               style: Theme.of(context).textTheme.titleMedium,
-        //             ),
-        //             Text(
-        //               "02 Nov 2023",
-        //               style: Theme.of(context).textTheme.titleMedium,
-        //             ),
-        //           ],
-        //         ),
-        //         SizedBox(
-        //           height: 16,
-        //         ),
-        //         Text(
-        //             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In ultricies, odio id scelerisque ultricies, ligula urna scelerisque purus, sit amet pharetra leo augue eget mauris. Phasellus commodo laoreet laoreet. Aenean ullamcorper metus ac lobortis tempus. Aliquam nec arcu ut tellus euismod maximus eget vel turpis. Nullam risus lacus, imperdiet placerat aliquam ut, efficitur ac velit. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. ")
-        //       ],
-        //     ),
-        //   ),
-        // )
       ],
     );
   }

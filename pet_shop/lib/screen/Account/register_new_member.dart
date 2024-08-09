@@ -39,8 +39,6 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
   final FocusNode _confirmpasswordFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
 
-  bool _isNotValidate = false;
-
   @override
   void initState() {
     _isObscured = true;
@@ -99,17 +97,17 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                       child: Image(
                         image: AssetImage(
                             "assets/images/_project/Account/login-dog-2.png"),
-                        width: 350,
+                        width: 300,
                       ),
                     ),
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Image(
-                        image: AssetImage(
-                            "assets/images/_project/Account/login-dog-1.png"),
-                        width: 250,
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.bottomLeft,
+                    //   child: Image(
+                    //     image: AssetImage(
+                    //         "assets/images/_project/Account/login-dog-1.png"),
+                    //     width: 250,
+                    //   ),
+                    // ),
 
                     //! [Input Form]
                     SingleChildScrollView(
@@ -139,16 +137,16 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                     text: TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: "Hi ",
+                                          text: "Chào ",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 35.0,
+                                              fontSize: 32.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
-                                          text: "You!",
+                                          text: "Bạn!",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 35.0,
+                                              fontSize: 32.0,
                                               color: textColor2,
                                               fontWeight: FontWeight.w800),
                                         ),
@@ -157,20 +155,20 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: height * 0.02,
+                                  height: height * 0.01,
                                 ),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Hey, Please tell me your information \nto let us know you more.',
+                                    'Hãy cho chúng tôi\nbiết thêm thông tin về bạn',
                                     style: GoogleFonts.raleway().copyWith(
-                                      fontSize: 16.0,
+                                      fontSize: 15.0,
                                       fontWeight: FontWeight.w400,
                                     ),
                                   ),
                                 ),
                                 SizedBox(
-                                  height: height * 0.034,
+                                  height: height * 0.02,
                                 ),
 
                                 // TODO [Input Form/Content/Form]
@@ -184,13 +182,13 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                         child: Text(
                                           "Email",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 6.0,
+                                        height: 4.0,
                                       ),
                                       TextFormField(
                                         controller: _userController,
@@ -201,6 +199,11 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Nhập email',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -220,7 +223,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0, horizontal: 10.0),
+                                              vertical: 10.0, horizontal: 10.0),
                                         ),
                                         keyboardType:
                                             TextInputType.emailAddress,
@@ -232,20 +235,20 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                       ),
 
                                       const SizedBox(
-                                        height: 15,
+                                        height: 10,
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
                                           "Password",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 6.0,
+                                        height: 4.0,
                                       ),
                                       TextFormField(
                                         controller: _passwordController,
@@ -256,6 +259,11 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Nhập Password',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -294,7 +302,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
+                                              vertical: 10.0,
                                               horizontal:
                                                   10.0), // Điều chỉnh padding để tăng kích thước input
                                         ),
@@ -307,20 +315,20 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             TextInput.finishAutofillContext(),
                                       ),
                                       const SizedBox(
-                                        height: 15,
+                                        height: 10,
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Confirm Password",
+                                          "Xác nhận Password",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 6.0,
+                                        height: 4.0,
                                       ),
                                       TextFormField(
                                         controller: _confirmpasswordController,
@@ -331,6 +339,11 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Xác thực mật khẩu',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -369,7 +382,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
+                                              vertical: 10.0,
                                               horizontal:
                                                   10.0), // Điều chỉnh padding để tăng kích thước input
                                         ),
@@ -383,20 +396,20 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                       ),
                                       //todo [Unique phone number :)))]
                                       const SizedBox(
-                                        height: 15,
+                                        height: 10,
                                       ),
                                       Align(
                                         alignment: Alignment.centerLeft,
                                         child: Text(
-                                          "Phone number",
+                                          "Số điện thoại",
                                           style: GoogleFonts.raleway().copyWith(
-                                              fontSize: 16.0,
+                                              fontSize: 14.0,
                                               color: textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       SizedBox(
-                                        height: 6.0,
+                                        height: 4.0,
                                       ),
                                       TextFormField(
                                         controller: _phoneNumberController,
@@ -407,6 +420,11 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                           hintText: 'Nhập số điện thoại',
+                                          hintStyle:
+                                              GoogleFonts.raleway().copyWith(
+                                            fontSize: 14.0,
+                                            color: textColor1.withOpacity(0.5),
+                                          ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
                                                 right: 16.0),
@@ -427,7 +445,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                 width: 2.0),
                                           ),
                                           contentPadding: EdgeInsets.symmetric(
-                                              vertical: 20.0,
+                                              vertical: 10.0,
                                               horizontal:
                                                   10.0), // Điều chỉnh padding để tăng kích thước input
                                         ),
@@ -441,7 +459,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                       ),
                                       // TODO [Input Form/Content/Form/Button]
                                       SizedBox(
-                                        height: height * 0.04,
+                                        height: height * 0.03,
                                       ),
                                       MouseRegion(
                                         cursor: SystemMouseCursors.click,
@@ -469,7 +487,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             }
                                           },
                                           child: Container(
-                                            padding: const EdgeInsets.all(16),
+                                            padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
                                               color: primaryColorOrange,
                                               borderRadius:
@@ -482,7 +500,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                                     .copyWith(
                                                   color: Colors.white,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
+                                                  fontSize: 16,
                                                 ),
                                               ),
                                             ),

@@ -1,11 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:pet_shop/components/Header/header_appbar.dart';
+import 'package:pet_shop/controllers/Order/order_controller.dart';
+import 'package:pet_shop/models/Order/order.dart';
+import 'package:readmore/readmore.dart';
 
-class RateScreen extends StatelessWidget {
-  const RateScreen({Key? key}) : super(key: key);
+class RateScreen extends StatefulWidget {
+  final ProductUnreviewed productUnreviewed;
+  const RateScreen({Key? key, required this.productUnreviewed})
+      : super(key: key);
+
+  @override
+  _RateScreenState createState() => _RateScreenState();
+}
+
+class _RateScreenState extends State<RateScreen> {
+  double _rating = 4.0;
+  TextEditingController _commentController = TextEditingController();
+  OrderController orderController = Get.find<OrderController>();
+  List<String> _selectedTags = [];
+
+  void _toggleTag(String tag) {
+    setState(() {
+      if (_selectedTags.contains(tag)) {
+        _selectedTags.remove(tag);
+      } else {
+        _selectedTags.add(tag);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: Header_Appbar(
+        context: context,
+        name: "Đánh giá ${widget.productUnreviewed.product.name}",
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -15,53 +49,45 @@ class RateScreen extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      SizedBox(height: 20),
-                      Text(
-                        '4.0',
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.orange,
-                        ),
-                      ),
-                      Text(
-                        '(33)',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      SizedBox(height: 16),
                       CircleAvatar(
-                        radius: 50,
-                        backgroundImage:
-                            AssetImage('assets/images/_project/Logo/logo.png'),
+                        radius: 100,
+                        backgroundImage: NetworkImage(
+                          widget.productUnreviewed.product.image ??
+                              'https://tiki.vn/blog/wp-content/uploads/2023/12/tam-cho-cho-bang-sua-tam-tri-ve-1024x633.jpeg',
+                        ),
+                        onBackgroundImageError: (error, stackTrace) {
+                          setState(() {
+                            // Fallback to local asset image on error
+                          });
+                        },
                       ),
                       SizedBox(height: 16),
                       Text(
-                        'nhunguyen',
+                        widget.productUnreviewed.product.name,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        '3345UNB',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: HtmlWidget(
+                          widget.productUnreviewed.product.description,
+                          customWidgetBuilder: (element) {
+                            return ReadMoreText(
+                              element.text,
+                              trimLines: 5,
+                              colorClickableText: Colors.pink,
+                              trimMode: TrimMode.Line,
+                              trimCollapsedText: '\n Xem thêm',
+                              trimExpandedText: '\n Thu nhỏ',
+                              moreStyle: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.blue),
+                            );
+                          },
                         ),
-                      ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(5, (index) {
-                          return Icon(
-                            index < 4 ? Icons.star : Icons.star_border,
-                            color: Colors.orange,
-                            size: 30,
-                          );
-                        }),
                       ),
                       SizedBox(height: 16),
                       Divider(),
@@ -75,20 +101,59 @@ class RateScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Wrap(
-                        spacing: 8.0,
-                        runSpacing: 4.0,
+                      RatingBar.builder(
+                        initialRating: _rating,
+                        minRating: 0.5,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemSize: 40.0,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (rating) {
+                          setState(() {
+                            _rating = rating;
+                          });
+                        },
+                      ),
+                      SizedBox(height: 16),
+                      Divider(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Text(
+                          'Ý kiến của bạn!',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Row(
                         children: [
-                          ReviewTag(label: 'Tốt', isSelected: true),
-                          ReviewTag(label: 'Đúng với mô tả', isSelected: false),
-                          ReviewTag(label: 'Rất thất vọng', isSelected: false),
+                          ReviewTag(
+                            label: 'Đúng với mô tả',
+                            isSelected:
+                                _selectedTags.contains('Đúng với mô tả'),
+                            onTap: () => _toggleTag('Đúng với mô tả'),
+                          ),
+                          ReviewTag(
+                            label: 'Rất thất vọng',
+                            isSelected: _selectedTags.contains('Rất thất vọng'),
+                            onTap: () => _toggleTag('Rất thất vọng'),
+                          ),
                         ],
                       ),
                       SizedBox(height: 16),
-                      Text(
-                        'The driver was incredibly accommodating and helpful. Cab was very comfy and clean. He made my day even better than ...',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 16, color: Colors.black87),
+                      TextField(
+                        controller: _commentController,
+                        maxLines: 5,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Nhập bình luận của bạn',
+                        ),
                       ),
                       SizedBox(height: 20),
                     ],
@@ -96,7 +161,20 @@ class RateScreen extends StatelessWidget {
                 ),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  String msg =
+                      "${_selectedTags.join(', ')} ${_commentController.text}";
+                  var isPostSuccess = orderController.commentProduct(
+                      msg,
+                      _rating,
+                      widget.productUnreviewed.orderId,
+                      widget.productUnreviewed.product.id);
+
+                  if (await isPostSuccess) {
+                    await orderController.getAllStatusOrder();
+                    Navigator.of(context).pop();
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size(double.infinity, 50),
                 ),
@@ -116,26 +194,32 @@ class RateScreen extends StatelessWidget {
 class ReviewTag extends StatelessWidget {
   final String label;
   final bool isSelected;
+  final VoidCallback onTap;
 
   const ReviewTag({
     Key? key,
     required this.label,
     required this.isSelected,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      decoration: BoxDecoration(
-        color: isSelected ? Colors.black : Colors.grey[200],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? Colors.white : Colors.black,
-          fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.all(2),
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          color: isSelected ? Colors.black : Colors.grey[200],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? Colors.white : Colors.black,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+          ),
         ),
       ),
     );

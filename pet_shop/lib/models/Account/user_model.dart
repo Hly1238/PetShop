@@ -123,6 +123,7 @@ class UserInfo {
   final String image;
   // final List<String> favorites;
   final String token;
+  final String id_device;
 
   factory UserInfo.fromJson(Map<String, dynamic> data) => UserInfo(
         id: data['_id'] ?? '',
@@ -134,6 +135,7 @@ class UserInfo {
         image: data['image'] ?? '',
         // favorites: data['favorites'] ?? [],
         token: data['token'] ?? '',
+        id_device: data['id_device'],
       );
 
   UserInfo({
@@ -146,5 +148,6 @@ class UserInfo {
     required this.image,
     // required this.favorites,
     required this.token,
+    required this.id_device,
   });
 }

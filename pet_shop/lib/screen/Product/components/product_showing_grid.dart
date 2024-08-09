@@ -10,17 +10,21 @@ class ProductShowingGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GridView.builder(
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         childAspectRatio: 0.6,
+        crossAxisCount: 2,
         crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        maxCrossAxisExtent: 200,
+        mainAxisSpacing: 15,
       ),
       physics: BouncingScrollPhysics(),
       padding: EdgeInsets.all(10),
       itemCount: productList.length,
       itemBuilder: (context, index) =>
           ProductCardVertical(product: productList[index]),
+      shrinkWrap:
+          true, // This ensures GridView only takes up as much space as needed
+      primary:
+          false, // Set to false to prevent scrolling issues inside a Column
     );
   }
 }

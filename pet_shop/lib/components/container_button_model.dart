@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:pet_shop/config/constant.dart';
 
 class ContainerButtonModel extends StatelessWidget {
   // const ContainerButtonModel({Key? key}) : super(key: key);
@@ -12,15 +14,20 @@ class ContainerButtonModel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.all(10),
       height: 60,
-      width: containerWidth,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: bgColor),
+        color: bgColor,
+        borderRadius: BorderRadius.circular(10),
+      ),
       child: Center(
         child: Text(
           itext,
-          style: TextStyle(
-              color: Colors.white, fontWeight: FontWeight.w500, fontSize: 18),
+          style: GoogleFonts.raleway().copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
       ),
     );

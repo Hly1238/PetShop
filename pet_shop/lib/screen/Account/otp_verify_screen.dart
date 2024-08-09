@@ -53,7 +53,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
   bool canResend = false;
   late FocusNode myFocusNode;
   Key _pinFieldKey = UniqueKey();
-  String phoneNumber = "ngxuannhu1@gmail.com";
+  // String phoneNumber = "ngxuannhu1@gmail.com";
 
   // * Check times - each turn 3 min
   DateTime? _lastResendTime;
@@ -97,7 +97,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-              'Please wait ${minutes}m ${seconds}s before requesting again.'),
+              'Bạn đang thao tác quá nhanh. Vui lòng chờ ${minutes}m ${seconds}s thực hiện lại.'),
         ),
       );
     }
@@ -128,8 +128,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Invalid OTP'),
-          content: const Text('The OTP you entered is incorrect.'),
+          title: const Text('Mã OTP không hợp lệ'),
+          content: const Text('Mã bạn nhập không chính xác.'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -226,7 +226,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
-                                          text: "Verification Code",
+                                          text: "Mã xác thực",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
                                               color: textColor2,
@@ -242,7 +242,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'We have sent the code verification to',
+                                    'Mã xác thực đã được gửi tới ',
                                     style: GoogleFonts.raleway().copyWith(
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w400,
@@ -252,39 +252,20 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                 SizedBox(
                                   height: height * 0.009,
                                 ),
-                                Row(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Text(
-                                        phoneNumber,
-                                        style: TextStyle(
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
+                                // Row(
+                                //   children: [],
+                                // ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    widget.email,
+                                    style: TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w400,
                                     ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        minimumSize: Size(0, 0),
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                      child: Text(
-                                        " Change your number",
-                                        style: GoogleFonts.raleway().copyWith(
-                                          fontSize: 16.0,
-                                          color: textColor2,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
+
                                 SizedBox(
                                   height: height * 0.034,
                                 ),
@@ -296,7 +277,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        height: 80, // Chiều cao mong muốn
+                                        height: 80,
                                         child: PinFieldAutoFill(
                                           key: _pinFieldKey,
                                           currentCode: _otpCode,
@@ -341,7 +322,7 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                           Row(
                                             children: [
                                               Text(
-                                                "Didn't receive otp? ",
+                                                "Chưa nhận email? ",
                                                 style: TextStyle(
                                                     color: Colors.grey),
                                               ),
@@ -352,10 +333,10 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                                         HandleResend(
                                                             widget.email);
                                                       },
-                                                      child: Text("Resend"),
+                                                      child: Text("Gửi lại"),
                                                     )
                                                   : Text(
-                                                      "Resend",
+                                                      "Gửi lại",
                                                       style: TextStyle(
                                                           color: Colors.grey),
                                                     )

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/product.dart';
@@ -18,6 +19,8 @@ class SelectionTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ProductController productController = Get.find<ProductController>();
+
     String displayText = name;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -43,24 +46,28 @@ class SelectionTitle extends StatelessWidget {
                 if (isCategory) {
                   Navigator.of(context).pushNamed(Routes.list_category);
                 } else {
-                  var isDone =
-                      ProductController.instance.getProductsByCategory(id);
+                  var isDone = productController.getProductsByCategory(id);
                   if (await isDone) {
-                    Navigator.of(context).pushNamed(Routes.product_category,
-                        arguments: SelectionTitleArguments(
-                            name: name,
-                            productList:
-                                ProductController.instance.productList));
+                    Navigator.of(context).pushNamed(
+                      Routes.product_category,
+                      arguments: SelectionTitleArguments(
+                        name: name,
+                        productList: productController.productList,
+                        idCate: id,
+                      ),
+                    );
                   }
                 }
               },
-              child: Text(
-                "Xem thêm",
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.grey,
-                ),
-              ),
+              child: !isCategory
+                  ? Text(
+                      "Xem thêm",
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey,
+                      ),
+                    )
+                  : Text(""),
             ),
           ),
         ],
@@ -72,6 +79,8 @@ class SelectionTitle extends StatelessWidget {
 class SelectionTitleArguments {
   final String name;
   final List<Product> productList;
+  final String idCate;
 
-  SelectionTitleArguments({required this.name, required this.productList});
+  SelectionTitleArguments(
+      {required this.name, required this.productList, required this.idCate});
 }

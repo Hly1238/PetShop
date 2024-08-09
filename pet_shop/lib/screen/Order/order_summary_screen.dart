@@ -1,349 +1,10 @@
-// import 'package:flutter/material.dart';
-// import 'package:pet_shop/controllers/Order/order_controller.dart';
-// import 'package:pet_shop/models/Order/order.dart';
-// import 'package:pet_shop/route/route_generator.dart';
-
-// class OrderSummaryScreen extends StatelessWidget {
-//   const OrderSummaryScreen({Key? key}) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: IconButton(
-//           icon: Icon(Icons.arrow_back),
-//           onPressed: () {},
-//         ),
-//         title: Text('Order Summary'),
-//       ),
-//       body: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               AddressSection(),
-//               SizedBox(height: 16),
-//               NotesSection(),
-//               SizedBox(height: 16),
-//               SelectedItemsSection(),
-//               SizedBox(height: 16),
-//               SummarySection(),
-//               SizedBox(height: 16),
-//               VoucherSection(),
-//               SizedBox(height: 16),
-//               ContinueButton(),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class AddressSection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 5,
-//             offset: Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             children: [
-//               Icon(Icons.location_on),
-//               SizedBox(width: 8),
-//               Text('Địa chỉ giao hàng',
-//                   style: TextStyle(fontWeight: FontWeight.bold)),
-//               Spacer(),
-//               Text(
-//                 'Thay đổi',
-//                 style: TextStyle(color: Colors.red),
-//               ),
-//             ],
-//           ),
-//           SizedBox(height: 8),
-//           Text('Abcdefg Hkglmn'),
-//           Text('84906536176'),
-//           Text(
-//               '27/37/4 Đ. Thống Nhất (Phường 16, Quận Gò Vấp, Thành phố Hồ Chí Minh)'),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class NotesSection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 5,
-//             offset: Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Row(
-//             children: [
-//               Checkbox(value: false, onChanged: (value) {}),
-//               Text('Ghi chú (Thời gian giao hàng, ghi chú khác)'),
-//             ],
-//           ),
-//           TextField(
-//             decoration: InputDecoration(
-//               hintText: 'Nhập ghi chú của bạn tại đây',
-//               border: InputBorder.none,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class SelectedItemsSection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 5,
-//             offset: Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text('Mặt hàng đã chọn',
-//               style: TextStyle(fontWeight: FontWeight.bold)),
-//           SizedBox(height: 16),
-//           ItemCard(
-//             imagePath: 'assets/images/_project/Products/food_1.jpg',
-//             title: 'Hạt Me-O Adult cho mèo trưởng thành 1.2kg',
-//             price: '115.000đ',
-//           ),
-//           ItemCard(
-//             imagePath: 'assets/images/_project/Products/food_2.jpg',
-//             title: 'Hạt Royal Canin Urinary S/O hỗ trợ tiết niệu cho mèo 1.5kg',
-//             price: '470.000đ',
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class ItemCard extends StatelessWidget {
-//   final String imagePath;
-//   final String title;
-//   final String price;
-
-//   ItemCard({required this.imagePath, required this.title, required this.price});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 8.0),
-//       child: Row(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Image.asset(imagePath, width: 60, height: 60),
-//           SizedBox(width: 16),
-//           Expanded(
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(title, style: TextStyle(fontSize: 16)),
-//                 SizedBox(height: 4),
-//                 Text(price, style: TextStyle(color: Colors.red)),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class SummarySection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 5,
-//             offset: Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           SummaryRow(
-//             title: 'Tổng tiền hàng',
-//             value: '890.000đ',
-//           ),
-//           SummaryRow(
-//             title: 'Tiền thuế',
-//             value: '890.000đ',
-//           ),
-//           SummaryRow(
-//             title: 'Phí vận chuyển',
-//             value: 'Chưa tính',
-//             valueColor: Colors.red,
-//           ),
-//           Divider(color: Colors.grey),
-//           SummaryRow(
-//             title: 'Tổng thanh toán (4 sản phẩm)',
-//             value: '890.000đ',
-//             isBold: true,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class SummaryRow extends StatelessWidget {
-//   final String title;
-//   final String value;
-//   final bool isBold;
-//   final Color? valueColor;
-
-//   SummaryRow({
-//     required this.title,
-//     required this.value,
-//     this.isBold = false,
-//     this.valueColor,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 4.0),
-//       child: Row(
-//         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//         children: [
-//           Text(
-//             title,
-//             style: TextStyle(
-//               fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-//             ),
-//           ),
-//           Text(
-//             value,
-//             style: TextStyle(
-//               color: valueColor ?? Colors.black,
-//               fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class VoucherSection extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: EdgeInsets.all(16),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(8),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.2),
-//             spreadRadius: 2,
-//             blurRadius: 5,
-//             offset: Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Row(
-//         children: [
-//           ElevatedButton(
-//             onPressed: () {},
-//             style: ElevatedButton.styleFrom(
-//               backgroundColor: Colors.orange,
-//             ),
-//             child: Text('Chọn Voucher'),
-//           ),
-//           SizedBox(width: 16),
-//           Expanded(
-//             child: Text('Chọn hoặc nhập mã'),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class ContinueButton extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return SizedBox(
-//       width: double.infinity,
-//       child: ElevatedButton(
-//         onPressed: () async {
-//           var isSuccess = OrderController.instance.createOrder();
-//           if (await isSuccess) {
-//             Navigator.of(context).pushReplacementNamed(Routes.details);
-//           }
-//         },
-//         style: ElevatedButton.styleFrom(
-//           backgroundColor: Colors.pink,
-//           padding: EdgeInsets.symmetric(vertical: 16),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(8),
-//           ),
-//         ),
-//         child: Text(
-//           'TIẾP TỤC',
-//           style: TextStyle(fontSize: 16, color: Colors.white),
-//         ),
-//       ),
-//     );
-//   }
-// }
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
+import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
@@ -364,12 +25,15 @@ class OrderSummaryScreen extends StatefulWidget {
 
 class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
   String address = "";
+  String name = "";
+  String phone = "";
   bool isLoading = true;
 
   @override
   void initState() {
     super.initState();
     fetchAddress();
+    fetchData();
   }
 
   Future<void> fetchAddress() async {
@@ -380,18 +44,29 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
     });
   }
 
-  double calculateTotalPrice() {
+  Future<void> fetchData() async {
+    String fetchedPhone = await SecurityStorage().getSecureData("phone");
+    String fetchedName = await SecurityStorage().getSecureData("username");
+    setState(() {
+      phone = fetchedPhone;
+      name = fetchedName;
+      isLoading = false;
+    });
+  }
+
+  int calculateTotalPrice() {
     double totalPrice = 0;
     for (var item in widget.selectedItems) {
       double itemTotal = item.product.promotion * item.quantity;
       totalPrice += itemTotal;
     }
-    return totalPrice;
+    return totalPrice.toInt();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: AppBar(
         leading: BackButton(),
         title: Text('Order Summary'),
@@ -411,10 +86,12 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                           address = newAddress;
                         });
                       },
+                      phone: phone,
+                      name: name,
                     ),
                     SizedBox(height: 16),
-                    NotesSection(),
-                    SizedBox(height: 16),
+                    // NotesSection(),
+                    // SizedBox(height: 16),
                     SelectedItemsSection(
                       listItemSelected: widget.selectedItems,
                     ),
@@ -424,12 +101,13 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                       selectedItems: widget.selectedItems,
                     ),
                     SizedBox(height: 16),
-                    VoucherSection(),
-                    SizedBox(height: 16),
                     PaymentMethod(
+                      isEnabled: address.isNotEmpty,
                       address: address,
                       selectedItems: widget.selectedItems,
-                      billing: 'cod',
+                      billing: 'paypal',
+                      status: "approved",
+                      description: "",
                       total: calculateTotalPrice(),
                     ),
                     SizedBox(height: 16),
@@ -439,6 +117,8 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                       selectedItems: widget.selectedItems,
                       billing: 'cod',
                       total: calculateTotalPrice(),
+                      status: 'pending',
+                      description: '',
                     ),
                   ],
                 ),
@@ -450,9 +130,15 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
 
 class AddressSection extends StatelessWidget {
   final String address;
+  final String phone;
+  final String name;
   final Function(String) onChange;
 
-  AddressSection({required this.address, required this.onChange});
+  AddressSection(
+      {required this.address,
+      required this.onChange,
+      required this.phone,
+      required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -474,12 +160,23 @@ class AddressSection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Icon(Icons.location_on),
-              SizedBox(width: 8),
-              Text('Địa chỉ giao hàng',
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              Spacer(),
+              Row(
+                children: [
+                  Icon(
+                    Icons.local_shipping,
+                    size: 20,
+                  ),
+                  SizedBox(
+                    width: 7,
+                  ),
+                  Text(
+                    'Địa chỉ giao hàng',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  ),
+                ],
+              ),
               GestureDetector(
                 onTap: () async {
                   String newAddress = await showDialog(
@@ -499,7 +196,31 @@ class AddressSection extends StatelessWidget {
             ],
           ),
           SizedBox(height: 8),
-          Text(address.isEmpty ? "Chưa có địa chỉ" : address),
+          Padding(
+            padding: EdgeInsets.only(left: 27),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 5),
+                Text(phone, style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 5),
+                Text(address.isEmpty ? "Chưa có địa chỉ" : address,
+                    style: TextStyle(color: Colors.black54)),
+                SizedBox(height: 8),
+              ],
+            ),
+          ),
+
+          // ElevatedButton(
+          //   onPressed: () {
+          //     // Handle thay đổi action
+          //   },
+          //   child: Text('Thay đổi'),
+          // ),
         ],
       ),
     );
@@ -570,14 +291,31 @@ class NotesSection extends StatelessWidget {
         children: [
           Row(
             children: [
-              Checkbox(value: false, onChanged: (value) {}),
-              Text('Ghi chú (Thời gian giao hàng, ghi chú khác)'),
+              Icon(
+                Icons.note_alt,
+                size: 20,
+              ),
+              SizedBox(
+                width: 7,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width / 1.5,
+                child: Text('Ghi chú',
+                    softWrap: true,
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
+              )
             ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 25),
+            child: Text("(Thời gian giao hàng, ghi chú khác)"),
           ),
           TextField(
             decoration: InputDecoration(
+              hintStyle: TextStyle(color: Colors.grey),
               hintText: 'Nhập ghi chú của bạn tại đây',
-              border: InputBorder.none,
+              border: UnderlineInputBorder(),
             ),
           ),
         ],
@@ -610,17 +348,44 @@ class SelectedItemsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('Mặt hàng đã chọn',
-              style: TextStyle(fontWeight: FontWeight.bold)),
+          Row(
+            children: [
+              Icon(
+                Icons.shopping_cart,
+                size: 20,
+              ),
+              SizedBox(
+                width: 5,
+              ),
+              Text(
+                'Mặt hàng đã chọn',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+            ],
+          ),
           SizedBox(height: 16),
-          ...listItemSelected
-              .map((productOrder) => ItemCard(
-                    imagePath: productOrder.product.image,
-                    title: productOrder.product.name,
-                    price:
-                        '${productOrder.product.promotion * productOrder.quantity}đ',
-                  ))
-              .toList(),
+          SizedBox(
+            height: 350,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Divider(
+                    height: 20,
+                  ),
+                  Column(
+                    children: listItemSelected
+                        .map((productOrder) => ItemCard(
+                              imagePath: productOrder.product.image,
+                              title: productOrder.product.name,
+                              price:
+                                  '${TransformCustomApp().formatCurrency((productOrder.product.promotion * productOrder.quantity).toInt())}',
+                            ))
+                        .toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -636,36 +401,49 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image.network(imagePath, width: 60, height: 60),
-          Image(
-            image: AssetImage("assets/images/_project/Products/food_2.jpg"),
-            width: 60,
-            height: 60,
-          ),
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Container(
+        margin: EdgeInsets.only(top: 5),
+        child: Column(
+          children: [
+            Row(
               children: [
-                Text(title, style: TextStyle(fontSize: 16)),
-                SizedBox(height: 4),
-                Text(price, style: TextStyle(color: Colors.red)),
+                Image.network(
+                  imagePath,
+                  width: 70,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+                SizedBox(width: 15),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(title,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)),
+                      Text(
+                        price,
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
-          ),
-        ],
-      ),
-    );
+            Divider(
+              height: 30,
+            ),
+          ],
+        ));
   }
 }
 
 class SummarySection extends StatelessWidget {
-  final double total;
+  final int total;
   final List<ProductOrder> selectedItems;
   const SummarySection(
       {super.key, required this.total, required this.selectedItems});
@@ -690,23 +468,46 @@ class SummarySection extends StatelessWidget {
         children: [
           SummaryRow(
             title: 'Tổng tiền hàng',
-            value: '$total',
+            value: '${TransformCustomApp().formatCurrency(total)}',
+            isBold: true,
           ),
           // SummaryRow(
           //   title: 'Tiền thuế',
           //   value: '890.000đ',
           // ),
-          SummaryRow(
-            title: 'Phí vận chuyển',
-            value: 'Chưa tính',
-            valueColor: Colors.red,
-          ),
+          // SummaryRow(
+          //   title: 'Phí vận chuyển',
+          //   value: 'Chưa tính',
+          //   valueColor: Colors.red,
+          //   isBold: true,
+          // ),
           Divider(color: Colors.grey),
-          SummaryRow(
-            title: 'Tổng thanh toán (${selectedItems.length} sản phẩm)',
-            value: '$total',
-            isBold: true,
+          Row(
+            children: [
+              Text(
+                " Tổng thanh toán (${selectedItems.length} sản phẩm)",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15),
+              ),
+            ],
           ),
+          SizedBox(
+            height: 10,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                "${TransformCustomApp().formatCurrency(total)}",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red,
+                    fontSize: 18),
+              )
+            ],
+          )
         ],
       ),
     );
@@ -736,6 +537,7 @@ class SummaryRow extends StatelessWidget {
           Text(
             title,
             style: TextStyle(
+              color: valueColor ?? Colors.black,
               fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             ),
           ),
@@ -743,7 +545,6 @@ class SummaryRow extends StatelessWidget {
             value,
             style: TextStyle(
               color: valueColor ?? Colors.black,
-              fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
             ),
           ),
         ],
@@ -790,17 +591,21 @@ class VoucherSection extends StatelessWidget {
 
 class ContinueButton extends StatelessWidget {
   final bool isEnabled;
-  final double total;
+  final int total;
   final String address;
   final String billing;
+  final String status;
+  final String description;
   final List<ProductOrder> selectedItems;
   ContinueButton(
       {required this.isEnabled,
       required this.total,
       required this.address,
       required this.billing,
-      required this.selectedItems});
-
+      required this.selectedItems,
+      required this.status,
+      required this.description});
+  OrderController orderController = Get.find<OrderController>();
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -808,24 +613,23 @@ class ContinueButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: isEnabled
             ? () async {
-                var isSuccess =
-                    await createOrder(selectedItems, total, address, billing);
+                var isSuccess = await createOrder(selectedItems, total, address,
+                    billing, status, description);
                 if (await isSuccess) {
+                  await orderController.getAllStatusOrder();
+
                   Navigator.of(context).pushReplacementNamed(
-                      Routes.order_detail,
-                      arguments: Order(
-                          id: "",
-                          user: "",
-                          products: selectedItems,
-                          orderTotal: total,
-                          address: address,
-                          billing: billing,
-                          status: "pending",
-                          description: "description",
-                          date: DateTime.now()));
+                    Routes.order_detail,
+                    arguments: orderController.order.value,
+                  );
                 }
               }
-            : null,
+            : () {
+                // ScaffoldMessenger.of(context).showSnackBar(
+                //     SnackbarCustom()
+                //         .showErorSnackBar("Vui lòng điền thông tin vận chuyển"));
+                EasyLoading.showError("Vui lòng điền thông tin vận chuyển");
+              },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.pink,
           padding: EdgeInsets.symmetric(vertical: 16),
@@ -841,26 +645,35 @@ class ContinueButton extends StatelessWidget {
     );
   }
 
-  Future<bool> createOrder(List<ProductOrder> selectedItems, double total,
-      String address, String billing) async {
-    var isSuccess = OrderController.instance
-        .createOrder(selectedItems, total, address, billing);
+  Future<bool> createOrder(List<ProductOrder> selectedItems, int total,
+      String address, String billing, String status, String description) async {
+    var isSuccess = OrderController.instance.createOrder(
+        selectedItems, total, address, billing, status, description);
     return isSuccess;
   }
 }
 
 class PaymentMethod extends StatelessWidget {
-  final double total;
+  final bool isEnabled;
+
+  final int total;
   final String address;
   final String billing;
+  final String description;
+  final String status;
   final List<ProductOrder> selectedItems;
 
-  const PaymentMethod(
+  PaymentMethod(
       {super.key,
       required this.total,
       required this.address,
       required this.billing,
-      required this.selectedItems});
+      required this.selectedItems,
+      required this.description,
+      required this.status,
+      required this.isEnabled});
+  OrderController orderController = Get.find<OrderController>();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -877,66 +690,81 @@ class PaymentMethod extends StatelessWidget {
           ),
         ],
       ),
-      child: Row(
+      child: Column(
         children: [
-          // Expanded(
-          //   flex: 1,
-          //   child: ElevatedButton(
-          //     onPressed: () {},
-          //     style: ElevatedButton.styleFrom(
-          //       backgroundColor: Colors.orange,
-          //     ),
-          //     child: Text('Thanh toán khi nhận hàng'),
-          //   ),
-          // ),
-          // SizedBox(width: 16),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () async {
-                var result = await createOrder(10000);
-                if (result != null) {
-                  ScaffoldMessenger.of(context).showSnackBar(SnackbarCustom()
-                      .showErorSnackBar("${result.zptranstoken}"));
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: isEnabled
+                      ? () async {
+                          var result = await createOrder(total);
+                          if (result != null) {
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //     SnackbarCustom()
+                            //         .showErorSnackBar("${result.zptranstoken}"));
 
-                  FlutterZaloPaySdk.payOrder(zpToken: result.zptranstoken)
-                      .then((event) {
-                    switch (event) {
-                      case FlutterZaloPayStatus.cancelled:
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackbarCustom()
-                                .showErorSnackBar("User Huỷ Thanh Toán"));
-                        break;
-                      case FlutterZaloPayStatus.success:
-                        createPayment(context);
-                        break;
-                      case FlutterZaloPayStatus.failed:
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackbarCustom()
-                                .showErorSnackBar("Thanh toán thất bại"));
+                            FlutterZaloPaySdk.payOrder(
+                                    zpToken: result.zptranstoken)
+                                .then((event) {
+                              switch (event) {
+                                case FlutterZaloPayStatus.cancelled:
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackbarCustom().showErorSnackBar(
+                                          "User Huỷ Thanh Toán"));
+                                  break;
+                                case FlutterZaloPayStatus.success:
+                                  createPayment(context);
+                                  break;
+                                case FlutterZaloPayStatus.failed:
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackbarCustom().showErorSnackBar(
+                                          "Thanh toán thất bại"));
 
-                        break;
-                      default:
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            SnackbarCustom()
-                                .showErorSnackBar("Thanh toán thất bại"));
-                        break;
-                    }
-                  });
-                }
-              },
-              child: Text('Chọn phương thức thanh toán'),
-            ),
+                                  break;
+                                default:
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackbarCustom().showErorSnackBar(
+                                          "Thanh toán thất bại"));
+                                  break;
+                              }
+                            });
+                          }
+                        }
+                      : () {
+                          // ScaffoldMessenger.of(context).showSnackBar(
+                          //     SnackbarCustom()
+                          //         .showErorSnackBar("Vui lòng điền thông tin vận chuyển"));
+                          EasyLoading.showError(
+                              "Vui lòng điền thông tin vận chuyển");
+                        },
+                  child: Text('Thanh toán trước bằng ZaloPay'),
+                ),
+              ),
+            ],
           ),
+          SizedBox(
+            height: 5,
+          ),
+          Text(
+            "(Nếu không chọn thanh toán trước thì khách hàng sẽ thanh toán sau khi nhận được hàng)",
+            softWrap: true,
+            style: TextStyle(color: Colors.grey, fontSize: 11),
+          )
         ],
       ),
     );
   }
 
   void createPayment(BuildContext context) async {
-    bool isOrderCreated = await OrderController.instance
-        .createOrder(selectedItems, total, address, "paypal");
-    if (isOrderCreated) {
-      Navigator.of(context).pushNamed(Routes.sign_in);
+    bool isOrderCreated = await OrderController.instance.createOrder(
+        selectedItems, total, address, billing, status, description);
+    if (await isOrderCreated) {
+      await orderController.getAllStatusOrder();
+      Navigator.of(context).pushReplacementNamed(
+        Routes.order_detail,
+        arguments: orderController.order.value,
+      );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
           SnackbarCustom().showErorSnackBar("Tạo đơn hàng thất bại"));
