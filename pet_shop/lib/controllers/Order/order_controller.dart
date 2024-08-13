@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/models/Address/address.dart';
 import 'package:pet_shop/models/Home/Banners/ad_banner.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
@@ -19,6 +20,16 @@ class OrderController extends GetxController {
   RxBool isOrderLoading = false.obs;
   RxString address = "".obs;
   Rxn<Order> order = Rxn<Order>();
+  //!Address
+  RxList<City> cityList = List<City>.empty(growable: true).obs;
+  RxList<District> districtList = List<District>.empty(growable: true).obs;
+  RxList<Ward> wardList = List<Ward>.empty(growable: true).obs;
+  //!Tmp Address
+  RxString addressTmp = "".obs;
+  RxBool isUpdate = false.obs;
+
+  // ! Fee Transfer
+  RxInt deliveryFee = 0.obs;
 
   @override
   void onInit() {
@@ -142,6 +153,31 @@ class OrderController extends GetxController {
       print("Error loading orders: $e");
       return false;
     } finally {
+      EasyLoading.dismiss();
+
+      print("Final orders length: ${orderList.length}");
+    }
+  }
+
+  //todo [Cancle Order]
+  Future<bool> cancleOrder(Order order) async {
+    try {
+      var result = await OrderService().cancelOrder(order);
+      if (result != null) {
+        EasyLoading.showSuccess("Rất xin lỗi vì trải nghiệm vừa rồi!");
+        return true;
+      } else {
+        EasyLoading.showError(
+            "Hệ thống đã xảy ra lỗi, xin vui lòng thử lại sau");
+        return false;
+      }
+    } catch (e) {
+      EasyLoading.showError("Hệ thống đã xảy ra lỗi, xin vui lòng thử lại sau");
+      print("Error loading orders: $e");
+      return false;
+    } finally {
+      EasyLoading.dismiss();
+
       print("Final orders length: ${orderList.length}");
     }
   }
@@ -185,6 +221,7 @@ class OrderController extends GetxController {
       var result = await OrderService().findNewestAdrress();
       if (result.statusCode == 200) {
         var jsonResponse = jsonDecode(result.body); // Giải mã JSON
+        addressTmp.value = jsonResponse['address'];
         return jsonResponse['address'];
       } else {
         return "";
@@ -221,6 +258,92 @@ class OrderController extends GetxController {
       return false;
     } finally {
       EasyLoading.dismiss();
+    }
+  }
+
+  //todo [Get list city]
+  Future<void> getListCity() async {
+    try {
+      // isOrderLoading(true);
+      var result = await OrderService().getCityList();
+
+      // Phân tích JSON nếu cần
+      var data = jsonDecode(result);
+      if (result != null) {
+        cityList.assignAll(cityFromListJson(data));
+      } else {
+        print("Failed to load city: result is null");
+      }
+    } catch (e) {
+      print("Error loading orders: $e");
+    } finally {
+      print("Final city length: ${cityList.length}");
+    }
+  }
+
+  //todo [Get list district]
+  Future<void> getListDistrict(int id) async {
+    try {
+      // isOrderLoading(true);
+      var result = await OrderService().getDistrictList(id);
+
+      var data = jsonDecode(result);
+      if (result != null) {
+        districtList.assignAll(districtFromListJson(data));
+      } else {
+        print("Failed to load district: result is null");
+      }
+    } catch (e) {
+      print("Error loading orders: $e");
+    } finally {
+      print("Final district length: ${districtList.length}");
+    }
+  }
+
+  //todo [Get list ward]
+  Future<void> getWardList(int id) async {
+    try {
+      // isOrderLoading(true);
+      var result = await OrderService().getWardist(id);
+      var data = jsonDecode(result);
+      if (result != null) {
+        wardList.assignAll(wardFromListJson(data));
+      } else {
+        print("Failed to load ward: result is null");
+      }
+    } catch (e) {
+      print("Error loading orders: $e");
+    } finally {
+      print("Final ward length: ${wardList.length}");
+    }
+  }
+
+  //todo [Get Fee]
+  Future<String> getFee(int toDistrictId, int insurance_value, int? cod,
+      String to_ward_code) async {
+    int fee = 0;
+    try {
+      // isOrderLoading(true);
+      var result = await OrderService()
+          .getFee(toDistrictId, insurance_value, cod, to_ward_code);
+      var data = jsonDecode(result);
+      if (data != null) {
+        fee = data['data']['total'];
+        deliveryFee.value = data['data']['total'].toInt();
+        return "";
+      } else {
+        print("Failed to load fee: result is null");
+        deliveryFee.value = 0;
+      }
+
+      return "0";
+    } catch (e) {
+      print("Error loading orders: $e");
+      deliveryFee.value = 0;
+
+      return "0";
+    } finally {
+      print("Final Fee: ${fee}");
     }
   }
 }

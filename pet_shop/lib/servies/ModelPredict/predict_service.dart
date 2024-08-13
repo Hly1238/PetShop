@@ -5,7 +5,7 @@ import 'package:pet_shop/config/cofig.dart';
 
 class PredictService {
   var client = http.Client();
-  var url = Uri.http(Config.apiURL, Config.predict);
+  var url = Uri.https(Config.apiURL, Config.predict);
 
   Future<dynamic> predict(Uint8List bytes, String fileName) async {
     var request = http.MultipartRequest("POST", url);

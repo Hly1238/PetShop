@@ -39,7 +39,32 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 return ProductShowingGrid(
                     productList: productController.favoriteList);
               } else {
-                return ProductLoadingGrid();
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment:
+                        CrossAxisAlignment.center, // Center horizontally
+                    children: [
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.2),
+                      Image.asset(
+                        'assets/images/_project/Logo/logo.png',
+                        width: 150,
+                        height: 150,
+                      ),
+                      Text(
+                        'Chưa có sản phẩm yêu thích',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.2),
+                    ],
+                  ),
+                );
               }
             }),
           ),

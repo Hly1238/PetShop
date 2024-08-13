@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
+import 'package:pet_shop/models/Account/user_model.dart';
 import 'package:pet_shop/models/Pagination/pagination.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/favorite_product.dart';
@@ -19,7 +21,6 @@ class ProductController extends GetxController {
   //todo [Fav]
   RxList<Product> favoriteList = <Product>[].obs;
   RxBool isFav = false.obs;
-
   RxList<Product> productList = <Product>[].obs;
   RxList<Product> productListSearch = <Product>[].obs;
   RxList<Product> productRecommended = <Product>[].obs;
@@ -45,6 +46,9 @@ class ProductController extends GetxController {
   // todo [Category]
   RxList<Category> categoryList = List<Category>.empty(growable: true).obs;
   RxBool isCategoryLoading = false.obs;
+
+  //
+  Rxn<Product> product = Rxn<Product>();
 
   @override
   void onInit() {
@@ -158,6 +162,34 @@ class ProductController extends GetxController {
       return false;
     } finally {
       isProductLoading(false);
+
+      print("Final Products list In Cate length: ${productList.length}");
+      return true;
+    }
+  }
+
+  //todo [Products by Id]
+  Future<bool> getProductById(
+    String id,
+  ) async {
+    try {
+      EasyLoading.show(
+        status: 'Loading',
+        dismissOnTap: false,
+      );
+      isProductLoading(true);
+      var result = await ProductService().getById(id);
+      if (result != null) {
+        var data = json.decode(result.body);
+        var tmp = data["data"];
+        product.value = Product.fromJson(tmp);
+      }
+    } catch (e) {
+      print("Exception while fetching category with products: $e");
+      return false;
+    } finally {
+      isProductLoading(false);
+      EasyLoading.dismiss();
 
       print("Final Products list In Cate length: ${productList.length}");
       return true;

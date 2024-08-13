@@ -4,6 +4,7 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/components/Header/header_appbar.dart';
+import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:readmore/readmore.dart';
@@ -36,6 +37,7 @@ class _RateScreenState extends State<RateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: Header_Appbar(
         context: context,
         name: "Đánh giá ${widget.productUnreviewed.product.name}",

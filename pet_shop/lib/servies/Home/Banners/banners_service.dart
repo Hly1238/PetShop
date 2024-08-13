@@ -3,7 +3,7 @@ import 'package:pet_shop/config/cofig.dart';
 
 class BannersService {
   var client = http.Client();
-  var url = Uri.http(Config.apiURL, Config.bannerAPI);
+  var url = Uri.https(Config.apiURL, Config.bannerAPI);
   Map<String, String> requestHeaders = {
     'Content-Type': 'application/json',
   };
@@ -14,7 +14,7 @@ class BannersService {
   }
 
   Future<dynamic> getTopNewBanner() async {
-    var url = Uri.http(Config.apiURL, '${Config.bannerNewAPI}');
+    var url = Uri.https(Config.apiURL, '${Config.bannerNewAPI}');
     var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
     return response;
   }
@@ -23,7 +23,7 @@ class BannersService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, '${Config.getBannerIdAPI}${id}');
+    var url = Uri.https(Config.apiURL, '${Config.getBannerIdAPI}${id}');
 
     var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
 

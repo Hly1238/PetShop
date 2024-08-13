@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/controllers/Home/home_controller.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/screen/Home/components/banner/banner_showing.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_loading.dart';
 import 'package:pet_shop/screen/Home/components/carousel_slider/carousel_slider_view.dart';
@@ -32,6 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _refreshData();
+
     _scrollController.addListener(() {
       if (_scrollController.offset >= 400) {
         if (!_showScrollToTopButton) {

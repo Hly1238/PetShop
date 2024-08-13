@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:pet_shop/models/Account/user_model.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
-import 'package:pet_shop/models/Product/Product.dart';
+import 'package:pet_shop/models/Product/product.dart';
 
 List<Order> orderListfromJson(String val) {
   final data = jsonDecode(val);

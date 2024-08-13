@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/controllers/Predict/predict_controller.dart';
 import 'package:pet_shop/controllers/Product/filter_controller.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/product.dart';
@@ -11,11 +12,13 @@ import 'package:pet_shop/screen/Product/components/product_showing_grid.dart';
 class ProductCategory extends StatefulWidget {
   final String name;
   final String idCate;
+  final bool isSearch;
   final List<Product> productList;
 
   const ProductCategory({
     Key? key,
     this.productList = const [],
+    this.isSearch = false,
     required this.name,
     required this.idCate,
   }) : super(key: key);
@@ -27,6 +30,7 @@ class ProductCategory extends StatefulWidget {
 class _ProductCategoryState extends State<ProductCategory> {
   final ProductController productController = Get.find<ProductController>();
   final FilterController filterController = Get.put(FilterController());
+  PredictController predictController = Get.find<PredictController>();
 
   final ScrollController _scrollController = ScrollController();
   bool _showScrollToTopButton = false;
@@ -70,6 +74,7 @@ class _ProductCategoryState extends State<ProductCategory> {
   @override
   void initState() {
     super.initState();
+    getData();
     _scrollController.addListener(() {
       if (_scrollController.offset >= 400) {
         if (!_showScrollToTopButton) {
@@ -94,9 +99,18 @@ class _ProductCategoryState extends State<ProductCategory> {
     });
   }
 
+  void getData() async {
+    await productController.getProductsByCategory(widget.idCate);
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
+    predictController.productList.clear();
+    productController.productList.clear();
+    filterController.productListSearch.clear();
+    filterController.updateChanged(false);
+    filterController.updateReset(false);
     super.dispose();
   }
 
@@ -117,15 +131,16 @@ class _ProductCategoryState extends State<ProductCategory> {
     return Scaffold(
       backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: AppBar(
-        title: Text('Products in ${widget.name}'),
+        title: Text('Sản phẩm ${widget.name}'),
       ),
       body: Stack(
         children: [
           Column(
             children: [
-              FilterComponet(
-                idCate: widget.idCate,
-              ),
+              if (!widget.isSearch)
+                FilterComponet(
+                  idCate: widget.idCate,
+                ),
               SizedBox(
                 height: 10,
               ),

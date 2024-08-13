@@ -10,9 +10,20 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.productAPI);
+    var url = Uri.https(Config.apiURL, Config.productAPI);
 
     var response = await client.post(url, headers: requestHeaders);
+    return response;
+  }
+
+  Future<dynamic> getById(String id) async {
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var url = Uri.https(Config.apiURL, '${Config.getProductByID}${id}');
+
+    var response = await client.get(url, headers: requestHeaders);
+
     return response;
   }
 
@@ -21,7 +32,7 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.getNewProduct);
+    var url = Uri.https(Config.apiURL, Config.getNewProduct);
 
     var response = await client.get(url, headers: requestHeaders);
     return response;
@@ -31,7 +42,7 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.getPopularProduct);
+    var url = Uri.https(Config.apiURL, Config.getPopularProduct);
 
     var response = await client.get(url, headers: requestHeaders);
     return response;
@@ -41,7 +52,7 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.getHighRecommendProduct);
+    var url = Uri.https(Config.apiURL, Config.getHighRecommendProduct);
 
     var response = await client.get(url, headers: requestHeaders);
     return response;
@@ -59,7 +70,7 @@ class ProductService {
       'Content-Type': 'application/json',
     };
     var url =
-        Uri.http(Config.apiURL, Config.productSearchName, queryParameters);
+        Uri.https(Config.apiURL, Config.productSearchName, queryParameters);
     var response = await client.get(url, headers: requestHeaders);
     return response;
   }
@@ -75,7 +86,7 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.productSearchPrice);
+    var url = Uri.https(Config.apiURL, Config.productSearchPrice);
     var response = await client.post(url,
         headers: requestHeaders, body: jsonEncode(queryParameters));
     return response;
@@ -87,7 +98,7 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(
+    var url = Uri.https(
         Config.apiURL, Config.productGetReviews + '$productId/reviews');
     var response = await client.get(url, headers: requestHeaders);
     return response;
@@ -98,7 +109,8 @@ class ProductService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.recommendedProduct + '$productId');
+    var url =
+        Uri.https(Config.apiURL, Config.recommendedProduct + '$productId');
     var response = await client.get(url, headers: requestHeaders);
     return response;
   }
@@ -106,7 +118,7 @@ class ProductService {
   // todo [Filter Product]
   Future<dynamic> filterProduct(Map<String, Object?> dataFilter, String? page,
       String? limit, String? idCate) async {
-    var url = Uri.http(Config.apiURL, Config.filterProduct);
+    var url = Uri.https(Config.apiURL, Config.filterProduct);
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };

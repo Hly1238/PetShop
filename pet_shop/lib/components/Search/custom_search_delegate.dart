@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/category.dart';
@@ -33,14 +34,14 @@ class CustomSearchDelegate extends SearchDelegate<String> {
           .toList(),
     );
 
-    // Tìm kiếm trong danh sách thể loại
-    results.addAll(
-      categories
-          .where((category) =>
-              category.name.toLowerCase().contains(query.toLowerCase()))
-          .map((category) => category.name)
-          .toList(),
-    );
+    // // Tìm kiếm trong danh sách thể loại
+    // results.addAll(
+    //   categories
+    //       .where((category) =>
+    //           category.name.toLowerCase().contains(query.toLowerCase()))
+    //       .map((category) => category.name)
+    //       .toList(),
+    // );
 
     return results;
   }
@@ -52,12 +53,12 @@ class CustomSearchDelegate extends SearchDelegate<String> {
       }
     }
 
-    // Tìm ID trong danh sách thể loại
-    for (var category in categories) {
-      if (category.name == name) {
-        return category.id; // Thay .name thành .id
-      }
-    }
+    // // Tìm ID trong danh sách thể loại
+    // for (var category in categories) {
+    //   if (category.name == name) {
+    //     return category.id; // Thay .name thành .id
+    //   }
+    // }
 
     return null;
   }
@@ -73,13 +74,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
         icon: const Icon(Icons.clear),
       ),
       IconButton(
-        onPressed: () {
-          Fluttertoast.showToast(
-            msg: 'You searched for: $query',
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-          );
-        },
+        onPressed: () {},
         icon: const Icon(Icons.search),
       ),
     ];
@@ -95,48 +90,23 @@ class CustomSearchDelegate extends SearchDelegate<String> {
     );
   }
 
-  // @override
-  // Widget buildResults(BuildContext context) {
-  //   if (query.isEmpty) {
-  //     return Center(
-  //       child: Text('Please enter a search term'),
-  //     );
-  //   }
-  //   Navigator.of(context).pushReplacementNamed(Routes.product_category,
-  //       arguments: SelectionTitleArguments(name: query, productList: []));
-  //   Fluttertoast.showToast(
-  //     msg: 'You searched for: $query',
-  //     toastLength: Toast.LENGTH_SHORT,
-  //     gravity: ToastGravity.BOTTOM,
-  //   );
-
-  //   return Center(
-  //     child: Text('You searched for: $query'),
-  //   );
-  // }
-
   @override
   Widget buildResults(BuildContext context) {
     if (query.isEmpty) {
       return Center(
-        child: Text('Please enter a search term'),
+        child: Text('Hãy nhập sản phẩm cần tìm'),
       );
     }
 
-    // Delay the navigation until after the build process
     Future.microtask(() async {
       await ProductController.instance.getProductByName(query);
       Navigator.of(context).pushReplacementNamed(
         Routes.product_category,
         arguments: SelectionTitleArguments(
-            idCate: '',
+            idCate: ProductController.instance.productListSearch[0].id,
             name: query,
-            productList: ProductController.instance.productListSearch),
-      );
-      Fluttertoast.showToast(
-        msg: 'You searched for: $query',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+            productList: ProductController.instance.productListSearch,
+            isSearch: true),
       );
     });
 
@@ -156,22 +126,28 @@ class CustomSearchDelegate extends SearchDelegate<String> {
 
     final results = searchAndFilter(query);
     if (results.isEmpty) {
-      return Center(
-        child: Text('No suggestions available'),
+      return Container(
+        color: CustomAppColor.lightBackgroundColor_Home,
+        child: Center(
+          child: Text('Không tìm thấy sản phẩm tương ứng'),
+        ),
       );
     }
-    return ListView.builder(
-      itemCount: results.length,
-      itemBuilder: (context, index) {
-        final item = results[index];
-        return ListTile(
-          title: Text(item),
-          onTap: () {
-            query = item;
-            showResults(context);
-          },
-        );
-      },
+    return Container(
+      color: CustomAppColor.lightBackgroundColor_Home,
+      child: ListView.builder(
+        itemCount: results.length,
+        itemBuilder: (context, index) {
+          final item = results[index];
+          return ListTile(
+            title: Text(item),
+            onTap: () {
+              query = item;
+              showResults(context);
+            },
+          );
+        },
+      ),
     );
   }
 }

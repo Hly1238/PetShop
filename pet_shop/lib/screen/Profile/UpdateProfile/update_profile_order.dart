@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +8,7 @@ import 'package:pet_shop/components/Header/header_appbar.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/responsive/responsive_widget.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
+import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/config/validators/validation.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
@@ -17,14 +16,16 @@ import 'package:pet_shop/models/Address/address.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'dart:convert';
 
-class UpdateProfile extends StatefulWidget {
-  const UpdateProfile({Key? key}) : super(key: key);
+class UpdateProfileOrder extends StatefulWidget {
+  final int totalOrder;
+  const UpdateProfileOrder({Key? key, required this.totalOrder})
+      : super(key: key);
 
   @override
-  _UpdateProfileState createState() => _UpdateProfileState();
+  _UpdateProfileOrderState createState() => _UpdateProfileOrderState();
 }
 
-class _UpdateProfileState extends State<UpdateProfile> {
+class _UpdateProfileOrderState extends State<UpdateProfileOrder> {
   AuthController authController = Get.find<AuthController>();
   OrderController orderController = Get.find<OrderController>();
   String? username;
@@ -47,11 +48,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final FocusNode _addressFocusNode = FocusNode();
   final FocusNode _phoneNumberFocusNode = FocusNode();
 
-  //! Drop down
-  //todo [Rating dropdown]
-  List<double> listRating = [1.0, 2.0, 3.0, 4.0, 5.0];
-  double? selectedRating;
-
   City? defaultCity;
   District? selectedDistrict;
   Ward? selectedWard;
@@ -67,8 +63,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
     getData().then((_) {
       getListData();
     });
+
     getListData();
+
     super.initState();
+  }
+
+  void resetState() {
+    selectedDistrict = null;
+    selectedWard = null;
   }
 
   @override
@@ -82,17 +85,18 @@ class _UpdateProfileState extends State<UpdateProfile> {
     _addressFocusNode.dispose();
     _phoneNumberFocusNode.dispose();
 
-    // Optionally clear controller lists if necessary
     orderController.districtList.clear();
     orderController.wardList.clear();
 
     super.dispose();
   }
 
-  Future<void> getListData() async {
+  void getListData() async {
     await orderController.getListCity();
+
     if (defaultCity != null) {
-      getDistrict(defaultCity!.ProvinceID);
+      await getDistrict(defaultCity!.ProvinceID);
+      await getWardList(selectedDistrict!.DistrictID);
     }
     if (selectedDistrict != null) {
       getWardList(selectedDistrict!.DistrictID);
@@ -105,11 +109,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   Future<void> getWardList(int districtID) async {
     await orderController.getWardList(districtID);
-  }
-
-  void resetState() {
-    selectedDistrict = null;
-    selectedWard = null;
   }
 
   Future<void> getAddressApart(
@@ -132,7 +131,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
         '{"${dis[2]}": "${dis[3].trim()}", "${dis[0]}":  ${dis[1]}}';
     Map<String, dynamic> disjson = jsonDecode(jsonStringDis);
     District district = District.fromJson(disjson);
-
     selectedDistrict = district;
 
     // //todo Ward
@@ -141,24 +139,40 @@ class _UpdateProfileState extends State<UpdateProfile> {
         '{"${ward[2]}": "${ward[3].trim()}", "${ward[0]}":  "${ward[1]}"}';
     Map<String, dynamic> wardjson = jsonDecode(jsonStringWard);
     Ward wardObject = Ward.fromJson(wardjson);
-
     selectedWard = wardObject;
   }
 
   Future<void> getData() async {
     var isLogin = await SecurityStorage().readSecureData("token");
     if (isLogin) {
-      var result = await authController.getProfile();
-      if (result != null) {
-        if (authController.user.value?.address != "") {
-          List<String> listAddress =
-              authController.user.value!.address.split("-");
+      if (!orderController.isUpdate.value) {
+        var addressFromRecentlyOrder =
+            await orderController.findLastestAddress();
+        if (addressFromRecentlyOrder == "") {
+          var result = await authController.getProfile();
+          if (result != null) {
+            if (authController.user.value?.address != "") {
+              List<String> listAddress =
+                  authController.user.value!.address.split("-");
 
-          if (listAddress.isNotEmpty) {
-            await getAddressApart(
-                listAddress[0], listAddress[1], listAddress[2]);
-            _addressController = TextEditingController(text: listAddress[3]);
+              if (listAddress.isNotEmpty) {
+                getAddressApart(listAddress[0], listAddress[1], listAddress[2]);
+                _addressController =
+                    TextEditingController(text: listAddress[3]);
+              }
+            }
           }
+        } else {
+          List<String> listAddress = addressFromRecentlyOrder.split("-");
+
+          getAddressApart(listAddress[0], listAddress[1], listAddress[2]);
+          _addressController = TextEditingController(text: listAddress[3]);
+        }
+      } else {
+        List<String> listAddress = orderController.addressTmp.split("-");
+        if (listAddress.isNotEmpty) {
+          getAddressApart(listAddress[0], listAddress[1], listAddress[2]);
+          _addressController = TextEditingController(text: listAddress[3]);
         }
       }
 
@@ -195,7 +209,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
-
     return WillPopScope(
       onWillPop: () async {
         bool shouldPop = await showCupertinoDialog(
@@ -247,39 +260,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            //todo [Image]
-                            // Align(
-                            //   alignment: Alignment.center,
-                            //   child: GestureDetector(
-                            //     onTap: () async {},
-                            //     child: Container(
-                            //       decoration: BoxDecoration(
-                            //         shape: BoxShape.circle,
-                            //         border: Border.all(
-                            //             color: Colors.white, width: 1),
-                            //       ),
-                            //       child: ClipRRect(
-                            //         borderRadius: BorderRadius.circular(300),
-                            //         child: SizedBox(
-                            //           height: 100,
-                            //           width: 100,
-                            //           child: FadeInImage(
-                            //             fit: BoxFit.cover,
-                            //             placeholder: AssetImage(
-                            //                 'assets/images/_project/Logo/logo.png'),
-                            //             image: NetworkImage("userInfo.image"),
-                            //             imageErrorBuilder:
-                            //                 (context, error, stackTrace) =>
-                            //                     Image.asset(
-                            //               'assets/images/_project/Logo/logo.png',
-                            //               fit: BoxFit.cover,
-                            //             ),
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ),
-                            //   ),
-                            // ),
                             SizedBox(
                               height: 30,
                             ),
@@ -329,92 +309,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                           ),
                                           child: Column(
                                             children: [
-                                              //todo [Email]
-                                              Align(
-                                                alignment: Alignment.centerLeft,
-                                                child: Text(
-                                                  "Email",
-                                                  style: GoogleFonts.raleway()
-                                                      .copyWith(
-                                                    fontSize: 14.0,
-                                                    color: CustomAppColor
-                                                        .textColor1
-                                                        .withOpacity(0.5),
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 4.0,
-                                              ),
-                                              TextFormField(
-                                                controller: _emailController,
-                                                focusNode: _emailFocusNode,
-                                                decoration: InputDecoration(
-                                                  border: OutlineInputBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            5.0),
-                                                  ),
-                                                  hintText: 'Nhập email',
-                                                  hintStyle:
-                                                      GoogleFonts.raleway()
-                                                          .copyWith(
-                                                    fontSize: 14.0,
-                                                    color: CustomAppColor
-                                                        .textColor1
-                                                        .withOpacity(0.5),
-                                                  ),
-                                                  prefixIcon: Container(
-                                                    margin:
-                                                        const EdgeInsets.only(
-                                                            right: 16.0),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      border: Border(
-                                                        right: BorderSide(
-                                                          width: 1.0,
-                                                          color: Color(
-                                                              0xAAAA000000),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    child: Icon(
-                                                        Icons.email_outlined),
-                                                  ),
-                                                  focusedBorder:
-                                                      OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        color: Colors.orange,
-                                                        width: 2.0),
-                                                  ),
-                                                  contentPadding:
-                                                      EdgeInsets.symmetric(
-                                                          vertical: 10.0,
-                                                          horizontal: 10.0),
-                                                  fillColor:
-                                                      Colors.grey.shade300,
-                                                  filled:
-                                                      true, // Apply the fill color
-                                                ),
-                                                keyboardType:
-                                                    TextInputType.emailAddress,
-                                                autofillHints: [
-                                                  AutofillHints.email
-                                                ],
-                                                validator: (name) =>
-                                                    TValidation.validateEmail(
-                                                        name),
-                                                autovalidateMode:
-                                                    AutovalidateMode
-                                                        .onUserInteraction,
-                                                readOnly:
-                                                    true, // Make the email field non-editable
-                                              ),
-
                                               //todo [Username]
                                               const SizedBox(
                                                 height: 10,
@@ -783,6 +677,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                               ),
 
                                               Obx(() {
+                                                print(
+                                                    "aaaaaaaaaaaaaaaaaaaaaabbb ccccccccccc ${selectedDistrict}");
+                                                print(
+                                                    "aaaaaaaaaaaaaaaaaaaaaabbb ${orderController.districtList.isNotEmpty ? orderController.districtList.firstWhere((city) => city.DistrictID == selectedDistrict?.DistrictID && city.DistrictName == selectedDistrict?.DistrictName, orElse: () => orderController.districtList.first) : null}");
                                                 return DropdownButtonFormField2<
                                                     District>(
                                                   isExpanded: true,
@@ -1111,8 +1009,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                               if (globalKey.currentState!
                                                   .validate()) {
                                                 if (selectedWard == null) {
-                                                  // defaultCity = orderController
-                                                  //     .cityList.first;
                                                   selectedDistrict =
                                                       orderController
                                                           .districtList.first;
@@ -1123,20 +1019,20 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                                   selectedDistrict =
                                                       orderController
                                                           .districtList.first;
+
                                                   selectedWard = orderController
                                                       .wardList.first;
                                                 }
-
                                                 showDialogCustom(
-                                                  context,
-                                                  "Bạn muốn lưu lại các thay đổi",
-                                                  _usernameController.text,
-                                                  _phoneNumberController.text,
-                                                  _addressController.text,
-                                                  defaultCity.toString(),
-                                                  selectedDistrict.toString(),
-                                                  selectedWard.toString(),
-                                                );
+                                                    context,
+                                                    "Bạn muốn lưu lại các thay đổi",
+                                                    _usernameController.text,
+                                                    _phoneNumberController.text,
+                                                    _addressController.text,
+                                                    defaultCity.toString(),
+                                                    selectedDistrict.toString(),
+                                                    selectedWard.toString(),
+                                                    widget.totalOrder);
                                               }
                                             },
                                             child: Container(
@@ -1189,7 +1085,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
       String address,
       String selectedValueCity,
       String selectedValuedis,
-      String selectedValueward) {
+      String selectedValueward,
+      int totalOrder) {
     return showCupertinoDialog(
       context: context,
       builder: (BuildContext context) => CupertinoAlertDialog(
@@ -1206,14 +1103,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
           CupertinoDialogAction(
             child: Text("Đồng ý"),
             onPressed: () {
-              handleUpdate(
-                userName,
-                phone,
-                address,
-                selectedValueCity,
-                selectedValuedis,
-                selectedValueward,
-              );
+              orderController.isUpdate(true);
+
+              handleUpdate(userName, phone, address, selectedValueCity,
+                  selectedValuedis, selectedValueward, totalOrder);
 
               Navigator.pop(context);
             },
@@ -1229,17 +1122,30 @@ class _UpdateProfileState extends State<UpdateProfile> {
       String address,
       String selectedValueCity,
       String selectedValuedis,
-      String selectedValueward) async {
+      String selectedValueward,
+      int totalOrder) async {
     String addressNew = getConcatenatedValue(
         selectedValueCity, selectedValuedis, selectedValueward, address);
-    var isSuccess = authController.updateInfo(
-        username: userName, phone: phone, address: addressNew);
+
+    var isSuccess = authController.updateInfo(username: userName, phone: phone);
+    orderController.addressTmp.value = addressNew;
+
     if (await isSuccess == 1) {
       SecurityStorage().writeSecureData("username", userName);
       SecurityStorage().writeSecureData("phone", phone);
       SecurityStorage().writeSecureData("address", addressNew);
       getData();
-      // await authController.getProfile();
+      Object code = TransformCustomApp().getCodeForDeliveryFee(addressNew);
+      if (code is Map<String, dynamic>) {
+        int toDistrictId = code['toDistrictId'];
+        String toWardCode = code['to_ward_code'];
+        await orderController.getFee(toDistrictId.toInt(), totalOrder,
+            totalOrder, toWardCode.toString());
+      } else {
+        print("Failed to retrieve delivery fee code.");
+      }
+      await authController.getProfile();
+      Navigator.of(context).pop();
     }
   }
 

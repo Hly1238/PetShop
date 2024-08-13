@@ -123,14 +123,14 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           text: "Đổi ",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
                                           text: "Password",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor2,
+                                              color: CustomAppColor.textColor2,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ],
@@ -166,7 +166,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           "Password",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -185,7 +185,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -244,7 +245,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           "Xác nhận Password",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -263,7 +264,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -347,7 +349,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                           child: Container(
                                             padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
-                                              color: primaryColorOrange,
+                                              color: CustomAppColor
+                                                  .primaryColorOrange,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
@@ -379,7 +382,7 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.w200,
                                             ),
                                           ),
@@ -401,7 +404,8 @@ class _RecoveryScreenState extends State<RecoveryScreen> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,
-                                                color: textColor2,
+                                                color:
+                                                    CustomAppColor.textColor2,
                                                 fontWeight: FontWeight.w800,
                                               ),
                                             ),

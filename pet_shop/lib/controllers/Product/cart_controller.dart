@@ -23,7 +23,7 @@ class CartController extends GetxController {
   }
 
   //todo [Get list cart]
-  void getCartList() async {
+  Future<void> getCartList() async {
     try {
       isCartLoading(true);
       var result = await CartService().getAll();
@@ -51,7 +51,7 @@ class CartController extends GetxController {
 
       var result = await CartService().addToCart(productId, quantity, price);
       if (result.statusCode == 200) {
-        EasyLoading.showSuccess("Nice");
+        EasyLoading.showSuccess("Thêm vào giỏ hàng thành công");
         return true;
       } else {
         EasyLoading.showError("Try again");
@@ -111,11 +111,11 @@ class CartController extends GetxController {
       );
       var result = await CartService().removeItem(productId);
       if (result.statusCode == 200) {
-        EasyLoading.showSuccess("Nice");
+        // EasyLoading.showSuccess("Nice");
 
         return true;
       } else {
-        EasyLoading.showError("Try again");
+        // EasyLoading.showError("Try again");
 
         return false;
       }

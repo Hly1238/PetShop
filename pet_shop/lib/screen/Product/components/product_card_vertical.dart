@@ -1,10 +1,13 @@
 // !!!!!!!!!!!!!!!!
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/controllers/Product/cart_controller.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/screen/Product/components/rounded_container.dart';
+import 'package:pet_shop/screen/Product/detail_product.dart';
 
 class ProductCardVertical extends StatelessWidget {
   final Product product;
@@ -13,9 +16,16 @@ class ProductCardVertical extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ProductController proController = Get.find<ProductController>();
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(Routes.details, arguments: product);
+        proController.product.value = null;
+
+        Navigator.of(context).pushNamed(
+          Routes.details,
+          arguments:
+              DetailProductArguments(idProduct: product.id, product: product),
+        );
       },
       child: Center(
         child: ConstrainedBox(

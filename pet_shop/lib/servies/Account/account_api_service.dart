@@ -27,7 +27,7 @@ class AccountApiService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.loginAPI);
+    var url = Uri.https(Config.apiURL, Config.loginAPI);
     var body = {
       "email": email,
       "password": password,
@@ -49,7 +49,7 @@ class AccountApiService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.apiSignUp);
+    var url = Uri.https(Config.apiURL, Config.apiSignUp);
     var body = {"email": email, "password": password, "phone": phone};
     var response =
         await client.post(url, headers: requestHeaders, body: jsonEncode(body));
@@ -63,7 +63,7 @@ class AccountApiService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.getOtpAPI);
+    var url = Uri.https(Config.apiURL, Config.getOtpAPI);
     var body = {
       "email": email.trim(),
     };
@@ -80,7 +80,7 @@ class AccountApiService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.verifyOtpAPI);
+    var url = Uri.https(Config.apiURL, Config.verifyOtpAPI);
     var body = {
       "email": email.trim(),
       "otp": otp.trim(),
@@ -98,7 +98,7 @@ class AccountApiService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.updatePassOtpAPI);
+    var url = Uri.https(Config.apiURL, Config.updatePassOtpAPI);
     var body = {
       "email": email.trim(),
       "password": password.trim(),
@@ -115,7 +115,7 @@ class AccountApiService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, "${Config.activateAPI}$activatecode");
+    var url = Uri.https(Config.apiURL, "${Config.activateAPI}$activatecode");
 
     var response = await client.get(url, headers: requestHeaders);
     return response;
@@ -127,7 +127,7 @@ class AccountApiService {
       required String oldPassword,
       required String newPassword}) async {
     await init();
-    var url = Uri.http(Config.apiURL, Config.updatePasswordAPI);
+    var url = Uri.https(Config.apiURL, Config.updatePasswordAPI);
     var body = {
       "_id": id,
       "oldPassword": oldPassword,
@@ -141,12 +141,55 @@ class AccountApiService {
   // !Add device
   Future<dynamic> addDevice({String? id_device}) async {
     await init();
-    var url = Uri.http(Config.apiURL, Config.addDevice);
+    var url = Uri.https(Config.apiURL, Config.addDevice);
     var body = {
       "id_device": id_device ?? "",
     };
     var response = await client.post(url,
         headers: requestHeadersUpdate, body: jsonEncode(body));
+    return response;
+  }
+
+  //!Update Info
+  Future<dynamic> updateInfo({
+    required String id,
+    String? username,
+    String? phone,
+    String? address,
+  }) async {
+    await init();
+
+    var url = Uri.https(Config.apiURL, '${Config.updateInfoUser}$id');
+
+    var body = <String, String>{};
+    if (username != null && username.isNotEmpty) {
+      body['username'] = username;
+    }
+    if (phone != null && phone.isNotEmpty) {
+      body['phone'] = phone;
+    }
+    if (address != null && address.isNotEmpty) {
+      body['address'] = address;
+    }
+    var response = await client.put(
+      url,
+      headers: requestHeadersUpdate,
+      body: jsonEncode(body),
+    );
+
+    return response;
+  }
+
+  //! Get Profile
+  Future<dynamic> getInfo() async {
+    await init();
+
+    var url = Uri.https(Config.apiURL, Config.getProfile);
+
+    var response = await client.get(
+      url,
+      headers: requestHeadersUpdate,
+    );
     return response;
   }
 }

@@ -11,6 +11,8 @@ class UserReviewCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,6 +82,7 @@ class UserReviewCard extends StatelessWidget {
         SizedBox(
           height: 20,
         ),
+        Divider()
       ],
     );
   }

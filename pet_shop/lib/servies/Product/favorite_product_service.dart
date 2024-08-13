@@ -18,7 +18,7 @@ class FavoriteProductService {
   }
 
   Future<dynamic> getAll() async {
-    var url = Uri.http(Config.apiURL, Config.favoriteGetAllAPI);
+    var url = Uri.https(Config.apiURL, Config.favoriteGetAllAPI);
     await init();
 
     var response =
@@ -27,7 +27,7 @@ class FavoriteProductService {
   }
 
   Future<dynamic> getFavOfProduct(String id) async {
-    var url = Uri.http(Config.apiURL, Config.favoriteAPI + id);
+    var url = Uri.https(Config.apiURL, Config.favoriteAPI + id);
     await init();
 
     var response =
@@ -36,7 +36,7 @@ class FavoriteProductService {
   }
 
   Future<dynamic> updateFav(String id) async {
-    var url = Uri.http(Config.apiURL, Config.updateFavAPI + id);
+    var url = Uri.https(Config.apiURL, Config.updateFavAPI + id);
     await init();
 
     var response =

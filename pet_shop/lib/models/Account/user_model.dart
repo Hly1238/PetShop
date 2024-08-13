@@ -124,6 +124,7 @@ class UserInfo {
   // final List<String> favorites;
   final String token;
   final String id_device;
+  final String address;
 
   factory UserInfo.fromJson(Map<String, dynamic> data) => UserInfo(
         id: data['_id'] ?? '',
@@ -136,6 +137,7 @@ class UserInfo {
         // favorites: data['favorites'] ?? [],
         token: data['token'] ?? '',
         id_device: data['id_device'],
+        address: data['address'],
       );
 
   UserInfo({
@@ -149,5 +151,11 @@ class UserInfo {
     // required this.favorites,
     required this.token,
     required this.id_device,
+    required this.address,
   });
+
+  @override
+  String toString() {
+    return 'UserInfo(id: $id, email: $email, phone: $phone, username: $username, role: $role, image: $image, token: $token, id_device: $id_device, address: $address)';
+  }
 }

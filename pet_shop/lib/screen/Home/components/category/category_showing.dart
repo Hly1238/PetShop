@@ -11,7 +11,7 @@ class CategoryShowing extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 140,
-      padding: EdgeInsets.only(right: 10),
+      padding: EdgeInsets.only(right: 10, bottom: 10),
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),

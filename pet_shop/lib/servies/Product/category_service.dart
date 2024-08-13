@@ -11,7 +11,7 @@ class CategoryService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    var url = Uri.http(Config.apiURL, Config.categoryAPI);
+    var url = Uri.https(Config.apiURL, Config.categoryAPI);
 
     var response = await client.get(Uri.parse('$url'), headers: requestHeaders);
 
@@ -26,7 +26,7 @@ class CategoryService {
       if (limit != null && limit.isNotEmpty) 'limit': limit,
     };
 
-    var url = Uri.http(
+    var url = Uri.https(
         Config.apiURL, Config.categoryContainProducts + _id, queryParameters);
 
     Map<String, String> requestHeaders = {
@@ -48,7 +48,7 @@ class CategoryService {
     };
 
     var url =
-        Uri.http(Config.apiURL, Config.categorySearchByName, queryParameters);
+        Uri.https(Config.apiURL, Config.categorySearchByName, queryParameters);
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -67,7 +67,22 @@ class CategoryService {
       if (limit != null && limit.isNotEmpty) 'limit': limit,
     };
 
-    var url = Uri.http(Config.apiURL, "${Config.searchProductsBySlug}$slug");
+    var url = Uri.https(Config.apiURL, "${Config.searchProductsBySlug}$slug");
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+    };
+    var response = await client.get(url, headers: requestHeaders);
+    return response;
+  }
+
+  Future<dynamic> getIdBySlug(String slug, String? page, String? limit) async {
+    final queryParameters = {
+      if (page != null && page.isNotEmpty) 'page': page,
+      if (limit != null && limit.isNotEmpty) 'limit': limit,
+    };
+
+    var url = Uri.https(Config.apiURL, "${Config.getIdBySlug}$slug");
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',

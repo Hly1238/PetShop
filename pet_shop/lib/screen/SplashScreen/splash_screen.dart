@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:pet_shop/route/route_generator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -42,14 +43,9 @@ class _SplashScreenState extends State<SplashScreen>
     bool? isViewed = prefs.getBool('onBoard');
     await Future.delayed(Duration(seconds: 3)); // Splash screen delay
     if (isViewed != null && isViewed) {
-      // Navigator.pushReplacement(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => NavigationScreen(),
-      //     ));
-      Navigator.of(context).pushReplacementNamed('/');
+      Navigator.of(context).pushReplacementNamed(Routes.homepage);
     } else {
-      Navigator.of(context).pushReplacementNamed('/on_boarding');
+      Navigator.of(context).pushReplacementNamed(Routes.onBoarding);
     }
   }
 

@@ -222,14 +222,14 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                           text: "",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
                                           text: "Mã xác thực",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor2,
+                                              color: CustomAppColor.textColor2,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ],
@@ -368,7 +368,8 @@ class _OtpVerifyScreenState extends State<OtpVerifyScreen> {
                                             padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
                                               color: isButtonEnabled
-                                                  ? primaryColorOrange
+                                                  ? CustomAppColor
+                                                      .primaryColorOrange
                                                   : Colors.grey,
                                               borderRadius:
                                                   BorderRadius.circular(10),

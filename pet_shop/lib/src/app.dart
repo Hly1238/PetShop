@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
 
           //Navigation
-          initialRoute: Routes.homepage,
+          initialRoute: Routes.splashScreen,
           onGenerateRoute: RouteGenerator.generateRoute,
 
           // Provide the generated AppLocalizations to the MaterialApp. This

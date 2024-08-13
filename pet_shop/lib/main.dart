@@ -20,7 +20,11 @@ void main() async {
   await Hive.initFlutter();
   // Set up the SettingsController,  which will glue user settings to multiple
   // Flutter Widgets.
-
+  // Lock the app orientation to portrait only
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   // !!!!! Setting notification
   final settingsController = SettingsController(SettingsService());
   // Load the user's preferred the  me while the splash screen is displayed.

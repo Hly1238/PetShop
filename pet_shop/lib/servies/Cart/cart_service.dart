@@ -21,7 +21,7 @@ class CartService {
 
   Future<dynamic> getAll() async {
     await init();
-    var url = Uri.http(Config.apiURL, Config.cartAPI);
+    var url = Uri.https(Config.apiURL, Config.cartAPI);
     var response =
         await client.get(Uri.parse('${url}'), headers: requestHeaders);
 
@@ -32,7 +32,7 @@ class CartService {
       String productId, int quantity, double? price) async {
     await init();
 
-    var url = Uri.http(Config.apiURL, Config.cartAPI);
+    var url = Uri.https(Config.apiURL, Config.cartAPI);
     var body = {
       "productId": productId,
       "quantity": quantity,
@@ -46,7 +46,7 @@ class CartService {
   }
 
   Future<dynamic> substractItem(String productId) async {
-    var url = Uri.http(Config.apiURL, Config.subtractCartAPI);
+    var url = Uri.https(Config.apiURL, Config.subtractCartAPI);
     var body = {
       "productId": productId,
     };
@@ -59,7 +59,7 @@ class CartService {
   }
 
   Future<dynamic> removeItem(String productId) async {
-    var url = Uri.http(Config.apiURL, Config.cartAPI);
+    var url = Uri.https(Config.apiURL, Config.cartAPI);
     var body = {
       "productId": productId,
     };

@@ -2,6 +2,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Predict/predict_controller.dart';
 import 'package:pet_shop/models/ModelPredict/model_product.dart';
 import 'package:pet_shop/models/Product/product.dart';
@@ -21,6 +23,7 @@ class _ListPredictState extends State<ListPredict> {
   List<ModelProduct>? predList;
   bool isLoading = true;
   PredictController predictController = Get.find<PredictController>();
+  HomeController homeController = Get.find<HomeController>();
 
   final Map<String, String> breedImages = {
     "beagle": "assets/images/_project/Predict/beagle.jpg",
@@ -56,6 +59,13 @@ class _ListPredictState extends State<ListPredict> {
     fetchPrediction();
   }
 
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    homeController.getData();
+  }
+
   void fetchPrediction() async {
     Uint8List bytes = await widget.image.readAsBytes();
     var res = await PredictService().predict(bytes, widget.image.name);
@@ -68,23 +78,40 @@ class _ListPredictState extends State<ListPredict> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: AppBar(
-        title: Text('Prediction Results'),
+        title: Text('Kết quả dự đoán'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : predList == null || predList!.isEmpty
-              ? Center(child: Text('No predictions available.'))
-              : ListView.builder(
-                  itemCount: predList!.length,
-                  itemBuilder: (context, index) {
-                    String breed = predList![index]
-                        .label
-                        .toLowerCase()
-                        .replaceAll(' ', '_')
-                        .trim();
-                    return itemCard(breed);
-                  },
+              ? Center(child: Text('Không thể tìm thấy giống chó phù hợp'))
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        'Dựa trên thông tin được cung cấp\nĐây là những giống chó có khả năng tương thích với bạn',
+                        style: TextStyle(
+                          fontSize: 16.0,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        itemCount: predList!.length,
+                        itemBuilder: (context, index) {
+                          String breed = predList![index]
+                              .label
+                              .toLowerCase()
+                              .replaceAll(' ', '_')
+                              .trim();
+                          return itemCard(breed);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
     );
   }
@@ -94,18 +121,22 @@ class _ListPredictState extends State<ListPredict> {
     return GestureDetector(
       onTap: () async {
         var isSuccess = await predictController.getProductsBySlug(breed);
-        if (await isSuccess) {
-          Navigator.of(context).pushNamed(Routes.product_category,
-              arguments: SelectionTitleArguments(
-                  idCate: '',
-                  name: 'Sản phẩm dịch vụ của $breed',
-                  productList: predictController.productList));
+        var isGet = await predictController.getIdBySlug(breed);
+        if (await isSuccess && await isGet) {
+          Navigator.of(context).pushNamed(
+            Routes.product_category,
+            arguments: SelectionTitleArguments(
+              idCate: predictController.idCatefory.value,
+              name: 'Sản phẩm dịch vụ của $breed',
+              productList: predictController.productList,
+            ),
+          );
         }
       },
       child: Container(
         width: 350,
         padding: EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 3),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           color: Colors.white,

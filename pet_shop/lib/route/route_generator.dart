@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
@@ -36,6 +37,9 @@ import 'package:pet_shop/screen/Order/order_summary_screen.dart';
 import 'package:pet_shop/screen/Payment/payment.dart';
 import 'package:pet_shop/screen/Predict/list_predict.dart';
 import 'package:pet_shop/screen/Product/Category/category_screen.dart';
+import 'package:pet_shop/screen/Profile/UpdateProfile/update_profile.dart';
+import 'package:pet_shop/screen/Profile/UpdateProfile/update_profile_order.dart';
+import 'package:pet_shop/screen/Profile/profile_screen.dart';
 import 'package:pet_shop/screen/Rate/rate_screen.dart';
 import 'package:pet_shop/screen/Product/ProductCategory/product_category.dart';
 import 'package:pet_shop/screen/Product/detail_product.dart';
@@ -73,6 +77,9 @@ class Routes {
   static const String cart = "/cart";
   static const String pay = "/pay";
   static const String bannerDetails = "/banner_detail";
+  static const String updateProfile = "/updateProfile";
+  static const String profile = "/profile";
+  static const String updateProfileOrder = "/order_profile";
 }
 
 class RouteGenerator {
@@ -86,16 +93,20 @@ class RouteGenerator {
     Get.put(FilterController());
     final args = settings.arguments;
     switch (settings.name) {
-      case '/splash_screen':
+      case Routes.splashScreen:
         return MaterialPageRoute(builder: (_) => SplashScreen());
-      case '/on_boarding':
+      case Routes.onBoarding:
         return MaterialPageRoute(builder: (_) => OnBoarding());
       case Routes.homepage:
         return MaterialPageRoute(builder: (_) => NavigationScreen());
       case Routes.details:
-        if (args is Product) {
+        if (args is DetailProductArguments) {
           return MaterialPageRoute(
-              builder: (_) => DetailProduct(product: args));
+            builder: (_) => DetailProduct(
+              idProduct: args.idProduct,
+              product: args.product,
+            ),
+          );
         }
         return _errorRoute();
       case Routes.order_detail:
@@ -141,16 +152,39 @@ class RouteGenerator {
               productList: args.productList,
               name: args.name,
               idCate: args.idCate,
+              isSearch: args.isSearch,
             ),
           );
         }
         return _errorRoute();
+      case Routes.updateProfile:
+        return MaterialPageRoute(builder: (_) => UpdateProfile());
+      case Routes.updateProfileOrder:
+        if (args is int) {
+          return MaterialPageRoute(
+            builder: (_) => UpdateProfileOrder(
+              totalOrder: args,
+            ),
+          );
+        }
+        return _errorRoute();
+      // return MaterialPageRoute(builder: (_) => UpdateProfileOrder());
+      case Routes.profile:
+        return MaterialPageRoute(builder: (_) => ProfileScreen());
       case Routes.sign_in:
         return MaterialPageRoute(builder: (_) => LoginScreen());
       case Routes.cart:
         return MaterialPageRoute(builder: (_) => CartScreen());
       case Routes.list_category:
-        return MaterialPageRoute(builder: (_) => CategoryScreen());
+        if (args is List<Category>) {
+          return MaterialPageRoute(
+            builder: (_) => CategoryScreen(
+              categories: args,
+            ),
+          );
+        }
+        return _errorRoute();
+
       case Routes.rate_comment:
         if (args is ProductUnreviewed) {
           return MaterialPageRoute(
@@ -222,6 +256,7 @@ class RouteGenerator {
   static Route<dynamic> _errorRoute() {
     return MaterialPageRoute(builder: (_) {
       return Scaffold(
+        backgroundColor: CustomAppColor.lightBackgroundColor_Home,
         appBar: AppBar(
           title: Text('Error'),
         ),

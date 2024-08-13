@@ -261,9 +261,8 @@ class _OrderCardState extends State<OrderCard> {
               ),
             ),
           ),
-          SizedBox(height: 5),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.only(left: 10, right: 10, bottom: 20),
             child: Row(
               children: [
                 Expanded(
@@ -336,7 +335,7 @@ class _OrderCardState extends State<OrderCard> {
       case "cancel":
         return "Hủy đơn";
       default:
-        return "Trạng thái không xác định";
+        return "Đơn hàng bị hủy";
     }
   }
 

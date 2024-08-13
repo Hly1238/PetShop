@@ -139,7 +139,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                       fontSize: 35.0,
-                                                      color: textColor1,
+                                                      color: CustomAppColor
+                                                          .textColor1,
                                                       fontWeight:
                                                           FontWeight.normal),
                                             ),
@@ -148,7 +149,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                       fontSize: 35.0,
-                                                      color: textColor2,
+                                                      color: CustomAppColor
+                                                          .textColor2,
                                                       fontWeight:
                                                           FontWeight.w800),
                                             ),
@@ -187,7 +189,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                       fontSize: 14.0,
-                                                      color: textColor1,
+                                                      color: CustomAppColor
+                                                          .textColor1,
                                                       fontWeight:
                                                           FontWeight.bold),
                                             ),
@@ -207,8 +210,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               hintStyle: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 14.0,
-                                                color:
-                                                    textColor1.withOpacity(0.5),
+                                                color: CustomAppColor.textColor1
+                                                    .withOpacity(0.5),
                                               ),
                                               prefixIcon: Container(
                                                 margin: const EdgeInsets.only(
@@ -256,7 +259,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                       fontSize: 14.0,
-                                                      color: textColor1,
+                                                      color: CustomAppColor
+                                                          .textColor1,
                                                       fontWeight:
                                                           FontWeight.bold),
                                             ),
@@ -276,8 +280,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                               hintStyle: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 14.0,
-                                                color:
-                                                    textColor1.withOpacity(0.5),
+                                                color: CustomAppColor.textColor1
+                                                    .withOpacity(0.5),
                                               ),
                                               prefixIcon: Container(
                                                 margin: const EdgeInsets.only(
@@ -352,7 +356,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 style: GoogleFonts.raleway()
                                                     .copyWith(
                                                         fontSize: 14.0,
-                                                        color: textColor1,
+                                                        color: CustomAppColor
+                                                            .textColor1,
                                                         fontWeight:
                                                             FontWeight.normal),
                                               ),
@@ -377,7 +382,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 padding:
                                                     const EdgeInsets.all(10),
                                                 decoration: BoxDecoration(
-                                                  color: primaryColorOrange,
+                                                  color: CustomAppColor
+                                                      .primaryColorOrange,
                                                   borderRadius:
                                                       BorderRadius.circular(10),
                                                 ),
@@ -460,7 +466,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 style: GoogleFonts.raleway()
                                                     .copyWith(
                                                   fontSize: 16.0,
-                                                  color: textColor1,
+                                                  color:
+                                                      CustomAppColor.textColor1,
                                                   fontWeight: FontWeight.w200,
                                                 ),
                                               ),
@@ -482,7 +489,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   style: GoogleFonts.raleway()
                                                       .copyWith(
                                                     fontSize: 16.0,
-                                                    color: textColor2,
+                                                    color: CustomAppColor
+                                                        .textColor2,
                                                     fontWeight: FontWeight.w800,
                                                   ),
                                                 ),

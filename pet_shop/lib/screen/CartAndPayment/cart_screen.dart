@@ -44,7 +44,7 @@ class _CartScreenState extends State<CartScreen> {
 
     if (selectedItems.isEmpty) {
       Fluttertoast.showToast(
-        msg: "No items selected for checkout",
+        msg: "Vui lòng chọn sản phẩm bạn muốn mua",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
@@ -53,17 +53,6 @@ class _CartScreenState extends State<CartScreen> {
       );
       return;
     }
-
-    // String selectedProducts =
-    //     selectedItems.map((item) => item.product.name).join(", ");
-    // Fluttertoast.showToast(
-    //   msg: "Selected products: $selectedProducts",
-    //   toastLength: Toast.LENGTH_SHORT,
-    //   gravity: ToastGravity.BOTTOM,
-    //   backgroundColor: Colors.green,
-    //   textColor: Colors.white,
-    //   fontSize: 16.0,
-    // );
 
     Navigator.of(context)
         .pushNamed(Routes.order_sumary, arguments: selectedItems);
@@ -75,7 +64,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Cart"),
+        title: Text("Giỏ hàng"),
         leading: BackButton(),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,

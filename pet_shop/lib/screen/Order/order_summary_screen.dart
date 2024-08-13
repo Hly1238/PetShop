@@ -5,7 +5,9 @@ import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
 import 'package:pet_shop/config/validators/transform.dart';
+import 'package:pet_shop/controllers/Account/auth_controller.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
+import 'package:pet_shop/controllers/Product/cart_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
 import 'package:pet_shop/payment/flutter_zalopay_sdk.dart';
@@ -24,32 +26,57 @@ class OrderSummaryScreen extends StatefulWidget {
 }
 
 class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
+  AuthController authController = Get.find<AuthController>();
+  OrderController orderController = Get.find<OrderController>();
   String address = "";
   String name = "";
   String phone = "";
   bool isLoading = true;
+  int totalOrder = 0;
 
   @override
   void initState() {
     super.initState();
+
+    setState(() {
+      totalOrder = calculateTotalPrice();
+    });
     fetchAddress();
     fetchData();
   }
 
   Future<void> fetchAddress() async {
     String fetchedAddress = await OrderController.instance.findLastestAddress();
-    setState(() {
-      address = fetchedAddress;
-      isLoading = false;
-    });
+    setState(
+      () {
+        if (fetchedAddress == "") {
+          if (authController.user.value?.address.toString() != "") {
+            address = authController.user.value!.address;
+          }
+        } else {
+          address = fetchedAddress;
+        }
+      },
+    );
+    Object code = TransformCustomApp().getCodeForDeliveryFee(address);
+    if (code is Map<String, dynamic>) {
+      int toDistrictId = code['toDistrictId'];
+      String toWardCode = code['to_ward_code'];
+
+      await orderController.getFee(
+          toDistrictId.toInt(), totalOrder, totalOrder, toWardCode.toString());
+    } else {
+      print("Failed to retrieve delivery fee code.");
+    }
   }
 
   Future<void> fetchData() async {
+    await authController.getProfile();
     String fetchedPhone = await SecurityStorage().getSecureData("phone");
     String fetchedName = await SecurityStorage().getSecureData("username");
     setState(() {
-      phone = fetchedPhone;
-      name = fetchedName;
+      phone = authController.user.value?.phone ?? fetchedPhone;
+      name = authController.user.value?.username ?? fetchedName;
       isLoading = false;
     });
   }
@@ -61,6 +88,21 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
       totalPrice += itemTotal;
     }
     return totalPrice.toInt();
+  }
+
+  int calculateTotalOrder() {
+    int totalOrderAmount = totalOrder.toInt();
+    int deliveryFee = orderController.deliveryFee.value;
+
+    return totalOrderAmount + deliveryFee;
+  }
+
+  @override
+  void dispose() {
+    OrderController.instance.addressTmp.value = "";
+    orderController.isUpdate(false);
+    orderController.deliveryFee.value = 0;
+    super.dispose();
   }
 
   @override
@@ -88,6 +130,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                       },
                       phone: phone,
                       name: name,
+                      totalOrder: totalOrder,
                     ),
                     SizedBox(height: 16),
                     // NotesSection(),
@@ -103,7 +146,9 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                     SizedBox(height: 16),
                     PaymentMethod(
                       isEnabled: address.isNotEmpty,
-                      address: address,
+                      address: orderController.isUpdate.value
+                          ? "${orderController.addressTmp.value}"
+                          : address,
                       selectedItems: widget.selectedItems,
                       billing: 'paypal',
                       status: "approved",
@@ -113,7 +158,10 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
                     SizedBox(height: 16),
                     ContinueButton(
                       isEnabled: address.isNotEmpty,
-                      address: address,
+                      // address: address,
+                      address: orderController.isUpdate.value
+                          ? "${orderController.addressTmp.value}"
+                          : address,
                       selectedItems: widget.selectedItems,
                       billing: 'cod',
                       total: calculateTotalPrice(),
@@ -132,13 +180,17 @@ class AddressSection extends StatelessWidget {
   final String address;
   final String phone;
   final String name;
+  final int totalOrder;
   final Function(String) onChange;
+  AuthController authController = Get.find<AuthController>();
+  OrderController orderController = Get.find<OrderController>();
 
   AddressSection(
       {required this.address,
       required this.onChange,
       required this.phone,
-      required this.name});
+      required this.name,
+      required this.totalOrder});
 
   @override
   Widget build(BuildContext context) {
@@ -179,14 +231,9 @@ class AddressSection extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () async {
-                  String newAddress = await showDialog(
-                    context: context,
-                    builder: (context) =>
-                        AddressDialog(currentAddress: address),
-                  );
-                  if (newAddress.isNotEmpty) {
-                    onChange(newAddress);
-                  }
+                  await orderController.isUpdate(false);
+                  Navigator.of(context).pushNamed(Routes.updateProfileOrder,
+                      arguments: totalOrder);
                 },
                 child: Text(
                   'Thay đổi',
@@ -198,29 +245,39 @@ class AddressSection extends StatelessWidget {
           SizedBox(height: 8),
           Padding(
             padding: EdgeInsets.only(left: 27),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(height: 5),
-                Text(phone, style: TextStyle(fontWeight: FontWeight.bold)),
-                SizedBox(height: 5),
-                Text(address.isEmpty ? "Chưa có địa chỉ" : address,
-                    style: TextStyle(color: Colors.black54)),
-                SizedBox(height: 8),
-              ],
+            child: Obx(
+              () {
+                bool isAddressValid = orderController.isUpdate.value
+                    ? orderController.addressTmp.value.isNotEmpty
+                    : address.isNotEmpty;
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      authController.user.value?.username ?? name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(height: 5),
+                    Text(authController.user.value?.phone ?? phone,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    SizedBox(height: 5),
+                    Text(
+                      isAddressValid
+                          ? orderController.isUpdate.value
+                              ? TransformCustomApp().formatAddress(
+                                  orderController.addressTmp.value)
+                              : TransformCustomApp().formatAddress(address)
+                          : "Chưa có địa chỉ",
+                      style: TextStyle(
+                        color: Colors.black54,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                  ],
+                );
+              },
             ),
           ),
-
-          // ElevatedButton(
-          //   onPressed: () {
-          //     // Handle thay đổi action
-          //   },
-          //   child: Text('Thay đổi'),
-          // ),
         ],
       ),
     );
@@ -379,6 +436,7 @@ class SelectedItemsSection extends StatelessWidget {
                               title: productOrder.product.name,
                               price:
                                   '${TransformCustomApp().formatCurrency((productOrder.product.promotion * productOrder.quantity).toInt())}',
+                              quantity: productOrder.quantity,
                             ))
                         .toList(),
                   ),
@@ -396,49 +454,65 @@ class ItemCard extends StatelessWidget {
   final String imagePath;
   final String title;
   final String price;
+  final int quantity;
 
-  ItemCard({required this.imagePath, required this.title, required this.price});
+  ItemCard(
+      {required this.imagePath,
+      required this.title,
+      required this.price,
+      required this.quantity});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 5),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Image.network(
-                  imagePath,
-                  width: 70,
-                  height: 100,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(width: 15),
-                Expanded(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(title,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 15)),
-                      Text(
-                        price,
+      margin: EdgeInsets.only(top: 5),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Image.network(
+                imagePath,
+                width: 70,
+                height: 100,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(title,
                         style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
-                    ],
-                  ),
+                            fontWeight: FontWeight.bold, fontSize: 15)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          price,
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        ),
+                        Text(
+                          "x${quantity}",
+                          style: TextStyle(color: Colors.black, fontSize: 12),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
-              ],
-            ),
-            Divider(
-              height: 30,
-            ),
-          ],
-        ));
+              ),
+            ],
+          ),
+          Divider(
+            height: 30,
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -449,6 +523,7 @@ class SummarySection extends StatelessWidget {
       {super.key, required this.total, required this.selectedItems});
   @override
   Widget build(BuildContext context) {
+    OrderController orderController = Get.find<OrderController>();
     return Container(
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -471,16 +546,15 @@ class SummarySection extends StatelessWidget {
             value: '${TransformCustomApp().formatCurrency(total)}',
             isBold: true,
           ),
-          // SummaryRow(
-          //   title: 'Tiền thuế',
-          //   value: '890.000đ',
-          // ),
-          // SummaryRow(
-          //   title: 'Phí vận chuyển',
-          //   value: 'Chưa tính',
-          //   valueColor: Colors.red,
-          //   isBold: true,
-          // ),
+          Obx(() {
+            return SummaryRow(
+              title: 'Phí vận chuyển',
+              value:
+                  "${TransformCustomApp().formatCurrency(orderController.deliveryFee.toInt())}",
+              valueColor: Colors.red,
+              isBold: true,
+            );
+          }),
           Divider(color: Colors.grey),
           Row(
             children: [
@@ -496,18 +570,22 @@ class SummarySection extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                "${TransformCustomApp().formatCurrency(total)}",
-                style: TextStyle(
+          Obx(() {
+            var feeDelivery = orderController.deliveryFee.value;
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "${TransformCustomApp().formatCurrency((feeDelivery + total))}",
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.red,
-                    fontSize: 18),
-              )
-            ],
-          )
+                    fontSize: 18,
+                  ),
+                )
+              ],
+            );
+          }),
         ],
       ),
     );
@@ -606,43 +684,61 @@ class ContinueButton extends StatelessWidget {
       required this.status,
       required this.description});
   OrderController orderController = Get.find<OrderController>();
+  CartController cartController = Get.find<CartController>();
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: isEnabled
-            ? () async {
-                var isSuccess = await createOrder(selectedItems, total, address,
-                    billing, status, description);
-                if (await isSuccess) {
-                  await orderController.getAllStatusOrder();
+    return Obx(() {
+      bool isAddressValid = orderController.isUpdate.value
+          ? orderController.addressTmp.value.isNotEmpty
+          : address.isNotEmpty;
 
-                  Navigator.of(context).pushReplacementNamed(
-                    Routes.order_detail,
-                    arguments: orderController.order.value,
-                  );
+      int feeDelivery = orderController.deliveryFee.value;
+      return SizedBox(
+        width: double.infinity,
+        child: ElevatedButton(
+          onPressed: isAddressValid
+              ? () async {
+                  var isSuccess = await createOrder(
+                      selectedItems,
+                      total + feeDelivery,
+                      orderController.isUpdate.value
+                          ? orderController.addressTmp.value
+                          : address,
+                      billing,
+                      status,
+                      description);
+                  orderController.isUpdate(false);
+                  if (await isSuccess) {
+                    await cartController.getCartList();
+                    await orderController.getAllStatusOrder();
+
+                    Navigator.of(context).pushReplacementNamed(
+                      Routes.order_detail,
+                      arguments: orderController.order.value,
+                    );
+                  }
                 }
-              }
-            : () {
-                // ScaffoldMessenger.of(context).showSnackBar(
-                //     SnackbarCustom()
-                //         .showErorSnackBar("Vui lòng điền thông tin vận chuyển"));
-                EasyLoading.showError("Vui lòng điền thông tin vận chuyển");
-              },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.pink,
-          padding: EdgeInsets.symmetric(vertical: 16),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
+              : () {
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //     SnackbarCustom()
+                  //         .showErorSnackBar("Vui lòng điền thông tin vận chuyển"));
+                  EasyLoading.showError("Vui lòng điền thông tin vận chuyển");
+                },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: isAddressValid ? Colors.pink : Colors.grey,
+            padding: EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: Text(
+            'TIẾP TỤC',
+            style: TextStyle(fontSize: 16, color: Colors.white),
           ),
         ),
-        child: Text(
-          'TIẾP TỤC',
-          style: TextStyle(fontSize: 16, color: Colors.white),
-        ),
-      ),
-    );
+      );
+    });
   }
 
   Future<bool> createOrder(List<ProductOrder> selectedItems, int total,
@@ -673,94 +769,119 @@ class PaymentMethod extends StatelessWidget {
       required this.status,
       required this.isEnabled});
   OrderController orderController = Get.find<OrderController>();
+  CartController cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: isEnabled
-                      ? () async {
-                          var result = await createOrder(total);
-                          if (result != null) {
+    return Obx(() {
+      int feeDelivery = orderController.deliveryFee.value;
+
+      bool isAddressValid = orderController.isUpdate.value
+          ? orderController.addressTmp.value.isNotEmpty
+          : address.isNotEmpty;
+      return Container(
+        padding: EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: isAddressValid
+                        ? () async {
+                            var result =
+                                await createOrder((total + feeDelivery));
+                            if (result != null) {
+                              FlutterZaloPaySdk.payOrder(
+                                      zpToken: result.zptranstoken)
+                                  .then((event) {
+                                switch (event) {
+                                  case FlutterZaloPayStatus.cancelled:
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackbarCustom().showErorSnackBar(
+                                            "Bạn đã Huỷ Thanh Toán"));
+                                    break;
+                                  case FlutterZaloPayStatus.success:
+                                    createPayment(context, feeDelivery);
+                                    break;
+                                  case FlutterZaloPayStatus.failed:
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackbarCustom().showErorSnackBar(
+                                            "Thanh toán thất bại"));
+
+                                    break;
+                                  default:
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackbarCustom().showErorSnackBar(
+                                            "Thanh toán thất bại"));
+                                    break;
+                                }
+                              });
+                            }
+                          }
+                        : () {
                             // ScaffoldMessenger.of(context).showSnackBar(
                             //     SnackbarCustom()
-                            //         .showErorSnackBar("${result.zptranstoken}"));
-
-                            FlutterZaloPaySdk.payOrder(
-                                    zpToken: result.zptranstoken)
-                                .then((event) {
-                              switch (event) {
-                                case FlutterZaloPayStatus.cancelled:
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackbarCustom().showErorSnackBar(
-                                          "User Huỷ Thanh Toán"));
-                                  break;
-                                case FlutterZaloPayStatus.success:
-                                  createPayment(context);
-                                  break;
-                                case FlutterZaloPayStatus.failed:
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackbarCustom().showErorSnackBar(
-                                          "Thanh toán thất bại"));
-
-                                  break;
-                                default:
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackbarCustom().showErorSnackBar(
-                                          "Thanh toán thất bại"));
-                                  break;
-                              }
-                            });
-                          }
-                        }
-                      : () {
-                          // ScaffoldMessenger.of(context).showSnackBar(
-                          //     SnackbarCustom()
-                          //         .showErorSnackBar("Vui lòng điền thông tin vận chuyển"));
-                          EasyLoading.showError(
-                              "Vui lòng điền thông tin vận chuyển");
-                        },
-                  child: Text('Thanh toán trước bằng ZaloPay'),
+                            //         .showErorSnackBar("Vui lòng điền thông tin vận chuyển"));
+                            EasyLoading.showError(
+                                "Vui lòng điền thông tin vận chuyển");
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          isAddressValid ? Colors.pink : Colors.grey,
+                      padding: EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: Text(
+                      'Thanh toán trước bằng ZaloPay',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text(
-            "(Nếu không chọn thanh toán trước thì khách hàng sẽ thanh toán sau khi nhận được hàng)",
-            softWrap: true,
-            style: TextStyle(color: Colors.grey, fontSize: 11),
-          )
-        ],
-      ),
-    );
+              ],
+            ),
+            SizedBox(
+              height: 5,
+            ),
+            Text(
+              "(Nếu không chọn thanh toán trước thì khách hàng sẽ thanh toán sau khi nhận được hàng)",
+              softWrap: true,
+              style: TextStyle(color: Colors.grey, fontSize: 11),
+            )
+          ],
+        ),
+      );
+    });
   }
 
-  void createPayment(BuildContext context) async {
+  void createPayment(BuildContext context, int feeDelivery) async {
     bool isOrderCreated = await OrderController.instance.createOrder(
-        selectedItems, total, address, billing, status, description);
+        selectedItems,
+        feeDelivery + total,
+        orderController.isUpdate.value
+            ? orderController.addressTmp.value
+            : address,
+        billing,
+        status,
+        description);
     if (await isOrderCreated) {
       await orderController.getAllStatusOrder();
+      orderController.isUpdate(false);
+      await cartController.getCartList();
       Navigator.of(context).pushReplacementNamed(
         Routes.order_detail,
         arguments: orderController.order.value,

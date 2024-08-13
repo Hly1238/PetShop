@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:pet_shop/config/cofig.dart';
 import 'package:pet_shop/config/constant.dart';
@@ -31,6 +32,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void getData() async {
+    var isSuccess = await authController.getProfile();
+
     var isLogin = await SecurityStorage().readSecureData("token");
     if (isLogin) {
       String fetchedName =
@@ -83,348 +86,288 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 300,
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: 300,
-                      width: MediaQuery.of(context).size.width,
-                      color: Colors.blue,
-                      alignment: Alignment.center,
-                      child: FadeInImage(
-                        height: double.infinity,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        placeholder:
-                            AssetImage('assets/images/_project/Logo/logo.png'),
-                        image: NetworkImage("userInfo.image"),
-                        imageErrorBuilder: (context, error, stackTrace) =>
-                            Image.asset(
-                          'assets/images/_project/Logo/logo.png',
-                          fit: BoxFit.cover,
-                        ),
+        child: Container(
+          margin: EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 250,
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: 250,
+                        // width: MediaQuery.of(context).size.width,
+                        // color: Colors.blue,
+                        // alignment: Alignment.center,
+                        // child: FadeInImage(
+                        //   height: double.infinity,
+                        //   width: double.infinity,
+                        //   fit: BoxFit.cover,
+                        //   placeholder:
+                        //       AssetImage('assets/images/_project/Logo/logo.png'),
+                        //   image: NetworkImage("userInfo.image"),
+                        //   imageErrorBuilder: (context, error, stackTrace) =>
+                        //       Image.asset(
+                        //     'assets/images/_project/Logo/logo.png',
+                        //     fit: BoxFit.cover,
+                        //   ),
+                        // ),
                       ),
                     ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        GestureDetector(
-                          onTap: () async {},
-                          child: Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(color: Colors.white, width: 1),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(300),
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: FadeInImage(
-                                  fit: BoxFit.cover,
-                                  placeholder: AssetImage(
-                                      'assets/images/_project/Logo/logo.png'),
-                                  image: NetworkImage("userInfo.image"),
-                                  imageErrorBuilder:
-                                      (context, error, stackTrace) =>
-                                          Image.asset(
-                                    'assets/images/_project/Logo/logo.png',
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Text(
-                          name,
-                          style: const TextStyle(
-                              color: Color(0xff04236c),
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, left: 20, bottom: 5),
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      "Settings",
-                      style: TextStyle(
-                        fontSize: 13,
-                        // fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Colors.white),
-                    child: Column(children: <Widget>[
-                      ExpansionTile(
-                        trailing: Icon(
-                          Icons.keyboard_arrow_down,
-                          color: Colors.black26,
-                          size: 27,
-                        ),
-                        title: _buildSelectionSetting(
-                            Icons.person, "User Profile", null, null),
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(top: 8),
-                            padding: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(
-                                color: Colors.black,
-                              ),
-                            ),
-                            child: Column(
-                              children: <Widget>[
-                                Container(
-                                  padding: const EdgeInsets.all(8.0),
-                                  decoration: const BoxDecoration(
-                                      border: Border(
-                                          bottom:
-                                              BorderSide(color: Colors.black))),
-                                  child: GestureDetector(
-                                    onTap: () async {
-                                      // TextEditingController textController =
-                                      //     TextEditingController();
-                                      // await showDialog(
-                                      //   context: context,
-                                      //   builder: (context) => AlertDialog(
-                                      //     title: const Text('Change Username'),
-                                      //     content: TextField(
-                                      //       controller: textController,
-                                      //       autofocus: true,
-                                      //       decoration: const InputDecoration(
-                                      //           hintText:
-                                      //               "Enter your new name"),
-                                      //     ),
-                                      //     actions: <Widget>[
-                                      //       TextButton(
-                                      //         style: TextButton.styleFrom(
-                                      //           textStyle: Theme.of(context)
-                                      //               .textTheme
-                                      //               .labelLarge,
-                                      //         ),
-                                      //         child: const Text('Cancel'),
-                                      //         onPressed: () {
-                                      //           Navigator.of(context).pop();
-                                      //         },
-                                      //       ),
-                                      //       TextButton(
-                                      //         style: TextButton.styleFrom(
-                                      //           textStyle: Theme.of(context)
-                                      //               .textTheme
-                                      //               .labelLarge,
-                                      //         ),
-                                      //         child: const Text('Confirm'),
-                                      //         onPressed: () async {
-                                      //           if (textController
-                                      //               .text.isNotEmpty) {}
-                                      //         },
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // );
-                                    },
-                                    // child: ListTile(
-                                    //   title: const Text(
-                                    //     'Username',
-                                    //     style: TextStyle(
-                                    //         fontWeight: FontWeight.bold,
-                                    //         color: Color(0xff1b2794)),
-                                    //   ),
-                                    //   subtitle: Text(
-                                    //     name,
-                                    //     style: const TextStyle(
-                                    //         color: Color(0xff2c38a4)),
-                                    //   ),
-                                    //   trailing: const Icon(Icons.navigate_next),
-                                    // ),
-                                    child: ListTile(
-                                      title: const Text(
-                                        'Thông tin cá nhân',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff1b2794)),
-                                      ),
-                                      subtitle: Text(
-                                        "Chỉnh sửa",
-                                        style: const TextStyle(
-                                            color: Color(0xff2c38a4)),
-                                      ),
-                                      trailing: const Icon(Icons.navigate_next),
-                                    ),
-                                  ),
-                                ),
-                                // Container(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   decoration: const BoxDecoration(
-                                //       border: Border(
-                                //           bottom:
-                                //               BorderSide(color: Colors.black))),
-                                //   child: ListTile(
-                                //     title: const Text(
-                                //       'Email',
-                                //       style: TextStyle(
-                                //           fontWeight: FontWeight.bold,
-                                //           color: Color(0xff1b2794)),
-                                //     ),
-                                //     subtitle: Text(
-                                //       email,
-                                //       style: const TextStyle(
-                                //           color: Color(0xff2c38a4)),
-                                //     ),
-                                //     trailing: const Icon(Icons.navigate_next),
-                                //   ),
-                                // ),
-
-                                GestureDetector(
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return const SimpleDialog(
-                                          title: Text(
-                                            'Change Password',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          children: [UpdatePasswordForm()],
-                                        );
-                                      },
-                                    );
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: const ListTile(
-                                      title: Text(
-                                        'Password',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xff1b2794)),
-                                      ),
-                                      trailing: Icon(Icons.navigate_next),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 32,
-                          ),
-                        ],
-                      ),
-
-                      //todo [Notification]
-                      const Divider(
-                          height: 0,
-                          endIndent: 25,
-                          indent: 5,
-                          thickness: 0.1,
-                          color: Colors.black),
-                      ListTile(
-                        contentPadding: EdgeInsets.all(15),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    Container(
+                      margin: EdgeInsets.only(top: 70),
+                      child: Align(
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Row(
-                              children: [
-                                Icon(Icons.notifications,
-                                    color: Colors.black38),
-                                const SizedBox(width: 10),
-                                Text(
-                                  "Thông báo",
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
+                            GestureDetector(
+                              onTap: () async {},
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border:
+                                      Border.all(color: Colors.white, width: 1),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(300),
+                                  child: SizedBox(
+                                    height: 100,
+                                    width: 100,
+                                    child: FadeInImage(
+                                      fit: BoxFit.cover,
+                                      placeholder: AssetImage(
+                                          'assets/images/_project/Logo/logo.png'),
+                                      image: NetworkImage("userInfo.image"),
+                                      imageErrorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Image.asset(
+                                        'assets/images/_project/Logo/logo.png',
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ],
+                              ),
                             ),
-                            CupertinoSwitch(
-                              value: _enNotification,
-                              onChanged: (value) async {
-                                setState(() {
-                                  _enNotification = value;
-                                });
-                                _handleNotification(
-                                    _enNotification, authController);
-                              },
-                            ),
+                            Obx(() {
+                              return Text(
+                                authController.user.value?.username ?? name,
+                                style: const TextStyle(
+                                    color: Color(0xff04236c),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
+                              );
+                            }),
                           ],
                         ),
                       ),
-                      const Divider(
-                          height: 0,
-                          endIndent: 25,
-                          indent: 5,
-                          thickness: 0.1,
-                          color: Colors.black),
-                      GestureDetector(
-                        onTap: () async {
-                          var isLogOut = authController.logout();
-                          if (await isLogOut) {
-                            Navigator.of(context)
-                                .pushReplacementNamed(Routes.homepage);
-                          }
-                        },
-                        child: _buildSelectionSetting(Icons.logout, "Sign out",
-                            null, Icons.arrow_forward_ios),
-                      ),
-                    ]),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(top: 20, left: 20, bottom: 5),
-                    alignment: Alignment.centerLeft,
-                    child: const Text(
-                      "About Us",
-                      style: TextStyle(
-                        fontSize: 13,
-                        // fontWeight: FontWeight.bold,
-                        color: Colors.black54,
+                    )
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 20, left: 20, bottom: 5),
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "Settings",
+                        style: TextStyle(
+                          fontSize: 13,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
+                    Container(
                       decoration: const BoxDecoration(
                           shape: BoxShape.rectangle,
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           color: Colors.white),
                       child: Column(children: <Widget>[
-                        _buildSelectionSetting(Icons.info_outline,
-                            "Information", null, Icons.arrow_forward_ios),
-                      ])),
-                ],
-              ),
-            )
-          ],
+                        ExpansionTile(
+                          trailing: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.black26,
+                            size: 27,
+                          ),
+                          title: _buildSelectionSetting(
+                              Icons.person, "User Profile", null, null),
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 8),
+                              padding: const EdgeInsets.all(5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              child: Column(
+                                children: <Widget>[
+                                  Container(
+                                    padding: const EdgeInsets.all(8.0),
+                                    decoration: const BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.black))),
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        Navigator.of(context)
+                                            .pushNamed(Routes.updateProfile);
+                                      },
+                                      child: ListTile(
+                                        title: const Text(
+                                          'Thông tin cá nhân',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xff1b2794)),
+                                        ),
+                                        subtitle: Text(
+                                          "Chỉnh sửa",
+                                          style: const TextStyle(
+                                              color: Color(0xff2c38a4)),
+                                        ),
+                                        trailing:
+                                            const Icon(Icons.navigate_next),
+                                      ),
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return const SimpleDialog(
+                                            backgroundColor: Colors.white,
+                                            insetPadding: EdgeInsets.all(15),
+                                            title: Text(
+                                              'Thay đổi mật khẩu',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            children: [UpdatePasswordForm()],
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: const ListTile(
+                                        title: Text(
+                                          'Mật khẩu',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xff1b2794)),
+                                        ),
+                                        trailing: Icon(Icons.navigate_next),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 32,
+                            ),
+                          ],
+                        ),
+
+                        //todo [Notification]
+                        const Divider(
+                            height: 0,
+                            endIndent: 25,
+                            indent: 5,
+                            thickness: 0.1,
+                            color: Colors.black),
+                        ListTile(
+                          contentPadding: EdgeInsets.all(15),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.notifications,
+                                      color: Colors.black38),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    "Thông báo",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              CupertinoSwitch(
+                                value: _enNotification,
+                                onChanged: (value) async {
+                                  setState(() {
+                                    _enNotification = value;
+                                  });
+                                  _handleNotification(
+                                      _enNotification, authController);
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Divider(
+                            height: 0,
+                            endIndent: 25,
+                            indent: 5,
+                            thickness: 0.1,
+                            color: Colors.black),
+                        GestureDetector(
+                          onTap: () async {
+                            var isLogOut = authController.logout();
+                            if (await isLogOut) {
+                              Navigator.of(context)
+                                  .pushReplacementNamed(Routes.homepage);
+                            }
+                          },
+                          child: _buildSelectionSetting(Icons.logout,
+                              "Sign out", null, Icons.arrow_forward_ios),
+                        ),
+                      ]),
+                    ),
+                    Container(
+                      margin:
+                          const EdgeInsets.only(top: 20, left: 20, bottom: 5),
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "About Us",
+                        style: TextStyle(
+                          fontSize: 13,
+                          // fontWeight: FontWeight.bold,
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+                    Container(
+                        decoration: const BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Colors.white),
+                        child: Column(children: <Widget>[
+                          _buildSelectionSetting(Icons.info_outline,
+                              "Information", null, Icons.arrow_forward_ios),
+                        ])),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -637,7 +580,7 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
               TextFormField(
                 controller: newPasswordController,
                 decoration: const InputDecoration(
-                    labelText: 'New Password',
+                    labelText: 'Mật khẩu mới',
                     labelStyle: TextStyle(color: Colors.grey)),
                 validator: validatePassword,
                 onSaved: (newValue) {
@@ -647,7 +590,7 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
               TextFormField(
                 controller: renewPasswordController,
                 decoration: const InputDecoration(
-                    labelText: 'Re-enter Password',
+                    labelText: 'Xác nhận mật khẩu',
                     labelStyle: TextStyle(color: Colors.grey)),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -668,23 +611,54 @@ class _UpdatePasswordFormState extends State<UpdatePasswordForm> {
               Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState?.validate() == true) {
-                          _formKey.currentState?.save();
-                          HandleUpdatePassword(
-                              newPasswordController.text, oldPassword!);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          padding: const EdgeInsets.all(16)),
-                      child: const Text(
-                        'Update',
-                        style: TextStyle(color: Colors.white),
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (_formKey.currentState?.validate() == true) {
+                            _formKey.currentState?.save();
+                            HandleUpdatePassword(
+                                newPasswordController.text, oldPassword!);
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: CustomAppColor.primaryColorOrange,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Cập nhật",
+                              style: GoogleFonts.raleway().copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ),
-                  )
+                  ),
+                  // Expanded(
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       if (_formKey.currentState?.validate() == true) {
+                  //         _formKey.currentState?.save();
+                  //         HandleUpdatePassword(
+                  //             newPasswordController.text, oldPassword!);
+                  //       }
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //         backgroundColor: Colors.blue,
+                  //         padding: const EdgeInsets.all(16)),
+                  //     child: const Text(
+                  //       'Cập nhật',
+                  //       style: TextStyle(color: Colors.white),
+                  //     ),
+                  //   ),
+                  // )
                 ],
               ),
               const SizedBox(

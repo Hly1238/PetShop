@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/category.dart';
 import 'package:pet_shop/models/Product/product.dart';
@@ -44,10 +45,12 @@ class SelectionTitle extends StatelessWidget {
             child: InkWell(
               onTap: () async {
                 if (isCategory) {
-                  Navigator.of(context).pushNamed(Routes.list_category);
+                  Navigator.of(context).pushNamed(Routes.list_category,
+                      arguments: HomeController.instance.categoryList);
                 } else {
                   var isDone = productController.getProductsByCategory(id);
                   if (await isDone) {
+                    print("zoooo");
                     Navigator.of(context).pushNamed(
                       Routes.product_category,
                       arguments: SelectionTitleArguments(
@@ -59,15 +62,13 @@ class SelectionTitle extends StatelessWidget {
                   }
                 }
               },
-              child: !isCategory
-                  ? Text(
-                      "Xem thêm",
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey,
-                      ),
-                    )
-                  : Text(""),
+              child: Text(
+                "Xem thêm",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.grey,
+                ),
+              ),
             ),
           ),
         ],
@@ -80,7 +81,11 @@ class SelectionTitleArguments {
   final String name;
   final List<Product> productList;
   final String idCate;
+  final isSearch;
 
   SelectionTitleArguments(
-      {required this.name, required this.productList, required this.idCate});
+      {required this.name,
+      required this.productList,
+      required this.idCate,
+      this.isSearch = false});
 }

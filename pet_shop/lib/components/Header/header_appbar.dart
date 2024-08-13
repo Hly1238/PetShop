@@ -1,11 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pet_shop/components/Search/custom_search_delegate.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
+import 'package:pet_shop/controllers/Product/product_controller.dart';
 import 'package:pet_shop/models/Product/product.dart';
 import 'package:pet_shop/route/route_generator.dart';
+import 'package:get/get.dart';
 
 class Header_Appbar extends StatelessWidget implements PreferredSizeWidget {
   final bool isBack;
@@ -71,7 +74,7 @@ class Header_Appbar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
       SizedBox(
-        width: kDefaultPaddin,
+        width: 20.0,
       ),
       // badges.Badge(
       //   badgeContent: Text(

@@ -9,17 +9,19 @@ import 'package:shimmer/shimmer.dart';
 
 class CategoryCard extends StatelessWidget {
   final Category category;
-  const CategoryCard({Key? key, required this.category}) : super(key: key);
+  final double height;
+  const CategoryCard({Key? key, required this.category, this.height = 0.0})
+      : super(key: key);
 
   //todo [Toast]
   void _showToast(BuildContext context, String id) {
-    Fluttertoast.showToast(
-      msg: "Banner ID: $id",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.black,
-      textColor: Colors.white,
-    );
+    // Fluttertoast.showToast(
+    //   msg: "Banner ID: $id",
+    //   toastLength: Toast.LENGTH_SHORT,
+    //   gravity: ToastGravity.BOTTOM,
+    //   backgroundColor: Colors.black,
+    //   textColor: Colors.white,
+    // );
   }
 
   //todo [Handle Find Products In Category]
@@ -28,11 +30,14 @@ class CategoryCard extends StatelessWidget {
     var isSuccess = ProductController.instance
         .getProductsByCategory(category.id, page: page, limit: limit);
     if (await isSuccess) {
-      Navigator.of(context).pushNamed(Routes.product_category,
-          arguments: SelectionTitleArguments(
-              idCate: '',
-              name: category.name,
-              productList: ProductController.instance.productList));
+      Navigator.of(context).pushNamed(
+        Routes.product_category,
+        arguments: SelectionTitleArguments(
+          idCate: category.id,
+          name: category.name,
+          productList: ProductController.instance.productList,
+        ),
+      );
     }
   }
 
@@ -54,13 +59,13 @@ class CategoryCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
             child: Container(
               width: 270,
-              height: 140,
+              height: height != 0.0 ? height : 140,
               decoration: BoxDecoration(
                 color: Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
                   image: imageProvider,
-                  fit: BoxFit.cover,
+                  fit: BoxFit.fill,
                 ),
               ),
               child: Padding(

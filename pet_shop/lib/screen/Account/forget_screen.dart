@@ -126,14 +126,14 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                           text: "",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
                                           text: "Quên mật khẩu!",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor2,
+                                              color: CustomAppColor.textColor2,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ],
@@ -169,7 +169,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                           "Email",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -195,7 +195,8 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -253,7 +254,8 @@ class _ForgetScreenState extends State<ForgetScreen> {
                                           child: Container(
                                             padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
-                                              color: primaryColorOrange,
+                                              color: CustomAppColor
+                                                  .primaryColorOrange,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),

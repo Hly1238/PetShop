@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pet_shop/components/Header/header_appbar.dart';
 import 'package:pet_shop/config/constant.dart';
+import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Product/Product.dart';
 import 'package:pet_shop/route/route_generator.dart';
 import 'package:pet_shop/screen/Order/order_screen.dart';
+import 'package:pet_shop/screen/Product/detail_product.dart';
 
 class CustomTabBar extends StatefulWidget {
   final List<Order> pendingList;
@@ -150,20 +152,24 @@ class _ReuseableAppBodyWidgetState extends State<ReuseableAppBodyWidget> {
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // Center horizontally
                   children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                     Image.asset(
                       'assets/images/_project/Logo/logo.png',
-                      width: 150, // Adjust the size as needed
-                      height: 150, // Adjust the size as needed
+                      width: 150,
+                      height: 150,
                     ),
-                    SizedBox(height: 20),
                     Text(
-                      'No orders found',
+                      'Không tìm thấy đơn hàng',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.grey,
                       ),
+                      textAlign: TextAlign.center,
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   ],
                 ),
               ),
@@ -226,22 +232,24 @@ class _TabBodyUnreviewedItemState extends State<TabBodyUnreviewedItem> {
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment:
+                      CrossAxisAlignment.center, // Center horizontally
                   children: [
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                     Image.asset(
                       'assets/images/_project/Logo/logo.png',
-                      width: 150, // Adjust the size as needed
-                      height: 150, // Adjust the size as needed
+                      width: 150,
+                      height: 150,
                     ),
-                    SizedBox(height: 20),
                     Text(
-                      'Bạn đã đánh giá hết các sản phẩm',
-                      textAlign: TextAlign
-                          .center, // Center the text within its container
+                      'Bạn đã đánh giá\ntất cả sản phẩm',
                       style: TextStyle(
                         fontSize: 18,
                         color: Colors.grey,
                       ),
+                      textAlign: TextAlign.center,
                     ),
+                    SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   ],
                 ),
               ),
@@ -276,13 +284,13 @@ class ItemUnreviewed extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(top: 5),
-      padding: EdgeInsets.all(8), // Thêm khoảng cách bên trong container
+      padding: EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.grey[200], // Màu nền hơi xám cho phần còn lại
-        borderRadius: BorderRadius.circular(8), // Bo góc cho border
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(
-          color: Colors.grey, // Màu của border
-          width: 1, // Độ rộng của border
+          color: Colors.grey.shade500,
+          width: 0.7,
         ),
       ),
       child: Column(
@@ -290,8 +298,13 @@ class ItemUnreviewed extends StatelessWidget {
         children: [
           InkWell(
             onTap: () {
-              Navigator.of(context)
-                  .pushNamed(Routes.details, arguments: product.product);
+              Navigator.of(context).pushNamed(
+                Routes.details,
+                arguments: DetailProductArguments(
+                  idProduct: product.product.id,
+                  product: product.product,
+                ),
+              );
             },
             child: Row(
               children: [
@@ -321,7 +334,7 @@ class ItemUnreviewed extends StatelessWidget {
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       Text(
-                        "${product.product.promotion.toInt()}đ",
+                        "${TransformCustomApp().formatCurrency(product.product.promotion.toInt())}",
                         style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
@@ -340,9 +353,14 @@ class ItemUnreviewed extends StatelessWidget {
                   .pushNamed(Routes.rate_comment, arguments: product);
             },
             child: Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: CustomAppColor.primaryColorOrange,
                 borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: Colors.grey, // Màu của border
+                  width: 1, // Độ rộng của border
+                ),
               ),
               padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Align(
@@ -353,14 +371,14 @@ class ItemUnreviewed extends StatelessWidget {
                     Text(
                       "Đánh giá",
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: Colors.white,
                         fontSize: 16,
                       ),
                     ),
                     SizedBox(width: 5),
                     Icon(
                       Icons.arrow_drop_down_outlined,
-                      color: Colors.blue,
+                      color: Colors.white,
                     ),
                   ],
                 ),

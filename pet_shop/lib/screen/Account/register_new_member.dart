@@ -140,14 +140,14 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           text: "Chào ",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 32.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
                                           text: "Bạn!",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 32.0,
-                                              color: textColor2,
+                                              color: CustomAppColor.textColor2,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ],
@@ -183,7 +183,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           "Email",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -202,7 +202,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -243,7 +244,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           "Password",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -262,7 +263,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -323,7 +325,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           "Xác nhận Password",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -342,7 +344,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -404,7 +407,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           "Số điện thoại",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 14.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -423,7 +426,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           hintStyle:
                                               GoogleFonts.raleway().copyWith(
                                             fontSize: 14.0,
-                                            color: textColor1.withOpacity(0.5),
+                                            color: CustomAppColor.textColor1
+                                                .withOpacity(0.5),
                                           ),
                                           prefixIcon: Container(
                                             margin: const EdgeInsets.only(
@@ -489,7 +493,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                           child: Container(
                                             padding: const EdgeInsets.all(10),
                                             decoration: BoxDecoration(
-                                              color: primaryColorOrange,
+                                              color: CustomAppColor
+                                                  .primaryColorOrange,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
@@ -521,7 +526,7 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.w200,
                                             ),
                                           ),
@@ -543,7 +548,8 @@ class _RegisterNewMemberState extends State<RegisterNewMember> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,
-                                                color: textColor2,
+                                                color:
+                                                    CustomAppColor.textColor2,
                                                 fontWeight: FontWeight.w800,
                                               ),
                                             ),

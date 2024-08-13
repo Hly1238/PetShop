@@ -12,9 +12,27 @@ class Config {
   // ! [Notification]
   static const String oneSignalApp = "e8134ccc-3926-4e95-9b88-b697078421df";
   static const String addDevice = "/api/user/add_device";
+  // ! [Token store]
+  // https://khachhang.ghn.vn/account
+  // https://viblo.asia/p/su-dung-api-giao-hang-nhanh-de-tinh-gia-cuoc-van-chuyen-1Je5EQB45nL
+  static const String storeTokenGHN = "039fcd55-5630-11ef-9216-121022568175";
+  static const String shopId = "5251508";
+  static const int shopDistrict = 1461; //Gò Vấp
+  // ! [Get Address]
+  static const String getProvince =
+      "https://online-gateway.ghn.vn/shiip/public-api/master-data/province";
+  static const String getDistrict =
+      "https://online-gateway.ghn.vn/shiip/public-api/master-data/district";
+  static const String getWard =
+      "https://online-gateway.ghn.vn/shiip/public-api/master-data/ward";
+  static const String getFee =
+      "https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee";
+
   //! Server
   static const String appName = "Shopping App";
-  static const String apiURL = "192.168.1.191:3100";
+  static const String url = "https://pet_shop";
+  // static const String apiURL = "192.168.1.191:3100";
+  static const String apiURL = "pet-shop-3q53.onrender.com";
 
   //!News
   static const String bannerAPI = "/api/news/search";
@@ -36,11 +54,13 @@ class Config {
   static const String categorySearchByName = "/api/category/searchByNameMobile";
   static const String categoryContainProducts = "/api/category/productsM/";
   static const String searchProductsBySlug = "/api/category/searchBySlug/";
+  static const String getIdBySlug = "/api/category//getIdBySlud/";
   // http://localhost:3100/api/category/products/6694177f68ad0eb07017e421?page=1&&limit=1
 
   // ! Profile
   static const String getProfile = "/api/user/profile";
   static const String updatePasswordAPI = "/api/auth/update_password";
+  static const String updateInfoUser = "/api/user/";
 
   // ! Product
   static const String productAPI = "/api/product/search";
@@ -52,6 +72,7 @@ class Config {
   static const String getHighRecommendProduct =
       "/api/product/getHighRecommendProduct";
   static const String filterProduct = "/api/product/filterProduct";
+  static const String getProductByID = "/api/product/getPM/";
 
   // !Comment
   static const String productGetReviews = "/api/product/";
@@ -65,12 +86,8 @@ class Config {
   static const String getOrderStauts = "/api/order/viewM/";
   static const String getUnreviewdItem = "/api/order/getUnreviewdItem";
   static const String updateIsConfirm = "/api/order/updateConfirm";
+  static const String updateCancelOrder = "/api/order/";
   //http://localhost:3100/api/order/change-state/66954066178464e463889d48
-
-  // {
-  //     "status": "canceled"
-  // }
-
   // http://localhost:3100/api/order/searchByName?name=350
   // http://localhost:3100/api/order/669486dd598f9574912217dc --sửa
   // http://localhost:3100/api/order/ordersByTotal?minTotal=200&maxTotal=500

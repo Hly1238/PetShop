@@ -6,8 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
+import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/controllers/Predict/predict_controller.dart';
 import 'package:pet_shop/controllers/Product/cart_controller.dart';
 import 'package:pet_shop/controllers/Product/product_controller.dart';
@@ -31,8 +33,9 @@ class NavigationScreen extends StatefulWidget {
 
 class _NavigationScreenState extends State<NavigationScreen> {
   ProductController productController = Get.find<ProductController>();
+  OrderController orderController = Get.find<OrderController>();
+  AuthController authController = Get.find<AuthController>();
 
-  //
   int pageIndex = 0;
   //todo [Predict]
   String isImageUploaded = "";
@@ -56,10 +59,14 @@ class _NavigationScreenState extends State<NavigationScreen> {
         await SecurityStorage().readSecureData("token") == false) {
       Navigator.of(context).pushNamed(Routes.sign_in);
     } else {
-      setState(() {
-        pageIndex = index;
-        productController.getAllFavoriteProduct();
-      });
+      setState(
+        () {
+          pageIndex = index;
+          productController.getAllFavoriteProduct();
+          orderController.getAllStatusOrder();
+          authController.getProfile();
+        },
+      );
     }
   }
 
@@ -79,48 +86,24 @@ class _NavigationScreenState extends State<NavigationScreen> {
         child: FloatingActionButton(
           // todo: [Scan dog action]
           onPressed: () {
-            // checkpermission_opencamera();
             showImagePickerOption(context);
-            // Navigator.of(context).pushNamed(Routes.recognize_model);
           },
           child: Icon(
             Icons.qr_code,
             size: 20,
+            color: Colors.white,
           ),
-          backgroundColor: Color(0xFFDB3022),
+          backgroundColor: CustomAppColor.primaryRedColor,
         ),
       ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // bottomNavigationBar: AnimatedBottomNavigationBar(
-      //     icons: [
-      //       CupertinoIcons.house_alt_fill,
-      //       // CupertinoIcons.cart_fill,
-      //       CupertinoIcons.rectangle_on_rectangle_angled,
-      //       CupertinoIcons.heart_fill,
-      //       CupertinoIcons.profile_circled,
-      //     ],
-      //     inactiveColor: Colors.black.withOpacity(0.5),
-      //     activeColor: Color(0xFFDB3022),
-      //     gapLocation: GapLocation.center,
-      //     activeIndex: pageIndex,
-      //     notchSmoothness: NotchSmoothness.softEdge,
-      //     leftCornerRadius: 10,
-      //     iconSize: 25,
-      //     rightCornerRadius: 10,
-      //     elevation: 0,
-      //     onTap: (index) {
-      //       _onItemTapped;
-      //       ProductController.instance.getAllFavoriteProduct();
-      //     }
-      //     // (index) {
-      //     //   ,
-      //     //   setState(() {
-      //     //     pageIndex = index;
-      //     //   });
-      //     // },
-      //     ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: AnimatedBottomNavigationBar(
+        height: 60,
+        shadow: Shadow(
+          color: Colors.black.withOpacity(0.2),
+          offset: Offset(0, 4),
+          blurRadius: 10,
+        ),
         icons: [
           CupertinoIcons.house_alt_fill,
           CupertinoIcons.rectangle_on_rectangle_angled,
@@ -144,8 +127,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   // todo: [Check Permission]
   checkpermission_opencamera() async {
     var cameraStatus = await Permission.camera.status;
-    // var microphoneStatus = await Permission.microphone.status;
-
+    // ! Instruction
     //cameraStatus.isGranted == has access to application
     //cameraStatus.isDenied == does not have access to application, you can request again for the permission.
     //cameraStatus.isPermanentlyDenied == does not have access to application, you cannot request again for the permission.
@@ -153,16 +135,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
     //cameraStatus.isUndetermined == permission has not asked before.
 
     if (!cameraStatus.isGranted) await Permission.camera.request();
-    // if (!microphoneStatus.isGranted) await Permission.microphone.request();
 
     if (await Permission.camera.isGranted) {
-      // if (await Permission.microphone.isGranted) {
-      // } else {
-      //   showToast(
-      //       "Camera needs to access your microphone, please provide permission",
-      //       position: ToastPosition.bottom);
-      // }
-      // openCamera();
       _pickImageFromCamera();
     } else {
       showToast("Provide Camera permission to use camera.",
@@ -181,18 +155,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
   void openCamera() {
     Navigator.of(context).pushNamed(Routes.scanner);
   }
-
-  // void requestCameraPermission() async {
-  //   var status = await Permission.camera.request();
-  //   if (status.isDenied) {
-  //     //Handle Denied
-  //     showToast("Camera");
-  //   } else if (status.isPermanentlyDenied) {
-  //     //Permissiobn permanently denied, show Dialog or redirect to app settings
-  //   } else if (status.isGranted) {
-  //     //proceed with camera
-  //   }
-  // }
 
   // todo [Options pick]
   void showImagePickerOption(BuildContext context) {
@@ -263,24 +225,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
 
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-      // setState(() {
-      //   isLoading = true;
-      // });
-
       // Uint8List bytes = await image.readAsBytes();
       Navigator.of(context).pushNamed(Routes.pred_list, arguments: image);
-      // PredictController.instance.predict(bytes, image.name);
-
-      // if (PredictController.instance.predList.isNotEmpty) {
-      //   for (var i = 0; i < PredictController.instance.predList.length; i++) {
-      //     print(PredictController.instance.predList[i]);
-      //   }
-      //   Navigator.of(context).pushNamed(Routes.pred_list,
-      //       arguments: PredictController.instance.predList);
-      //   // await predictImage(bytes, image.name);
-      // }
     } else {
-      print("jjjjjjjjjjjjjjjjjjjjjjjj");
+      print("Error _pickImage");
     }
   }
 
@@ -296,42 +244,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     // Navigator.of(context).pop();
     final XFile? image = await picker.pickImage(source: ImageSource.camera);
     if (image != null) {
-      // setState(() {
-      //   isLoading = true;
-      // });
-      // Uint8List bytes = await image.readAsBytes();
-      // await predictImage(bytes, image.name);
       Navigator.of(context).pushNamed(Routes.pred_list, arguments: image);
     }
   }
-
-  //todo [Predict]
-  Future<void> predictImage(Uint8List bytes, String fileName) async {
-    // print("Predicting image: $fileName");
-    // var predictionResult = await UploadApiImage().uploadImage(bytes, fileName);
-    // if (predictionResult != null) {
-    //   setState(() {
-    //     // Update UI with prediction result if needed
-    //     print("Prediction result: $predictionResult");
-    //     Navigator.of(context).pushReplacementNamed('/');
-    //     isLoading = false;
-    //   });
-    // } else {
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    //   print("Failed to predict image.");
-    // }
-  }
-
-  // void _imgFromGallery() async {
-  //   await ImagePicker()
-  //       .pickImage(source: ImageSource.camera, imageQuality: 50)
-  //       .then((value) => {
-  //             if (value != null)
-  //               {
-  //                 // _cropImage(File(value.path))
-  //               }
-  //           });
-  // }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/config/validators/transform.dart';
+import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
 import 'package:pet_shop/models/Product/product.dart';
@@ -22,6 +24,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   String name = "";
   String phone = "";
   bool isLoading = true;
+  OrderController orderController = Get.find<OrderController>();
 
   @override
   void initState() {
@@ -82,36 +85,65 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: GestureDetector(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: EdgeInsets.all(10),
-          height: 60,
-          decoration: BoxDecoration(
-            color: widget.item.status.trim() == "approved"
-                ? Colors.grey
-                : CustomAppColor.primaryColorOrange, // Màu nền khác là màu cam
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Center(
-            child: Text(
-              widget.item.status.trim() == "pending"
-                  ? "Hủy đơn"
-                  : (widget.item.status.trim() == "final" ||
-                          widget.item.status.trim() == "rejected")
-                      ? "Mua lại"
-                      : "Nhận đơn",
-              style: GoogleFonts.raleway().copyWith(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
+      bottomNavigationBar: widget.item.status.trim() != "final" &&
+              widget.item.status.trim() != "rejected"
+          ? GestureDetector(
+              onTap: () {
+                widget.item.status.trim() == "pending"
+                    ? handleCancelOrder(widget.item)
+                    : (widget.item.status.trim() == "approved" ||
+                            (widget.item.status.trim() == "final" &&
+                                !widget.item.isConfirm))
+                        ? handleFinalOrder(widget.item)
+                        : handelRebuyOrder();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                margin: EdgeInsets.all(10),
+                height: 60,
+                decoration: BoxDecoration(
+                  color: widget.item.status.trim() == "approved"
+                      ? Colors.grey
+                      : CustomAppColor.primaryColorOrange,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    widget.item.status.trim() == "pending"
+                        ? "Hủy đơn"
+                        : (widget.item.status.trim() == "approved" ||
+                                (widget.item.status.trim() == "final" &&
+                                    !widget.item.isConfirm))
+                            ? "Nhận đơn"
+                            : "Mua lại",
+                    style: GoogleFonts.raleway().copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
-      ),
+            )
+          : SizedBox(),
     );
+  }
+
+  handleFinalOrder(Order order) async {
+    var isSuccess = orderController.updateIsConfirm(order.id);
+    if (await isSuccess) {
+      orderController.getAllStatusOrder();
+      Navigator.of(context).pop();
+    }
+  }
+
+  handelRebuyOrder() {}
+  handleCancelOrder(Order order) async {
+    var isSuccess = orderController.cancleOrder(order);
+    if (await isSuccess) {
+      orderController.getAllStatusOrder();
+      Navigator.of(context).pop();
+    }
   }
 }
 
@@ -360,7 +392,8 @@ class AddressInfoSection extends StatelessWidget {
                     SizedBox(height: 5),
                     Text(phone, style: TextStyle(fontWeight: FontWeight.bold)),
                     SizedBox(height: 5),
-                    Text(address, style: TextStyle(color: Colors.black54)),
+                    Text(TransformCustomApp().formatAddress(address),
+                        style: TextStyle(color: Colors.black54)),
                     SizedBox(height: 8),
                   ],
                 ),
@@ -427,6 +460,7 @@ class SelectedItemsSection extends StatelessWidget {
                             imageUrl: item.product.image,
                             title: item.product.name,
                             price: item.product.promotion.toInt(),
+                            quantity: item.quantity,
                           ),
                         )
                         .toList(),
@@ -445,12 +479,14 @@ class ItemRow extends StatelessWidget {
   final String imageUrl;
   final String title;
   final int price;
+  final int quantity;
 
   const ItemRow({
     Key? key,
     required this.imageUrl,
     required this.title,
     required this.price,
+    required this.quantity,
   }) : super(key: key);
 
   @override
@@ -476,13 +512,23 @@ class ItemRow extends StatelessWidget {
                       Text(title,
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 15)),
-                      Text(
-                        "${TransformCustomApp().formatCurrency(price.toInt())}",
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15),
-                      ),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "${TransformCustomApp().formatCurrency(price.toInt())}",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15),
+                            ),
+                            Text(
+                              "x${quantity}",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 12),
+                            ),
+                          ]),
                     ],
                   ),
                 ),

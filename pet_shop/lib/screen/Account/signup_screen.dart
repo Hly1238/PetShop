@@ -121,14 +121,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                           text: "",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.normal),
                                         ),
                                         TextSpan(
                                           text: "Welcome!",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 35.0,
-                                              color: textColor2,
+                                              color: CustomAppColor.textColor2,
                                               fontWeight: FontWeight.w800),
                                         ),
                                       ],
@@ -164,7 +164,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           "Mã kích hoạt của bạn",
                                           style: GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
@@ -336,7 +336,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                           child: Container(
                                             padding: const EdgeInsets.all(16),
                                             decoration: BoxDecoration(
-                                              color: primaryColorOrange,
+                                              color: CustomAppColor
+                                                  .primaryColorOrange,
                                               borderRadius:
                                                   BorderRadius.circular(10),
                                             ),
@@ -367,7 +368,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                             style:
                                                 GoogleFonts.raleway().copyWith(
                                               fontSize: 16.0,
-                                              color: textColor1,
+                                              color: CustomAppColor.textColor1,
                                               fontWeight: FontWeight.w200,
                                             ),
                                           ),
@@ -389,7 +390,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                               style: GoogleFonts.raleway()
                                                   .copyWith(
                                                 fontSize: 16.0,
-                                                color: textColor2,
+                                                color:
+                                                    CustomAppColor.textColor2,
                                                 fontWeight: FontWeight.w800,
                                               ),
                                             ),

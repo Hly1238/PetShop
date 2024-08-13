@@ -15,8 +15,9 @@ class ProductReviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: AppBar(
-        title: Text("Reviews"),
+        title: Text("Đánh giá"),
         leading: BackButton(),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
@@ -220,7 +221,8 @@ class ProgressIndicator extends StatelessWidget {
               value: value,
               minHeight: 11,
               backgroundColor: Colors.grey,
-              valueColor: AlwaysStoppedAnimation(primaryColorOrange),
+              valueColor:
+                  AlwaysStoppedAnimation(CustomAppColor.primaryColorOrange),
               borderRadius: BorderRadius.circular(7),
             ),
           ),
@@ -248,7 +250,7 @@ class _ReviewListDialogState extends State<ReviewListDialog> {
         child: Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Reviews"),
+        title: Text("Đánh giá sản phẩm"),
         leading: BackButton(),
         backgroundColor: CustomAppColor.primaryColorOrange,
         foregroundColor: Colors.white,
