@@ -58,7 +58,7 @@ class Config {
   // http://localhost:3100/api/category/products/6694177f68ad0eb07017e421?page=1&&limit=1
 
   // ! Profile
-  static const String getProfile = "/api/user/profile";
+  static const String getProfile = "/api/user/profileM";
   static const String updatePasswordAPI = "/api/auth/update_password";
   static const String updateInfoUser = "/api/user/";
 
