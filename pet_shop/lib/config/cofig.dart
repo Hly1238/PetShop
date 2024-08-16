@@ -32,7 +32,7 @@ class Config {
   static const String appName = "Shopping App";
   static const String url = "https://pet_shop";
   // static const String apiURL = "192.168.1.191:3100";
-  static const String apiURL = "pet-shop-3q53.onrender.com";
+  static const String apiURL = "render-petshop.onrender.com";
 
   //!News
   static const String bannerAPI = "/api/news/search";

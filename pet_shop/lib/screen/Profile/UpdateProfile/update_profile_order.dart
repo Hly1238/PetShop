@@ -1009,9 +1009,9 @@ class _UpdateProfileOrderState extends State<UpdateProfileOrder> {
                                               if (globalKey.currentState!
                                                   .validate()) {
                                                 if (selectedWard == null) {
-                                                  selectedDistrict =
-                                                      orderController
-                                                          .districtList.first;
+                                                  // selectedDistrict =
+                                                  //     orderController
+                                                  //         .districtList.first;
                                                   selectedWard = orderController
                                                       .wardList.first;
                                                 }

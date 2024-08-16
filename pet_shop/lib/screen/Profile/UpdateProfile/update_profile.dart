@@ -1113,9 +1113,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                                 if (selectedWard == null) {
                                                   // defaultCity = orderController
                                                   //     .cityList.first;
-                                                  selectedDistrict =
-                                                      orderController
-                                                          .districtList.first;
+                                                  // selectedDistrict =
+                                                  //     orderController
+                                                  //         .districtList.first;
                                                   selectedWard = orderController
                                                       .wardList.first;
                                                 }

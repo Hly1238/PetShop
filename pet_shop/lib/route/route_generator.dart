@@ -233,9 +233,6 @@ class RouteGenerator {
       case Routes.productCard:
         return MaterialPageRoute(builder: (_) => CarouselLoading());
 
-      // case Routes.snackBarScreen:
-
-      //   return MaterialPageRoute(builder: (_) => ProductReviewScreen());
       case Routes.testModelScreen:
         return MaterialPageRoute(builder: (_) => Model());
       case '/pre':
