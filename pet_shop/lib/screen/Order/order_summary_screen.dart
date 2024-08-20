@@ -6,6 +6,7 @@ import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/config/snack_bar_inform/snackbar_custom.dart';
 import 'package:pet_shop/config/validators/transform.dart';
 import 'package:pet_shop/controllers/Account/auth_controller.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/controllers/Product/cart_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
@@ -28,6 +29,8 @@ class OrderSummaryScreen extends StatefulWidget {
 class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
   AuthController authController = Get.find<AuthController>();
   OrderController orderController = Get.find<OrderController>();
+  HomeController homeController = Get.find<HomeController>();
+
   String address = "";
   String name = "";
   String phone = "";
@@ -98,10 +101,11 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
   }
 
   @override
-  void dispose() {
+  void dispose() async {
     OrderController.instance.addressTmp.value = "";
     orderController.isUpdate(false);
     orderController.deliveryFee.value = 0;
+    await homeController.getData();
     super.dispose();
   }
 
@@ -111,7 +115,7 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
       backgroundColor: CustomAppColor.lightBackgroundColor_Home,
       appBar: AppBar(
         leading: BackButton(),
-        title: Text('Order Summary'),
+        title: Text('Hóa đơn'),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
@@ -435,7 +439,8 @@ class SelectedItemsSection extends StatelessWidget {
                               imagePath: productOrder.product.image,
                               title: productOrder.product.name,
                               price:
-                                  '${TransformCustomApp().formatCurrency((productOrder.product.promotion * productOrder.quantity).toInt())}',
+                                  '${TransformCustomApp().formatCurrency((productOrder.product.promotion).toInt())}',
+                              // '${TransformCustomApp().formatCurrency((productOrder.price).toInt())}',
                               quantity: productOrder.quantity,
                             ))
                         .toList(),
@@ -699,6 +704,9 @@ class ContinueButton extends StatelessWidget {
         child: ElevatedButton(
           onPressed: isAddressValid
               ? () async {
+                  for (var element in selectedItems) {
+                    element.price = element.product.promotion;
+                  }
                   var isSuccess = await createOrder(
                       selectedItems,
                       total + feeDelivery,

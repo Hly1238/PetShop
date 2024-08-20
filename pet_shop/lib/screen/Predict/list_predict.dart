@@ -62,8 +62,8 @@ class _ListPredictState extends State<ListPredict> {
   @override
   void dispose() {
     // TODO: implement dispose
-    super.dispose();
     homeController.getData();
+    super.dispose();
   }
 
   void fetchPrediction() async {

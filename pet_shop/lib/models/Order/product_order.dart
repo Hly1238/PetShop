@@ -5,7 +5,7 @@ class ProductOrder {
   final String id;
   final Product product;
   int quantity;
-  final double price;
+  double price;
   bool selected;
 
   ProductOrder({

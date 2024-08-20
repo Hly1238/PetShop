@@ -22,6 +22,11 @@ class Order {
   final DateTime date;
   final bool isConfirm;
 
+  // Thêm getter để tính tổng số lượng
+  int get totalItems {
+    return products.fold(0, (total, current) => total + current.quantity);
+  }
+
   factory Order.fromJson(Map<String, dynamic> data) {
     return Order(
       id: data['_id'],

@@ -34,7 +34,7 @@ class HomeController extends GetxController {
     getData();
   }
 
-  void getData() async {
+  Future<void> getData() async {
     await getBanners();
     await getCategory();
     await getProduct();

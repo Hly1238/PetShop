@@ -180,14 +180,26 @@ class _ReuseableAppBodyWidgetState extends State<ReuseableAppBodyWidget> {
               itemCount: widget.orderListStatus.length,
               itemBuilder: (context, index) {
                 final order = widget.orderListStatus[index];
+                // return OrderCard(
+                //   shopName: 'Puppy Pet Shop',
+                //   orderNumber: order.id,
+                //   orderTime: order.date,
+                //   paymentStatus: order.billing,
+                //   productDescription:
+                //       "",
+                //   totalItems: order.products.length,
+                //   totalPrice: order.orderTotal,
+                //   deliveryStatus: order.status,
+                //   isDelivered: order.status == "final" ? false : true,
+                //   order: order,
+                // );
                 return OrderCard(
                   shopName: 'Puppy Pet Shop',
                   orderNumber: order.id,
                   orderTime: order.date,
                   paymentStatus: order.billing,
-                  productDescription:
-                      "", // Replace with actual product description logic
-                  totalItems: order.products.length,
+                  productDescription: "",
+                  totalItems: order.totalItems, // Sử dụng getter totalItems
                   totalPrice: order.orderTotal,
                   deliveryStatus: order.status,
                   isDelivered: order.status == "final" ? false : true,

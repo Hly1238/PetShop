@@ -268,7 +268,8 @@ class _ProductDetailPopupState extends State<ProductDetailPopup> {
                                   CartController.instance.addToCart(
                                       widget.productId,
                                       _quantityNotifier.value,
-                                      _quantityNotifier.value * widget.price);
+                                      // _quantityNotifier.value * widget.price);
+                                      widget.price);
 
                                   _quantityNotifier.value = 1;
 

@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_shop/config/constant.dart';
 import 'package:pet_shop/config/secure_storage/security_storage.dart';
 import 'package:pet_shop/config/validators/transform.dart';
+import 'package:pet_shop/controllers/Home/home_controller.dart';
 import 'package:pet_shop/controllers/Order/order_controller.dart';
 import 'package:pet_shop/models/Order/order.dart';
 import 'package:pet_shop/models/Order/product_order.dart';
@@ -25,6 +26,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   String phone = "";
   bool isLoading = true;
   OrderController orderController = Get.find<OrderController>();
+  HomeController homeController = Get.find<HomeController>();
 
   @override
   void initState() {
@@ -40,6 +42,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
       name = fetchedName;
       isLoading = false;
     });
+  }
+
+  @override
+  void dispose() {
+    homeController.getData();
+    super.dispose();
   }
 
   @override
@@ -459,7 +467,7 @@ class SelectedItemsSection extends StatelessWidget {
                           (item) => ItemRow(
                             imageUrl: item.product.image,
                             title: item.product.name,
-                            price: item.product.promotion.toInt(),
+                            price: item.price.toInt(),
                             quantity: item.quantity,
                           ),
                         )
@@ -723,7 +731,7 @@ class TimeSection extends StatelessWidget {
                 width: 10,
               ),
               Text(
-                'Order Summary',
+                'Thời gian đặt hàng',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
             ],
@@ -753,25 +761,25 @@ class TimeSection extends StatelessWidget {
           SizedBox(
             height: 5,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Thời gian cập nhật: ',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                    color: Colors.black54),
-              ),
-              Text(
-                '${formattedDate}',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.black54,
-                ),
-              ),
-            ],
-          )
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       'Thời gian cập nhật: ',
+          //       style: TextStyle(
+          //           fontWeight: FontWeight.bold,
+          //           fontSize: 13,
+          //           color: Colors.black54),
+          //     ),
+          //     Text(
+          //       '${formattedDate}',
+          //       style: TextStyle(
+          //         fontSize: 13,
+          //         color: Colors.black54,
+          //       ),
+          //     ),
+          //   ],
+          // )
         ],
       ),
     );
