@@ -101,11 +101,11 @@ class _OrderSummaryScreenState extends State<OrderSummaryScreen> {
   }
 
   @override
-  void dispose() async {
+  void dispose() {
     OrderController.instance.addressTmp.value = "";
     orderController.isUpdate(false);
     orderController.deliveryFee.value = 0;
-    await homeController.getData();
+    homeController.getData();
     super.dispose();
   }
 

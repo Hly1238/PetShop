@@ -40,11 +40,15 @@ class _SplashScreenState extends State<SplashScreen>
 
   _navigateToNextScreen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    // await prefs.remove('onBoard');
+
     bool? isViewed = prefs.getBool('onBoard');
-    await Future.delayed(Duration(seconds: 3)); // Splash screen delay
+
+    await Future.delayed(Duration(seconds: 3));
     if (isViewed != null && isViewed) {
       Navigator.of(context).pushReplacementNamed(Routes.homepage);
     } else {
+      // Navigator.of(context).pushReplacementNamed(Routes.homepage);
       Navigator.of(context).pushReplacementNamed(Routes.onBoarding);
     }
   }
